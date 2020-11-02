@@ -10,6 +10,10 @@
         /// </summary>
         AcceptIfTrue,
         /// If the rule evaluates to <c>false</c> then the evaluation is considered determined.
-        AcceptIfFalse
+        AcceptIfFalse,
+        /// <summary>
+        /// Useful to set a default value in advance
+        /// </summary>
+        Fallthrough
     }
 }

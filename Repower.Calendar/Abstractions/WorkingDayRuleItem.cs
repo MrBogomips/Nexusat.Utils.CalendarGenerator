@@ -1,8 +1,8 @@
 ﻿namespace Repower.Calendar
 {
-    public class CalendarRuleChainItem
+    public class WorkingDayRuleItem
     {
-        public CalendarWorkingDayRulePolicy WorkingDayPolicy { get; }
+        public WorkingDayRulePolicy WorkingDayPolicy { get; }
         public IWorkingDayRule WorkingDayRule { get; }
     }
 }

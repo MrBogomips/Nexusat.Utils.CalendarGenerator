@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Repower.Calendar.Abstractions
+namespace Repower.Calendar
 {
     /// <summary>
     /// A chain of <see cref="IWorkingDayRule"/>s to manage the working days
