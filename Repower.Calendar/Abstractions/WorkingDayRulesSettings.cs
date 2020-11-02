@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Repower.Calendar
 {
-    class Calendar
+    class CalendarRuleChainSettings
     {
+
     }
 }
