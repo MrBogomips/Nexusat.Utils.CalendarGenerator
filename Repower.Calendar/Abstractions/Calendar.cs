@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 
 namespace Repower.Calendar
@@ -10,7 +11,7 @@ namespace Repower.Calendar
     /// 
     /// See <see cref="ICalendar"/> for the semantic of the members.
     /// </summary>
-    public abstract class Calendar : ICalendar
+    public class Calendar : ICalendar
     {
         private readonly WorkingDayRules WorkingDayRules;
 
@@ -32,23 +33,36 @@ namespace Repower.Calendar
         /// <returns><c>null</c> if the calendar has no workingDayInfo</returns>
         public IWorkingDayInfo GetWorkingDayInfo(DateTime date)
         {
-            IWorkingDayInfo retVal = null;
-            if (WorkingDayRules != null)
+            IWorkingDayInfo dayInfo;
+            TryGetWorkingDayInfo(date, out dayInfo);
+            return dayInfo;
+        }
+        public bool TryGetWorkingDayInfo(DateTime date, out IWorkingDayInfo dayInfo)
+        {
+            dayInfo = null;
+            if (WorkingDayRules == null || !WorkingDayRules.Any())
+            {
+                return false; // no rules => nothing to do
+            }
+            else
             {
                 foreach (var rule in WorkingDayRules)
                 {
-                    var curInfo = rule.WorkingDayRule.GetWorkingDayInfo(date);
-                    if (curInfo == null) continue; // nothing to evaluate
-                    retVal = curInfo;
-                    if (rule.WorkingDayPolicy == WorkingDayRulePolicy.AcceptAlways ||
-                        retVal.IsWorkingDay && rule.WorkingDayPolicy == WorkingDayRulePolicy.AcceptIfTrue ||
-                        !retVal.IsWorkingDay && rule.WorkingDayPolicy == WorkingDayRulePolicy.AcceptIfFalse)
-                    {
-                        break;
+                    IWorkingDayInfo curInfo;
+
+                    if (rule.Rule.TryGetWorkingDayInfo(date, out curInfo))
+                    { // something to evaluate
+                        dayInfo = curInfo; // register the most recent found
+                        if (rule.Policy == WorkingDayRulePolicy.AcceptAlways ||
+                            dayInfo.IsWorkingDay && rule.Policy == WorkingDayRulePolicy.AcceptIfTrue ||
+                            !dayInfo.IsWorkingDay && rule.Policy == WorkingDayRulePolicy.AcceptIfFalse)
+                        {
+                            break;
+                        }
                     }
                 }
             }
-            return retVal;
+            return dayInfo != null;
         }
 
         #region Equals

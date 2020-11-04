@@ -13,5 +13,7 @@ namespace Repower.Calendar
         /// <param name="date"></param>
         /// <returns></returns>
         IWorkingDayInfo GetWorkingDayInfo(DateTime date);
+
+        bool TryGetWorkingDayInfo(DateTime date, out IWorkingDayInfo dayInfo);
     }
 }

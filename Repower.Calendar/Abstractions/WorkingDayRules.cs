@@ -9,6 +9,7 @@ namespace Repower.Calendar
     /// </summary>
     public class WorkingDayRules: List<WorkingDayRuleItem>
     {
-        
+        public void Add(WorkingDayRulePolicy policy, IWorkingDayRule rule) =>
+            this.Add(new WorkingDayRuleItem(policy, rule));
     }
 }

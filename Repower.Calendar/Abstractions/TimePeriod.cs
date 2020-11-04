@@ -24,6 +24,8 @@ namespace Repower.Calendar
             Begin = begin;
             End = end;
         }
+        public TimePeriod(short beginHour, short beginMinute, short endHour, short endMinute) : 
+            this(new Time(beginHour, beginMinute), new Time(endHour, endMinute)) { }
         public int CompareTo(TimePeriod other) => Begin.CompareTo(other.Begin);
 
         /// <summary>

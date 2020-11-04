@@ -5,7 +5,7 @@ using System.Linq;
 namespace Repower.Calendar
 {
     [Serializable]
-    public class WeekdayRuleSettings
+    public class WeekdaysRuleSettings
     {
         public class DaySetting
         {
@@ -14,7 +14,7 @@ namespace Repower.Calendar
 
             public DaySetting(DayOfWeek dayOfWeek, IEnumerable<TimePeriod> workingPeriods = null)
             {
-                DayOfWeek = DayOfWeek;
+                DayOfWeek = dayOfWeek;
                 if (workingPeriods == null)
                 {
                     WorkingPeriods = new List<TimePeriod>();
@@ -34,7 +34,7 @@ namespace Repower.Calendar
             }
         }
         public IEnumerable<DaySetting> Days { get; }
-        public WeekdayRuleSettings(IEnumerable<DaySetting> days)
+        public WeekdaysRuleSettings(IEnumerable<DaySetting> days)
         {
             Days = days ?? throw new ArgumentNullException(nameof(days));
             

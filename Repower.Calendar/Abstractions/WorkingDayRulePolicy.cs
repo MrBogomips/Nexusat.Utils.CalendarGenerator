@@ -6,20 +6,21 @@
     public enum WorkingDayRulePolicy
     {
         /// <summary>
+        /// Useful to set a default value in advance
+        /// </summary>
+        Fallthrough = 0,
+        /// <summary>
         /// If the rule evaluates to <c>true</c> then the evaluation is considered determined.
         /// </summary>
-        AcceptIfTrue,
+        AcceptIfTrue = 1,
         /// <summary>
         /// If the rule evaluates to <c>false</c> then the evaluation is considered determined.
         /// </summary>
-        AcceptIfFalse,
+        AcceptIfFalse = 2,
         /// <summary>
         /// If the rule produce any outcome than this is accepted
         /// </summary>
-        AcceptAlways,
-        /// <summary>
-        /// Useful to set a default value in advance
-        /// </summary>
-        Fallthrough
+        AcceptAlways = 3,
+        
     }
 }
