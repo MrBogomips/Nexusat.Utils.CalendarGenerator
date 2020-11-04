@@ -3,7 +3,9 @@
 namespace Repower.Calendar
 {
     /// <summary>
-    /// Represents a time
+    /// Represents a time period within a day.
+    /// Hour can assume values between 0 and 24 meanind the End of Day.
+    /// Minute can asssume values between 0 and 60 meaninbg the End of Hour.
     /// </summary>
     public readonly struct Time: IComparable<Time>
     {
@@ -26,20 +28,20 @@ namespace Repower.Calendar
 
         public int CompareTo(Time other)
         {
-            if (other.Hour > Hour)
+            if (Hour > other.Hour)
             {
                 return 1;
             }
-            if (other.Hour < Hour)
+            else if (Hour < other.Hour)
             {
                 return -1;
             }
             // ASSERT other.Hour == Hour
-            if (other.Minute > Minute)
+            if (Minute > other.Minute)
             {
                 return 1;
             } 
-            else if (other.Minute < Minute)
+            else if (Minute < other.Minute)
             {
                 return -1;
             }
