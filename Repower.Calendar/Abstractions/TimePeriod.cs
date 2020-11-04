@@ -11,8 +11,10 @@ namespace Repower.Calendar
     /// A whole day is represented by the period [00:00, 24:00[, as ISO 8601 recommendes.
     /// .Net Class Library, unfortunately, isn't compliant with that time period representation.
     /// </summary>
+    [Serializable]
     public readonly struct TimePeriod : IComparable<TimePeriod>
     {
+        public static readonly TimePeriod AllDay = new TimePeriod(new Time(), new Time(24, 0));
         public Time Begin { get; }
         public Time End { get; }
 

@@ -1,49 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace Repower.Calendar
 {
-    public class WeekdayRuleSettings
-    {
-        public class DaySetting
-        {
-            public DayOfWeek DayOfWeek { get; set; }
-            public List<TimePeriod> WorkingPeriods { get; set; }
-        }
-        public IEnumerable<DaySetting> Days { get; }
-        public WeekdayRuleSettings(IEnumerable<DaySetting> days)
-        {
-            Days = days ?? throw new ArgumentNullException(nameof(days));
-            
-            List<DayOfWeek> daysProcessed = new List<DayOfWeek>();
-            foreach (var d in days)
-            {
-                // ASSERT: Weekday MUST appear once
-                if (daysProcessed.Contains(d.DayOfWeek))
-                {
-                    throw new ArgumentException($"Day of week ${d.DayOfWeek} appears more than once", nameof(days));
-                }
-                daysProcessed.Add(d.DayOfWeek);
-                // ASSERT: Working periods can't overlap
-                //List<TimePeriod> workingPeriod = d.WorkingPeriods.Sort((TimePeriod lhs, WorkingPeriod))
-
-            }
-        }
-        
-    }
-
+    /// <summary>
+    /// Represents a rule based on week days
+    /// </summary>
     public class WeekdaysRule : IWorkingDayRule
     {
-        internal static readonly string NAME = "Weekday";
+        internal static readonly string NAME = "Weekdays";
         public string Name => NAME;
 
-        public IWorkingDayInfo GetWorkingDayInfo(DateTime date)
-        {
-            IWorkingDayInfo dayInfo = new WorkingDayInfo();
+        private readonly WeekdayRuleSettings Settings;
 
-            return dayInfo;
+        public WeekdaysRule(WeekdayRuleSettings settings) =>
+            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
+
+        public IWorkingDayInfo GetWorkingDayInfo(DateTime date)
+        {  
+            var setting = Settings.Days.Where((d) => d.DayOfWeek == date.DayOfWeek).First();
+
+            if (setting == null) return null;
+
+            return new WorkingDayInfo { IsWorkingDay = true, WorkingPeriods = setting.WorkingPeriods };
         }
 
     }

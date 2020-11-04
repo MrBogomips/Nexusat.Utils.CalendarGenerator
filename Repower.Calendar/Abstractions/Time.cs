@@ -6,6 +6,7 @@ namespace Repower.Calendar
     /// Represents a time period within a day.
     /// Hour can assume values between 0 and 24 to correctly represent the End of Day: in this case minute must be 0 (zero).
     /// </summary>
+    [Serializable]
     public readonly struct Time: IComparable<Time>
     {
         public short Hour { get; }

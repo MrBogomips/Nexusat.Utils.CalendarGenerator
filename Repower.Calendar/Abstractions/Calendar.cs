@@ -29,7 +29,7 @@ namespace Repower.Calendar
         /// Return the working day info of the day.
         /// </summary>
         /// <param name="date"></param>
-        /// <returns><c>null</c> if the calendar has no rules</returns>
+        /// <returns><c>null</c> if the calendar has no workingDayInfo</returns>
         public IWorkingDayInfo GetWorkingDayInfo(DateTime date)
         {
             IWorkingDayInfo retVal = null;
@@ -37,8 +37,11 @@ namespace Repower.Calendar
             {
                 foreach (var rule in WorkingDayRules)
                 {
-                    retVal = rule.WorkingDayRule.GetWorkingDayInfo(date);
-                    if (retVal.IsWorkingDay && rule.WorkingDayPolicy == WorkingDayRulePolicy.AcceptIfTrue ||
+                    var curInfo = rule.WorkingDayRule.GetWorkingDayInfo(date);
+                    if (curInfo == null) continue; // nothing to evaluate
+                    retVal = curInfo;
+                    if (rule.WorkingDayPolicy == WorkingDayRulePolicy.AcceptAlways ||
+                        retVal.IsWorkingDay && rule.WorkingDayPolicy == WorkingDayRulePolicy.AcceptIfTrue ||
                         !retVal.IsWorkingDay && rule.WorkingDayPolicy == WorkingDayRulePolicy.AcceptIfFalse)
                     {
                         break;
