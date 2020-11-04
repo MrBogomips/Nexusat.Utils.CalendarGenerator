@@ -8,14 +8,14 @@ namespace Repower.Calendar
     /// <summary>
     /// Represents a rule based on week days
     /// </summary>
-    public class WeekdaysRule : IWorkingDayRule
+    public class WeekdaysWorkingRule : IWorkingDayRule
     {
         internal static readonly string NAME = "Weekdays";
         public string Name => NAME;
 
-        private readonly WeekdaysRuleSettings Settings;
+        private readonly WeekdaysWorkingRuleSettings Settings;
 
-        public WeekdaysRule(WeekdaysRuleSettings settings) =>
+        public WeekdaysWorkingRule(WeekdaysWorkingRuleSettings settings) =>
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
         public IWorkingDayInfo GetWorkingDayInfo(DateTime date)

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Repower.Calendar
 {
-    public class WeekdaysRuleBuilder
+    public class WeekdaysWorkingRuleBuilder
     {
         private Dictionary<DayOfWeek, List<TimePeriod>> settings = new Dictionary<DayOfWeek, List<TimePeriod>>();
 
@@ -32,17 +32,17 @@ namespace Repower.Calendar
         public void Clear() => settings.Clear();
 
         /// <summary>
-        /// Retrieve the settings suitable to instantiate a new <see cref="WeekdaysRule"/>.
+        /// Retrieve the settings suitable to instantiate a new <see cref="WeekdaysWorkingRule"/>.
         /// </summary>
         /// <returns></returns>
-        public WeekdaysRuleSettings GetSettings() =>
-            new WeekdaysRuleSettings(settings.Select(s =>
-            new WeekdaysRuleSettings.DaySetting(s.Key, s.Value)));
+        public WeekdaysWorkingRuleSettings GetSettings() =>
+            new WeekdaysWorkingRuleSettings(settings.Select(s =>
+            new WeekdaysWorkingRuleSettings.DaySetting(s.Key, s.Value)));
         /// <summary>
-        /// Retrieve a new <see cref="WeekdaysRule"/> based of the settings provided so far.
+        /// Retrieve a new <see cref="WeekdaysWorkingRule"/> based of the settings provided so far.
         /// </summary>
         /// <returns></returns>
-        public WeekdaysRule GetRule() => new WeekdaysRule(GetSettings());
+        public WeekdaysWorkingRule GetRule() => new WeekdaysWorkingRule(GetSettings());
         
     }
 }

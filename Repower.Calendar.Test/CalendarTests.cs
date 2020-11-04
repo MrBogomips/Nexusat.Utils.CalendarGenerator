@@ -15,7 +15,7 @@ namespace Repower.Calendar.Tests
         public void WeekdayTest()
         {
             // Setup
-            WeekdaysRuleBuilder builder = new WeekdaysRuleBuilder();
+            WeekdaysWorkingRuleBuilder builder = new WeekdaysWorkingRuleBuilder();
             builder.AddRule(Monday, 8, 30, 17, 30);
             builder.AddRule(Tuesday, 8, 30, 17, 30);
             builder.AddRule(Wednesday, 8, 30, 17, 30);
