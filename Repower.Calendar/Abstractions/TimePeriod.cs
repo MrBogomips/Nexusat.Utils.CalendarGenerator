@@ -43,7 +43,7 @@ namespace Repower.Calendar
         /// Returns the number of minutes covered in the period.
         /// </summary>
         /// <returns>0 in the case of a period where Begin and End are the same</returns>
-        public int GetMinutes() => End.GetSerial() - Begin.GetSerial();
+        public int TotalMinutes => End.GetSerial() - Begin.GetSerial();
 
 
         public static implicit operator TimeSpan(TimePeriod timePeriod) =>

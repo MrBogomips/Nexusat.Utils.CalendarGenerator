@@ -55,18 +55,36 @@ namespace Repower.Calendar.Test
         public void GetMinutesTest()
         {
             var p0 = new TimePeriod();
-            Assert.AreEqual(0, p0.GetMinutes());
+            Assert.AreEqual(0, p0.TotalMinutes);
 
             var p1 = new TimePeriod(new Time(), new Time(0, 1));
-            Assert.AreEqual(1, p1.GetMinutes());
+            Assert.AreEqual(1, p1.TotalMinutes);
 
             var p2 = new TimePeriod(new Time(), new Time(1, 0));
-            Assert.AreEqual(60, p2.GetMinutes());
+            Assert.AreEqual(60, p2.TotalMinutes);
 
             var p3 = new TimePeriod(new Time(), new Time(24, 0));
-            Assert.AreEqual(60 * 24, p3.GetMinutes());
+            Assert.AreEqual(60 * 24, p3.TotalMinutes);
             var p4 = new TimePeriod(new Time(), new Time(23, 59));
-            Assert.AreEqual(60 * 24 - 1, p4.GetMinutes());
+            Assert.AreEqual(60 * 24 - 1, p4.TotalMinutes);
+        }
+
+        [TestMethod]
+        public void GetTimeSpanTest()
+        {
+            var p0 = new TimePeriod();
+            Assert.AreEqual(0, ((TimeSpan)p0).TotalMinutes);
+
+            var p1 = new TimePeriod(new Time(), new Time(0, 1));
+            Assert.AreEqual(1, ((TimeSpan)p1).TotalMinutes);
+
+            var p2 = new TimePeriod(new Time(), new Time(1, 0));
+            Assert.AreEqual(60, ((TimeSpan)p2).TotalMinutes);
+
+            var p3 = new TimePeriod(new Time(), new Time(24, 0));
+            Assert.AreEqual(60 * 24, ((TimeSpan)p3).TotalMinutes);
+            var p4 = new TimePeriod(new Time(), new Time(23, 59));
+            Assert.AreEqual(60 * 24 - 1, ((TimeSpan)p4).TotalMinutes);
         }
     }
 }
