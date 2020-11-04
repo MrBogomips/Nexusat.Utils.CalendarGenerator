@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Repower.Calendar.Test
 {
@@ -9,6 +10,18 @@ namespace Repower.Calendar.Test
         static readonly Time t2 = new Time(0, 1);
         static readonly Time t3 = new Time(1, 0);
         static readonly Time t4 = new Time(0, 0);
+
+        [TestMethod]
+        public void CtorTest()
+        {
+            new Time(24, 0);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Time(-1, 0));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Time(25, 0));
+
+            new Time(0, 60);
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Time(0, -1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Time(0, 61));
+        }
 
         [TestMethod]
         public void OperatorsTest()
@@ -40,6 +53,13 @@ namespace Repower.Calendar.Test
             object o2 = t4;
 
             Assert.AreEqual(o1, o2);
+        }
+        [TestMethod]
+        public void ToStringTest()
+        {
+            Assert.AreEqual("00:00", t1.ToString());
+            Assert.AreEqual("00:01", t2.ToString());
+            Assert.AreEqual("01:00", t3.ToString());
         }
     }
 }

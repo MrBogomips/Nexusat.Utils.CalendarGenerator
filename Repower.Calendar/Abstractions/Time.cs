@@ -24,7 +24,7 @@ namespace Repower.Calendar
             Hour = hour;
             Minute = minute;
         }
-        public override string ToString() => $"${Hour:00}:${Minute:00}";
+        public override string ToString() => $"{Hour:00}:{Minute:00}";
 
         public int CompareTo(Time other)
         {
