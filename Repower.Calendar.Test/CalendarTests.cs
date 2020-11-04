@@ -133,5 +133,7 @@ namespace Repower.Calendar.Tests
             Assert.IsFalse(calendar.GetWorkingDayInfo(saturday).IsWorkingDay);
             Assert.IsFalse(calendar.GetWorkingDayInfo(sunday).IsWorkingDay);
         }
+
+
     }
 }
