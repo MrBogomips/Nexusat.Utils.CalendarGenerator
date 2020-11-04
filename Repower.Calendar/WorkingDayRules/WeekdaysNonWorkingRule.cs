@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 
 namespace Repower.Calendar
 {
     /// <summary>
-    /// Represents a rule based on working week days
+    /// Represents a rule based on non working week days
     /// </summary>
-    public class WeekdaysWorkingRule : IWorkingDayRule
+    public class WeekdaysNonWorkingRule : IWorkingDayRule
     {
-        internal static readonly string NAME = "WorkingWeekdays";
+        internal static readonly string NAME = "NonWorkingWeekdays";
         public string Name => NAME;
 
-        private readonly WeekdaysWorkingRuleSettings Settings;
+        private readonly WeekdaysNonWorkingRuleSettings Settings;
 
-        public WeekdaysWorkingRule(WeekdaysWorkingRuleSettings settings) =>
+        public WeekdaysNonWorkingRule(WeekdaysNonWorkingRuleSettings settings) =>
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
         public IWorkingDayInfo GetWorkingDayInfo(DateTime date)
@@ -35,7 +33,7 @@ namespace Repower.Calendar
             }
             else
             {
-                dayInfo = new WorkingDayInfo { IsWorkingDay = true, WorkingPeriods = setting.First().WorkingPeriods };
+                dayInfo = new WorkingDayInfo { IsWorkingDay = false };
                 return true;
             }
         }
