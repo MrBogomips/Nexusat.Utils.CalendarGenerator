@@ -4,8 +4,7 @@ namespace Repower.Calendar
 {
     /// <summary>
     /// Represents a time period within a day.
-    /// Hour can assume values between 0 and 24 meanind the End of Day.
-    /// Minute can asssume values between 0 and 60 meaninbg the End of Hour.
+    /// Hour can assume values between 0 and 24 to correctly represent the End of Day: in this case minute must be 0 (zero).
     /// </summary>
     public readonly struct Time: IComparable<Time>
     {
@@ -15,11 +14,15 @@ namespace Repower.Calendar
         {
             if (hour < 0 || hour > 24)
             {
-                throw new ArgumentOutOfRangeException(nameof(Hour), "Must be between 0 and 24 range");
-            }
-            if (minute < 0 || minute > 60)
+                throw new ArgumentOutOfRangeException(nameof(hour), "Must be between 0 and 24 range");
+            } 
+            else if (hour == 24 && minute != 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(Minute), "Must be between 0 and 60 range");
+                throw new ArgumentOutOfRangeException(nameof(minute), "A 24 time must have a minute of 0.");
+            }
+            if (minute < 0 || minute > 59)
+            {
+                throw new ArgumentOutOfRangeException(nameof(minute), "Must be between 0 and 59 range");
             }
             Hour = hour;
             Minute = minute;
@@ -75,7 +78,11 @@ namespace Repower.Calendar
 
             return Equals((Time)obj);
         }
-
-        public override int GetHashCode() => Hour ^ Minute;
+        /// <summary>
+        /// Returns a serial of the time.
+        /// </summary>
+        /// <returns></returns>
+        public int GetSerial() => Hour * 60 + Minute;
+        public override int GetHashCode() => GetSerial();
     }
 }
