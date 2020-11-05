@@ -35,6 +35,17 @@ namespace Repower.Calendar.Abstractions
 
         public string ToXml(XmlWriterSettings settings = null)
         {
+            /* XML Layout
+            <CalendarDays>
+	            <Day date="ISO_DATE" isWorkingDay="true|false">
+		            <Description></Description>
+		            <WorkingPeriods>
+			            <TimePeriod begin="08:00" end="12:00" />
+			            <TimePeriod begin="14:00" end="18:00" />
+		            </WorkingPeriods>
+	            </Day>
+            <CalendarDays>
+            */
             XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
             ns.Add("", "");
             var ser = new XmlSerializer(typeof(CalendarDays));
@@ -47,6 +58,24 @@ namespace Repower.Calendar.Abstractions
 
         public string ToJson()
         {
+            /* TODO: JSON Layout
+            {
+	            "days": [{
+		            "date": "ISO_DATE",
+		            "isWorkingDay": true | false,
+		            "description": "",
+		            "workingPeriods": [{
+			            "begin": "08:00",
+			            "end": "12:00"
+		            },{
+			            "begin": "14:00",
+			            "end": "18:00"
+		            },
+		            ]
+	            }]
+	            }
+            }
+            */
             throw new NotImplementedException();
         }
     }
