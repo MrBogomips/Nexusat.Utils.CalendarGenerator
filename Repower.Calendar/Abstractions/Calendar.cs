@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace Repower.Calendar
 {
@@ -11,7 +14,8 @@ namespace Repower.Calendar
     /// 
     /// See <see cref="ICalendar"/> for the semantic of the members.
     /// </summary>
-    public class Calendar : ICalendar
+    [Serializable]
+    public class Calendar : ICalendar, ISerializable
     {
         private readonly WorkingDayRules WorkingDayRules;
 
@@ -65,6 +69,30 @@ namespace Repower.Calendar
             return dayInfo != null;
         }
 
+        public string ToXml()
+        {
+            XmlSerializer ser = new XmlSerializer(typeof(Calendar));
+            using(StringWriter writer = new StringWriter())
+            {
+                ser.Serialize(writer, this);
+                return writer.ToString();
+            }
+        }
+
+        public static Calendar LoadFromXml(string xml)
+        {
+            if (xml == null) throw new ArgumentNullException(nameof(xml));
+            XmlSerializer ser = new XmlSerializer(typeof(Calendar));
+            using (StringReader reader = new StringReader(xml))
+            {
+                return ser.Deserialize(reader) as Calendar;
+            }
+        }
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
+        }
+
         #region Equals
         // override object.Equals
         public bool Equals(Calendar that) => that != null && that.Name == this.Name;
@@ -73,7 +101,6 @@ namespace Repower.Calendar
 
         // override object.GetHashCode
         public override int GetHashCode() => Name.GetHashCode();
-
         #endregion Equals
     }
 }

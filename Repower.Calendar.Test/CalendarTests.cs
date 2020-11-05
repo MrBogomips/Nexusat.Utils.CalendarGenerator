@@ -97,6 +97,30 @@ namespace Repower.Calendar.Tests
         public void WeekdayTest()
         {
             // Setup
+            Calendar calendar = SetupFullCalendar();
+
+            DateTime monday, tuesday, wednsday, thursday, friday, saturday, sunday;
+            monday = DateTime.Parse("2020-11-02");
+            tuesday = DateTime.Parse("2020-11-03");
+            wednsday = DateTime.Parse("2020-11-04");
+            thursday = DateTime.Parse("2020-11-05");
+            friday = DateTime.Parse("2020-11-06");
+            saturday = DateTime.Parse("2020-11-07");
+            sunday = DateTime.Parse("2020-11-08");
+            
+
+            // Excercise and Assert
+            Assert.IsTrue(calendar.GetWorkingDayInfo(monday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetWorkingDayInfo(tuesday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetWorkingDayInfo(wednsday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetWorkingDayInfo(thursday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetWorkingDayInfo(friday).IsWorkingDay);
+            Assert.IsFalse(calendar.GetWorkingDayInfo(saturday).IsWorkingDay);
+            Assert.IsFalse(calendar.GetWorkingDayInfo(sunday).IsWorkingDay);
+        }
+
+        private static Calendar SetupFullCalendar()
+        {
             WeekdaysWorkingRuleBuilder weekdaysRuleBuilder = new WeekdaysWorkingRuleBuilder();
             weekdaysRuleBuilder.AddRule(Monday, 8, 30, 17, 30);
             weekdaysRuleBuilder.AddRule(Tuesday, 8, 30, 17, 30);
@@ -114,26 +138,17 @@ namespace Repower.Calendar.Tests
             rules.Add(WorkingDayRulePolicy.Fallthrough, weekdaysRuleBuilder.GetRule());
             rules.Add(WorkingDayRulePolicy.Fallthrough, weekendRuleBuilder.GetRule());
 
-            var calendar = new Calendar("Five Working Days Calendar", rules);
-
-            var monday = DateTime.Parse("2020-11-02");
-            var tuesday = DateTime.Parse("2020-11-03");
-            var wednsday = DateTime.Parse("2020-11-04");
-            var thursday = DateTime.Parse("2020-11-05");
-            var friday = DateTime.Parse("2020-11-06");
-            var saturday = DateTime.Parse("2020-11-07");
-            var sunday = DateTime.Parse("2020-11-08");
-
-            // Excercise and Assert
-            Assert.IsTrue(calendar.GetWorkingDayInfo(monday).IsWorkingDay);
-            Assert.IsTrue(calendar.GetWorkingDayInfo(tuesday).IsWorkingDay);
-            Assert.IsTrue(calendar.GetWorkingDayInfo(wednsday).IsWorkingDay);
-            Assert.IsTrue(calendar.GetWorkingDayInfo(thursday).IsWorkingDay);
-            Assert.IsTrue(calendar.GetWorkingDayInfo(friday).IsWorkingDay);
-            Assert.IsFalse(calendar.GetWorkingDayInfo(saturday).IsWorkingDay);
-            Assert.IsFalse(calendar.GetWorkingDayInfo(sunday).IsWorkingDay);
+            return new Calendar("Five Working Days Calendar", rules);
         }
 
+        [TestMethod]
+        public void XmlSerializationTest()
+        {
+            Calendar calendar = SetupFullCalendar();
 
+            var xml = calendar.ToXml();
+            Assert.IsNotNull(xml);
+
+        }
     }
 }
