@@ -184,5 +184,22 @@ namespace Repower.Calendar.Tests
             var calendar2 = Calendar.LoadFromJson(json);
             TestFullCalendar(calendar2);
         }
+
+        [TestMethod]
+        public void GenerateCalendarDaysTest()
+        {
+            Calendar calendar = SetupFullCalendar();
+
+            var defaultDayInfo = new DayInfo()
+            {
+                Description = "Default",
+                IsWorkingDay = false
+            };
+
+            var calendarDays = calendar.GenerateCalendarDays(new DateTime(2020, 1, 1), new DateTime(2020, 12, 31), defaultDayInfo);
+
+            Assert.IsNotNull(calendarDays);
+            Assert.AreEqual(366, calendarDays.Count);
+        }
     }
 }

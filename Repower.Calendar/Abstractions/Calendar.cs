@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Repower.Calendar.Abstractions;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -8,7 +10,6 @@ using System.Xml;
 
 namespace Repower.Calendar
 {
-    // TODO: Json Serializer: Json serializer
     // TODO: Calendar Generator: generate a calendar suitable to be represented
     // TODO: EasterHolidayRule: manage the easter
     // TODO: CustomDayRule: a way to define a rule for specific days
@@ -133,20 +134,46 @@ namespace Repower.Calendar
             buffer.Position = 0;
             return ser.ReadObject(buffer) as Calendar;
         }
-
-
-        /*
-    public static Calendar LoadFromXml(string xml)
-    {
-        if (xml == null) throw new ArgumentNullException(nameof(xml));
-        XmlSerializer ser = new XmlSerializer(typeof(Calendar));
-        using (StringReader reader = new StringReader(xml))
+        /// <summary>
+        /// Generate a <see cref="CalendarDays"/> info.
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="defaultDayInfo">Default info in case of missing info</param>
+        /// <returns></returns>
+        public CalendarDays GenerateCalendarDays(DateTime from, DateTime to, DayInfo defaultDayInfo)
         {
-            var serializationInfo = ser.Deserialize(reader) as Calendar;
-            return GetCalendarFromSerializationInfo(serializationInfo);
+            if (to < from)
+            {
+                throw new ArgumentException($"'{nameof(to)}' cannot precede '{nameof(from)}'");
+            }
+
+            if (defaultDayInfo is null)
+            {
+                throw new ArgumentNullException(nameof(defaultDayInfo));
+            }
+
+            var calendarDays = new CalendarDays();
+            for(var cur = from; cur <= to; cur = cur.AddDays(1))
+            {
+                var info = GetDayInfo(cur) ?? defaultDayInfo;
+                List<CalendarDaysEntry.TimePeriod> workingPeriods = 
+                    info.WorkingPeriods?.Select(wp => new CalendarDaysEntry.TimePeriod() { 
+                        Begin = wp.Begin.ToString(),
+                        End = wp.End.ToString()
+                    }).ToList();
+
+                calendarDays.Add(new CalendarDaysEntry()
+                {
+                    Date = cur.ToString("yyyy-MM-dd"),
+                    IsWorkingDay = info.IsWorkingDay,
+                    Description = info.Description,
+                    WorkingPeriods = workingPeriods
+                }) ;
+            }
+
+            return calendarDays;
         }
-    }
-        */
 
         #region Equals
         // override object.Equals
