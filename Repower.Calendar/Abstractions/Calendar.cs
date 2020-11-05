@@ -1,27 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Xml.Serialization;
+using System.Xml;
 
 namespace Repower.Calendar
 {
+    // TODO: Json Serializer: Json serializer
+    // TODO: Calendar Generator: generate a calendar suitable to be represented
+    // TODO: EasterHolidayRule: manage the easter
+    // TODO: CustomDayRule: a way to define a rule for specific days
+
     /// <summary>
     /// Base implementation of a calendar.
     /// 
     /// See <see cref="ICalendar"/> for the semantic of the members.
     /// </summary>
-    [Serializable]
-    public class Calendar : ICalendar, ISerializable
+    [DataContract(Namespace ="http://www.nexusat.it/schemas/calendar")]
+    public class Calendar : ICalendar
     {
+        [DataMember]
         private readonly DayRules DayRules;
 
+        [DataMember]
         public string Name { get; private set; }
-
+        [DataMember]
         public string Description { get; private set; }
+        [DataMember]
         public string LongDescription { get; private set; }
 
         public Calendar(string name, DayRules dayRules, string description = null, string longDescription = null)
@@ -71,27 +77,30 @@ namespace Repower.Calendar
 
         public string ToXml()
         {
-            XmlSerializer ser = new XmlSerializer(typeof(Calendar));
-            using(StringWriter writer = new StringWriter())
-            {
-                ser.Serialize(writer, this);
-                return writer.ToString();
-            }
+            var ser = new DataContractSerializer(typeof(Calendar));
+
+            using var buffer = new StringWriter();
+            using var writer = XmlWriter.Create(buffer);
+
+            ser.WriteObject(writer, this);
+            writer.Flush();
+            return buffer.ToString();
         }
 
-        public static Calendar LoadFromXml(string xml)
+
+
+        /*
+    public static Calendar LoadFromXml(string xml)
+    {
+        if (xml == null) throw new ArgumentNullException(nameof(xml));
+        XmlSerializer ser = new XmlSerializer(typeof(Calendar));
+        using (StringReader reader = new StringReader(xml))
         {
-            if (xml == null) throw new ArgumentNullException(nameof(xml));
-            XmlSerializer ser = new XmlSerializer(typeof(Calendar));
-            using (StringReader reader = new StringReader(xml))
-            {
-                return ser.Deserialize(reader) as Calendar;
-            }
+            var serializationInfo = ser.Deserialize(reader) as Calendar;
+            return GetCalendarFromSerializationInfo(serializationInfo);
         }
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            throw new NotImplementedException();
-        }
+    }
+        */
 
         #region Equals
         // override object.Equals

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Repower.Calendar
 {
-    [Serializable]
     public partial class WeekdaysNonWorkingRuleSettings
     {
-        public IEnumerable<DaySetting> Days { get; }
+        [DataMember]
+        public IEnumerable<DaySetting> Days { get; private set; }
         public WeekdaysNonWorkingRuleSettings(IEnumerable<DaySetting> days)
         {
             Days = days ?? throw new ArgumentNullException(nameof(days));

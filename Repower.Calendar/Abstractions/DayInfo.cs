@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Repower.Calendar
 {
+    [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public class DayInfo : IDayInfo
     {
         public bool IsWorkingDay { get; set; }

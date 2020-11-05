@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Repower.Calendar
 {
     public partial class WeekdaysWorkingRuleSettings
     {
+        [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
         public class DaySetting
         {
-            public DayOfWeek DayOfWeek { get; }
-            public List<TimePeriod> WorkingPeriods { get; }
+            [DataMember]
+            public DayOfWeek DayOfWeek { get; private set; }
+            [DataMember]
+            public List<TimePeriod> WorkingPeriods { get; private set; }
 
             public DaySetting(DayOfWeek dayOfWeek, IEnumerable<TimePeriod> workingPeriods = null)
             {

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Repower.Calendar
 {
-    [Serializable]
+    [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public partial class WeekdaysWorkingRuleSettings
     {
+        [DataMember]
         public IEnumerable<DaySetting> Days { get; }
         public WeekdaysWorkingRuleSettings(IEnumerable<DaySetting> days)
         {

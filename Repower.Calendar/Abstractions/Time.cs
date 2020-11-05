@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Repower.Calendar
 {
@@ -6,11 +7,13 @@ namespace Repower.Calendar
     /// Represents a time period within a day.
     /// Hour can assume values between 0 and 24 to correctly represent the End of Day: in this case minute must be 0 (zero).
     /// </summary>
-    [Serializable]
-    public readonly struct Time: IComparable<Time>
+    [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
+    public struct Time: IComparable<Time>
     {
-        public short Hour { get; }
-        public short Minute { get; }
+        [DataMember]
+        public short Hour { get; private set; }
+        [DataMember]
+        public short Minute { get; private set; }
         public Time(short hour, short minute)
         {
             if (hour < 0 || hour > 24)
@@ -30,7 +33,7 @@ namespace Repower.Calendar
         }
         public override string ToString() => $"{Hour:00}:{Minute:00}";
 
-        public int CompareTo(Time other)
+        public readonly int CompareTo(Time other)
         {
             if (Hour > other.Hour)
             {
@@ -83,7 +86,7 @@ namespace Repower.Calendar
         /// Returns a serial of the time.
         /// </summary>
         /// <returns></returns>
-        public int GetSerial() => Hour * 60 + Minute;
+        public readonly int GetSerial() => Hour * 60 + Minute;
         public override int GetHashCode() => GetSerial();
     }
 }

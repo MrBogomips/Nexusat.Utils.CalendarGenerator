@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Repower.Calendar
@@ -11,12 +12,14 @@ namespace Repower.Calendar
     /// A whole day is represented by the period [00:00, 24:00[, as ISO 8601 recommendes.
     /// .Net Class Library, unfortunately, isn't compliant with that time period representation.
     /// </summary>
-    [Serializable]
-    public readonly struct TimePeriod : IComparable<TimePeriod>
+    [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
+    public struct TimePeriod : IComparable<TimePeriod>
     {
         public static readonly TimePeriod AllDay = new TimePeriod(new Time(), new Time(24, 0));
-        public Time Begin { get; }
-        public Time End { get; }
+        [DataMember]
+        public Time Begin { get; private set; }
+        [DataMember]
+        public Time End { get; private set; }
 
         public TimePeriod(Time begin, Time end)
         {
@@ -33,7 +36,7 @@ namespace Repower.Calendar
         /// </summary>
         /// <param name="other"></param>
         /// <returns><c>true</c> in case of overlapping</returns>
-        public bool Overlaps(TimePeriod other) {
+        public readonly bool Overlaps(TimePeriod other) {
             var this_begin = Begin.GetSerial();
             var this_end = End.GetSerial();
             var other_begin = other.Begin.GetSerial();
@@ -47,7 +50,7 @@ namespace Repower.Calendar
         /// Returns the number of minutes covered in the period.
         /// </summary>
         /// <returns>0 in the case of a period where Begin and End are the same</returns>
-        public int TotalMinutes => End.GetSerial() - Begin.GetSerial();
+        public readonly int TotalMinutes => End.GetSerial() - Begin.GetSerial();
 
 
         public static implicit operator TimeSpan(TimePeriod timePeriod) =>

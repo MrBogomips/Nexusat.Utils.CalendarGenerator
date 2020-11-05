@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace Repower.Calendar
 {
     /// <summary>
     /// Represents a rule based on non working week days
     /// </summary>
-    public class WeekdaysNonWorkingRule : IDayRule
+    [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
+    public class WeekdaysNonWorkingRule : DayRule
     {
-        internal static readonly string NAME = "NonWorkingWeekdays";
-        public string Name => NAME;
-
+        [DataMember]
         private readonly WeekdaysNonWorkingRuleSettings Settings;
 
         public WeekdaysNonWorkingRule(WeekdaysNonWorkingRuleSettings settings) =>
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
-        public IDayInfo GetDayInfo(DateTime date)
+        public override IDayInfo GetDayInfo(DateTime date)
         {
             IDayInfo dayInfo;
             TryGetDayInfo(date, out dayInfo);
             return dayInfo;
         }
 
-        public bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo)
+        public override bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo)
         {
             dayInfo = null;
             var setting = Settings.Days.Where((d) => d.DayOfWeek == date.DayOfWeek);

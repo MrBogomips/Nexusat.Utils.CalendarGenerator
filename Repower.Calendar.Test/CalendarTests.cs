@@ -9,9 +9,22 @@ using static System.DayOfWeek;
 
 namespace Repower.Calendar.Tests
 {
+
     [TestClass()]
     public class CalendarTests
     {
+        private TestContext TestContextInstance;
+
+        /// <summary>
+        /// Gets or sets the test context which provides
+        /// information about and functionality for the current test run.
+        /// </summary>
+        public TestContext TestContext
+        {
+            get { return TestContextInstance; }
+            set { TestContextInstance = value; }
+        }
+
         [TestMethod()]
         public void WeekdayWorkingTest()
         {
@@ -147,6 +160,7 @@ namespace Repower.Calendar.Tests
             Calendar calendar = SetupFullCalendar();
 
             var xml = calendar.ToXml();
+            TestContext.WriteLine(xml);
             Assert.IsNotNull(xml);
 
         }
