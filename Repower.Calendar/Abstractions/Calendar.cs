@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
 
@@ -101,6 +102,38 @@ namespace Repower.Calendar
             using var reader = XmlReader.Create(buffer);
             return ser.ReadObject(reader) as Calendar;
         }
+
+        public string ToJson(Encoding encoding = null, bool indent = false)
+        {
+            var ser = new DataContractJsonSerializer(typeof(Calendar));
+
+            using var buffer = new MemoryStream();
+            using var writer = JsonReaderWriterFactory.CreateJsonWriter(buffer, encoding ?? Encoding.UTF8, true, indent);
+            using var reader = new StreamReader(buffer);
+
+            ser.WriteObject(writer, this);
+            writer.Flush();
+            buffer.Position = 0;
+            return reader.ReadToEnd();
+        }
+
+        public static Calendar LoadFromJson(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                throw new ArgumentException($"'{nameof(json)}' cannot be null or whitespace", nameof(json));
+            }
+
+            var ser = new DataContractJsonSerializer(typeof(Calendar));
+
+            using var buffer = new MemoryStream();
+            using var writer = new StreamWriter(buffer);
+            writer.Write(json);
+            writer.Flush();
+            buffer.Position = 0;
+            return ser.ReadObject(buffer) as Calendar;
+        }
+
 
         /*
     public static Calendar LoadFromXml(string xml)

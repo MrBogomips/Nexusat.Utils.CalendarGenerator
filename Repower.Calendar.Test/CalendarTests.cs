@@ -171,5 +171,18 @@ namespace Repower.Calendar.Tests
             TestFullCalendar(calendar2);
 
         }
+
+        [TestMethod]
+        public void JsonSerializationTest()
+        {
+            Calendar calendar = SetupFullCalendar();
+
+            var json = calendar.ToJson(indent: true);
+            TestContext.WriteLine(json);
+            Assert.IsNotNull(json);
+
+            var calendar2 = Calendar.LoadFromJson(json);
+            TestFullCalendar(calendar2);
+        }
     }
 }
