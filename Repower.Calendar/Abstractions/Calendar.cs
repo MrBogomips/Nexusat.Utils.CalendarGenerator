@@ -11,6 +11,7 @@ namespace Repower.Calendar
     // TODO: Calendar Generator: generate a calendar suitable to be represented
     // TODO: EasterHolidayRule: manage the easter
     // TODO: CustomDayRule: a way to define a rule for specific days
+    // TODO: XSD Exporter for all the Rules settings
 
     /// <summary>
     /// Base implementation of a calendar.
@@ -75,19 +76,31 @@ namespace Repower.Calendar
             return dayInfo != null;
         }
 
-        public string ToXml()
+        public string ToXml(XmlWriterSettings settings = null)
         {
             var ser = new DataContractSerializer(typeof(Calendar));
 
             using var buffer = new StringWriter();
-            using var writer = XmlWriter.Create(buffer);
+            using var writer = XmlWriter.Create(buffer, settings);
 
             ser.WriteObject(writer, this);
             writer.Flush();
             return buffer.ToString();
         }
 
+        public static Calendar LoadFromXml(string xml)
+        {
+            if (string.IsNullOrWhiteSpace(xml))
+            {
+                throw new ArgumentException($"'{nameof(xml)}' cannot be null or whitespace", nameof(xml));
+            }
 
+            var ser = new DataContractSerializer(typeof(Calendar));
+
+            using var buffer = new StringReader(xml);
+            using var reader = XmlReader.Create(buffer);
+            return ser.ReadObject(reader) as Calendar;
+        }
 
         /*
     public static Calendar LoadFromXml(string xml)

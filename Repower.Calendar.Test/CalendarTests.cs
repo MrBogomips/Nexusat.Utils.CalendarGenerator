@@ -111,7 +111,11 @@ namespace Repower.Calendar.Tests
         {
             // Setup
             Calendar calendar = SetupFullCalendar();
+            TestFullCalendar(calendar);
+        }
 
+        private static void TestFullCalendar(Calendar calendar)
+        {
             DateTime monday, tuesday, wednsday, thursday, friday, saturday, sunday;
             monday = DateTime.Parse("2020-11-02");
             tuesday = DateTime.Parse("2020-11-03");
@@ -120,7 +124,7 @@ namespace Repower.Calendar.Tests
             friday = DateTime.Parse("2020-11-06");
             saturday = DateTime.Parse("2020-11-07");
             sunday = DateTime.Parse("2020-11-08");
-            
+
 
             // Excercise and Assert
             Assert.IsTrue(calendar.GetDayInfo(monday).IsWorkingDay);
@@ -162,6 +166,9 @@ namespace Repower.Calendar.Tests
             var xml = calendar.ToXml();
             TestContext.WriteLine(xml);
             Assert.IsNotNull(xml);
+
+            var calendar2 = Calendar.LoadFromXml(xml);
+            TestFullCalendar(calendar2);
 
         }
     }

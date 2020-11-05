@@ -9,7 +9,7 @@ namespace Repower.Calendar
     public partial class WeekdaysWorkingRuleSettings
     {
         [DataMember]
-        public IEnumerable<DaySetting> Days { get; }
+        public IEnumerable<DaySetting> Days { get; private set; }
         public WeekdaysWorkingRuleSettings(IEnumerable<DaySetting> days)
         {
             Days = days ?? throw new ArgumentNullException(nameof(days));
