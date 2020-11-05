@@ -6,7 +6,7 @@ using System.Text;
 namespace Repower.Calendar
 {
 
-    public interface IWorkingDayRule: IWorkingDayInfoProvider
+    public interface IDayRule: IDayInfoProvider
     {
         /// <summary>
         /// The public name of the rule

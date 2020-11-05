@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Repower.Calendar
 {
-    public class WorkingDayInfo : IWorkingDayInfo
+    public class DayInfo : IDayInfo
     {
         public bool IsWorkingDay { get; set; }
 

@@ -3,7 +3,7 @@
     /// <summary>
     /// The policy in evaluating a chain of rules
     /// </summary>
-    public enum WorkingDayRulePolicy
+    public enum DayRulePolicy
     {
         /// <summary>
         /// Useful to set a default value in advance

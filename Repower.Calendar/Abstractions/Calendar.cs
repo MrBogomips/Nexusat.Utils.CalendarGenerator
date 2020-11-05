@@ -17,17 +17,17 @@ namespace Repower.Calendar
     [Serializable]
     public class Calendar : ICalendar, ISerializable
     {
-        private readonly WorkingDayRules WorkingDayRules;
+        private readonly DayRules DayRules;
 
         public string Name { get; private set; }
 
         public string Description { get; private set; }
         public string LongDescription { get; private set; }
 
-        public Calendar(string name, WorkingDayRules workingDayRules, string description = null, string longDescription = null)
+        public Calendar(string name, DayRules dayRules, string description = null, string longDescription = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            WorkingDayRules = workingDayRules ?? throw new ArgumentNullException(nameof(workingDayRules));
+            DayRules = dayRules ?? throw new ArgumentNullException(nameof(dayRules));
         }
 
         /// <summary>
@@ -35,31 +35,31 @@ namespace Repower.Calendar
         /// </summary>
         /// <param name="date"></param>
         /// <returns><c>null</c> if the calendar has no workingDayInfo</returns>
-        public IWorkingDayInfo GetWorkingDayInfo(DateTime date)
+        public IDayInfo GetDayInfo(DateTime date)
         {
-            IWorkingDayInfo dayInfo;
-            TryGetWorkingDayInfo(date, out dayInfo);
+            IDayInfo dayInfo;
+            TryGetDayInfo(date, out dayInfo);
             return dayInfo;
         }
-        public bool TryGetWorkingDayInfo(DateTime date, out IWorkingDayInfo dayInfo)
+        public bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo)
         {
             dayInfo = null;
-            if (WorkingDayRules == null || !WorkingDayRules.Any())
+            if (DayRules == null || !DayRules.Any())
             {
                 return false; // no rules => nothing to do
             }
             else
             {
-                foreach (var rule in WorkingDayRules)
+                foreach (var rule in DayRules)
                 {
-                    IWorkingDayInfo curInfo;
+                    IDayInfo curInfo;
 
-                    if (rule.Rule.TryGetWorkingDayInfo(date, out curInfo))
+                    if (rule.Rule.TryGetDayInfo(date, out curInfo))
                     { // something to evaluate
                         dayInfo = curInfo; // register the most recent found
-                        if (rule.Policy == WorkingDayRulePolicy.AcceptAlways ||
-                            dayInfo.IsWorkingDay && rule.Policy == WorkingDayRulePolicy.AcceptIfTrue ||
-                            !dayInfo.IsWorkingDay && rule.Policy == WorkingDayRulePolicy.AcceptIfFalse)
+                        if (rule.Policy == DayRulePolicy.AcceptAlways ||
+                            dayInfo.IsWorkingDay && rule.Policy == DayRulePolicy.AcceptIfTrue ||
+                            !dayInfo.IsWorkingDay && rule.Policy == DayRulePolicy.AcceptIfFalse)
                         {
                             break;
                         }

@@ -23,8 +23,8 @@ namespace Repower.Calendar.Tests
             builder.AddRule(Thursday, 8, 30, 17, 30);
             builder.AddRule(Friday, 8, 30, 17, 30);
 
-            WorkingDayRules rules = new WorkingDayRules();
-            rules.Add(WorkingDayRulePolicy.Fallthrough, builder.GetRule());
+            DayRules rules = new DayRules();
+            rules.Add(DayRulePolicy.Fallthrough, builder.GetRule());
 
             var calendar = new Calendar("Working Calendar", rules);
 
@@ -37,20 +37,20 @@ namespace Repower.Calendar.Tests
             var sunday = DateTime.Parse("2020-11-08");
 
             // Excercise and Assert
-            Assert.IsTrue(calendar.GetWorkingDayInfo(monday).IsWorkingDay);
-            Assert.IsTrue(calendar.GetWorkingDayInfo(tuesday).IsWorkingDay);
-            Assert.IsTrue(calendar.GetWorkingDayInfo(wednsday).IsWorkingDay);
-            Assert.IsTrue(calendar.GetWorkingDayInfo(thursday).IsWorkingDay);
-            Assert.IsTrue(calendar.GetWorkingDayInfo(friday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetDayInfo(monday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetDayInfo(tuesday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetDayInfo(wednsday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetDayInfo(thursday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetDayInfo(friday).IsWorkingDay);
 
-            Assert.IsNull(calendar.GetWorkingDayInfo(saturday));
-            Assert.IsNull(calendar.GetWorkingDayInfo(sunday));
+            Assert.IsNull(calendar.GetDayInfo(saturday));
+            Assert.IsNull(calendar.GetDayInfo(sunday));
 
-            IWorkingDayInfo dayInfo;
+            IDayInfo dayInfo;
             
-            Assert.IsTrue(calendar.TryGetWorkingDayInfo(monday, out dayInfo));
+            Assert.IsTrue(calendar.TryGetDayInfo(monday, out dayInfo));
             Assert.IsNotNull(dayInfo);
-            Assert.IsFalse(calendar.TryGetWorkingDayInfo(sunday, out dayInfo));
+            Assert.IsFalse(calendar.TryGetDayInfo(sunday, out dayInfo));
             Assert.IsNull(dayInfo);
         }
 
@@ -62,8 +62,8 @@ namespace Repower.Calendar.Tests
             builder.AddRule(Saturday);
             builder.AddRule(Sunday);
             
-            WorkingDayRules rules = new WorkingDayRules();
-            rules.Add(WorkingDayRulePolicy.Fallthrough, builder.GetRule());
+            DayRules rules = new DayRules();
+            rules.Add(DayRulePolicy.Fallthrough, builder.GetRule());
 
             var calendar = new Calendar("NonWorking Calendar", rules);
 
@@ -76,20 +76,20 @@ namespace Repower.Calendar.Tests
             var sunday = DateTime.Parse("2020-11-08");
 
             // Excercise and Assert
-            Assert.IsNull(calendar.GetWorkingDayInfo(monday));
-            Assert.IsNull(calendar.GetWorkingDayInfo(tuesday));
-            Assert.IsNull(calendar.GetWorkingDayInfo(wednsday));
-            Assert.IsNull(calendar.GetWorkingDayInfo(thursday));
-            Assert.IsNull(calendar.GetWorkingDayInfo(friday));
+            Assert.IsNull(calendar.GetDayInfo(monday));
+            Assert.IsNull(calendar.GetDayInfo(tuesday));
+            Assert.IsNull(calendar.GetDayInfo(wednsday));
+            Assert.IsNull(calendar.GetDayInfo(thursday));
+            Assert.IsNull(calendar.GetDayInfo(friday));
 
-            Assert.IsFalse(calendar.GetWorkingDayInfo(saturday).IsWorkingDay);
-            Assert.IsFalse(calendar.GetWorkingDayInfo(sunday).IsWorkingDay);
+            Assert.IsFalse(calendar.GetDayInfo(saturday).IsWorkingDay);
+            Assert.IsFalse(calendar.GetDayInfo(sunday).IsWorkingDay);
 
-            IWorkingDayInfo dayInfo;
+            IDayInfo dayInfo;
 
-            Assert.IsFalse(calendar.TryGetWorkingDayInfo(monday, out dayInfo));
+            Assert.IsFalse(calendar.TryGetDayInfo(monday, out dayInfo));
             Assert.IsNull(dayInfo);
-            Assert.IsTrue(calendar.TryGetWorkingDayInfo(sunday, out dayInfo));
+            Assert.IsTrue(calendar.TryGetDayInfo(sunday, out dayInfo));
             Assert.IsNotNull(dayInfo);
         }
 
@@ -110,13 +110,13 @@ namespace Repower.Calendar.Tests
             
 
             // Excercise and Assert
-            Assert.IsTrue(calendar.GetWorkingDayInfo(monday).IsWorkingDay);
-            Assert.IsTrue(calendar.GetWorkingDayInfo(tuesday).IsWorkingDay);
-            Assert.IsTrue(calendar.GetWorkingDayInfo(wednsday).IsWorkingDay);
-            Assert.IsTrue(calendar.GetWorkingDayInfo(thursday).IsWorkingDay);
-            Assert.IsTrue(calendar.GetWorkingDayInfo(friday).IsWorkingDay);
-            Assert.IsFalse(calendar.GetWorkingDayInfo(saturday).IsWorkingDay);
-            Assert.IsFalse(calendar.GetWorkingDayInfo(sunday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetDayInfo(monday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetDayInfo(tuesday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetDayInfo(wednsday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetDayInfo(thursday).IsWorkingDay);
+            Assert.IsTrue(calendar.GetDayInfo(friday).IsWorkingDay);
+            Assert.IsFalse(calendar.GetDayInfo(saturday).IsWorkingDay);
+            Assert.IsFalse(calendar.GetDayInfo(sunday).IsWorkingDay);
         }
 
         private static Calendar SetupFullCalendar()
@@ -134,9 +134,9 @@ namespace Repower.Calendar.Tests
             weekendRuleBuilder.AddRule(Saturday);
             weekendRuleBuilder.AddRule(Sunday);
 
-            WorkingDayRules rules = new WorkingDayRules();
-            rules.Add(WorkingDayRulePolicy.Fallthrough, weekdaysRuleBuilder.GetRule());
-            rules.Add(WorkingDayRulePolicy.Fallthrough, weekendRuleBuilder.GetRule());
+            DayRules rules = new DayRules();
+            rules.Add(DayRulePolicy.Fallthrough, weekdaysRuleBuilder.GetRule());
+            rules.Add(DayRulePolicy.Fallthrough, weekendRuleBuilder.GetRule());
 
             return new Calendar("Five Working Days Calendar", rules);
         }

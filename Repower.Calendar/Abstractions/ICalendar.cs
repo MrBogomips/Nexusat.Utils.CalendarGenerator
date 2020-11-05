@@ -7,7 +7,7 @@ namespace Repower.Calendar
     /// <summary>
     /// Abstraction of a Calendar
     /// </summary>
-    public interface ICalendar: IWorkingDayInfoProvider
+    public interface ICalendar: IDayInfoProvider
     {
         /// <summary>
         /// The name of the calendar.

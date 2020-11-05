@@ -6,7 +6,7 @@ namespace Repower.Calendar
     /// <summary>
     /// Represents a rule based on non working week days
     /// </summary>
-    public class WeekdaysNonWorkingRule : IWorkingDayRule
+    public class WeekdaysNonWorkingRule : IDayRule
     {
         internal static readonly string NAME = "NonWorkingWeekdays";
         public string Name => NAME;
@@ -16,14 +16,14 @@ namespace Repower.Calendar
         public WeekdaysNonWorkingRule(WeekdaysNonWorkingRuleSettings settings) =>
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
-        public IWorkingDayInfo GetWorkingDayInfo(DateTime date)
+        public IDayInfo GetDayInfo(DateTime date)
         {
-            IWorkingDayInfo dayInfo;
-            TryGetWorkingDayInfo(date, out dayInfo);
+            IDayInfo dayInfo;
+            TryGetDayInfo(date, out dayInfo);
             return dayInfo;
         }
 
-        public bool TryGetWorkingDayInfo(DateTime date, out IWorkingDayInfo dayInfo)
+        public bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo)
         {
             dayInfo = null;
             var setting = Settings.Days.Where((d) => d.DayOfWeek == date.DayOfWeek);
@@ -33,7 +33,7 @@ namespace Repower.Calendar
             }
             else
             {
-                dayInfo = new WorkingDayInfo { IsWorkingDay = false };
+                dayInfo = new DayInfo { IsWorkingDay = false };
                 return true;
             }
         }

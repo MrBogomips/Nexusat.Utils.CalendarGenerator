@@ -5,15 +5,15 @@ using System.Text;
 
 namespace Repower.Calendar
 {
-    public interface IWorkingDayInfoProvider
+    public interface IDayInfoProvider
     {
         /// <summary>
         /// The impleemtation can return a <c>null</c> meaning no info available
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        IWorkingDayInfo GetWorkingDayInfo(DateTime date);
+        IDayInfo GetDayInfo(DateTime date);
 
-        bool TryGetWorkingDayInfo(DateTime date, out IWorkingDayInfo dayInfo);
+        bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo);
     }
 }

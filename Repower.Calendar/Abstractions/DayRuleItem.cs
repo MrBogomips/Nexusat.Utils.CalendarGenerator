@@ -5,12 +5,12 @@ namespace Repower.Calendar
     /// <summary>
     /// Represent a single rule with the interpretation policy
     /// </summary>
-    public class WorkingDayRuleItem
+    public class DayRuleItem
     {
-        public WorkingDayRulePolicy Policy { get; }
-        public IWorkingDayRule Rule { get; }
+        public DayRulePolicy Policy { get; }
+        public IDayRule Rule { get; }
 
-        public WorkingDayRuleItem(WorkingDayRulePolicy policy, IWorkingDayRule rule)
+        public DayRuleItem(DayRulePolicy policy, IDayRule rule)
         {
             Policy = policy;
             Rule = rule ?? throw new ArgumentNullException(nameof(rule));
