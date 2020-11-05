@@ -157,13 +157,13 @@ namespace Repower.Calendar
             for(var cur = from; cur <= to; cur = cur.AddDays(1))
             {
                 var info = GetDayInfo(cur) ?? defaultDayInfo;
-                List<CalendarDaysEntry.TimePeriod> workingPeriods = 
-                    info.WorkingPeriods?.Select(wp => new CalendarDaysEntry.TimePeriod() { 
+                List<CalendarDays.TimePeriod> workingPeriods = 
+                    info.WorkingPeriods?.Select(wp => new CalendarDays.TimePeriod() { 
                         Begin = wp.Begin.ToString(),
                         End = wp.End.ToString()
                     }).ToList();
 
-                calendarDays.Add(new CalendarDaysEntry()
+                calendarDays.Add(new CalendarDays.Day()
                 {
                     Date = cur.ToString("yyyy-MM-dd"),
                     IsWorkingDay = info.IsWorkingDay,

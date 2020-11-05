@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
-
+using System.Xml;
 using static System.DayOfWeek;
 
 namespace Repower.Calendar.Tests
@@ -201,5 +201,25 @@ namespace Repower.Calendar.Tests
             Assert.IsNotNull(calendarDays);
             Assert.AreEqual(366, calendarDays.Count);
         }
+        [TestMethod]
+        public void CalendarDaysToXmlTest()
+        {
+            Calendar calendar = SetupFullCalendar();
+
+            var defaultDayInfo = new DayInfo()
+            {
+                Description = "Default",
+                IsWorkingDay = false
+            };
+
+            var calendarDays = calendar.GenerateCalendarDays(new DateTime(2020, 1, 1), new DateTime(2020, 12, 31), defaultDayInfo);
+            var xmlSettings = new XmlWriterSettings();
+            xmlSettings.Indent = true;
+            var xml = calendarDays.ToXml(xmlSettings);
+            Assert.IsNotNull(xml);
+            TestContext.WriteLine(xml);
+        }
+
+       
     }
 }
