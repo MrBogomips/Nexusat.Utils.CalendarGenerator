@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable HeapView.ObjectAllocation.Evident
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     /// <summary>
     /// A chain of <see cref="DayRule"/>s to manage the working days
@@ -9,6 +10,6 @@ namespace Repower.Calendar
     public class DayRules: List<DayRuleItem>
     {
         public void Add(DayRulePolicy policy, DayRule rule) =>
-            this.Add(new DayRuleItem(policy, rule));
+            Add(new DayRuleItem(policy, rule));
     }
 }

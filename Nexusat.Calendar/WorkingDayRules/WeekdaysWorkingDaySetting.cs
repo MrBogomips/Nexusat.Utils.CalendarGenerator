@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+// ReSharper disable HeapView.ObjectAllocation.Evident
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     public partial class WeekdaysWorkingRuleSettings
     {
@@ -18,14 +19,7 @@ namespace Repower.Calendar
             public DaySetting(DayOfWeek dayOfWeek, IEnumerable<TimePeriod> workingPeriods = null)
             {
                 DayOfWeek = dayOfWeek;
-                if (workingPeriods == null)
-                {
-                    WorkingPeriods = new List<TimePeriod>();
-                }
-                else
-                {
-                    WorkingPeriods = new List<TimePeriod>(workingPeriods);
-                }
+                WorkingPeriods = workingPeriods == null ? new List<TimePeriod>() : new List<TimePeriod>(workingPeriods);
                 if (!WorkingPeriods.Any())
                 {
                     WorkingPeriods.Add(TimePeriod.AllDay);

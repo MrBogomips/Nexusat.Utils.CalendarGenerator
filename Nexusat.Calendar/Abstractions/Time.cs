@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     /// <summary>
     /// Represents a time period within a day.
@@ -19,8 +20,9 @@ namespace Repower.Calendar
             if (hour < 0 || hour > 24)
             {
                 throw new ArgumentOutOfRangeException(nameof(hour), "Must be between 0 and 24 range");
-            } 
-            else if (hour == 24 && minute != 0)
+            }
+
+            if (hour == 24 && minute != 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(minute), "A 24 time must have a minute of 0.");
             }
@@ -31,7 +33,9 @@ namespace Repower.Calendar
             Hour = hour;
             Minute = minute;
         }
-        public override string ToString() => $"{Hour:00}:{Minute:00}";
+        
+        [SuppressMessage("ReSharper", "HeapView.BoxingAllocation")]
+        public override string ToString() => $"{Hour:D2}:{Minute:D2}";
 
         public readonly int CompareTo(Time other)
         {
@@ -39,7 +43,8 @@ namespace Repower.Calendar
             {
                 return 1;
             }
-            else if (Hour < other.Hour)
+
+            if (Hour < other.Hour)
             {
                 return -1;
             }
@@ -47,8 +52,9 @@ namespace Repower.Calendar
             if (Minute > other.Minute)
             {
                 return 1;
-            } 
-            else if (Minute < other.Minute)
+            }
+
+            if (Minute < other.Minute)
             {
                 return -1;
             }
@@ -56,10 +62,10 @@ namespace Repower.Calendar
         }
 
         public static bool operator <(Time lhs, Time rhs) =>
-            lhs.Hour < rhs.Hour || (lhs.Hour == rhs.Hour && lhs.Minute < rhs.Minute); 
+            lhs.Hour < rhs.Hour || lhs.Hour == rhs.Hour && lhs.Minute < rhs.Minute; 
         
         public static bool operator >(Time lhs, Time rhs) =>
-            lhs.Hour > rhs.Hour || (lhs.Hour == rhs.Hour && lhs.Minute > rhs.Minute);
+            lhs.Hour > rhs.Hour || lhs.Hour == rhs.Hour && lhs.Minute > rhs.Minute;
         public static bool operator <=(Time lhs, Time rhs) =>
             lhs.Hour <= rhs.Hour && lhs.Minute <= rhs.Minute;
         
@@ -71,10 +77,11 @@ namespace Repower.Calendar
         public static bool operator !=(Time lhs, Time rhs) => 
             lhs.Hour != rhs.Hour || lhs.Minute != rhs.Minute;
 
-        public bool Equals(Time obj) => this == obj;
+        private bool Equals(Time obj) => this == obj;
 
         public override bool Equals(object obj)
         {
+            // ReSharper disable once HeapView.BoxingAllocation
             if (obj == null || GetType() != obj.GetType())
             {
                 return false;

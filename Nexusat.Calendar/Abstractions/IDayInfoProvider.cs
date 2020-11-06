@@ -1,6 +1,7 @@
 ﻿using System;
+// ReSharper disable UnusedMemberInSuper.Global
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     public interface IDayInfoProvider
     {

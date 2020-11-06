@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
+// ReSharper disable HeapView.ObjectAllocation.Evident
+// ReSharper disable HeapView.ObjectAllocation
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
 
     // TODO: CalendarChain
@@ -26,7 +27,7 @@ namespace Repower.Calendar
         private readonly DayRules _dayRules;
 
         [DataMember]
-        public string Name { get; private set; }
+        public string Name { get; }
         [DataMember]
         public string Description { get; private set; }
         [DataMember]
@@ -35,6 +36,8 @@ namespace Repower.Calendar
         public Calendar(string name, DayRules dayRules, string description = null, string longDescription = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
+            Description = description;
+            LongDescription = longDescription;
             _dayRules = dayRules ?? throw new ArgumentNullException(nameof(dayRules));
         }
 
@@ -45,8 +48,7 @@ namespace Repower.Calendar
         /// <returns><c>null</c> if the calendar has no workingDayInfo</returns>
         public IDayInfo GetDayInfo(DateTime date)
         {
-            IDayInfo dayInfo;
-            TryGetDayInfo(date, out dayInfo);
+            TryGetDayInfo(date, out var dayInfo);
             return dayInfo;
         }
         public bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo)
@@ -56,22 +58,16 @@ namespace Repower.Calendar
             {
                 return false; // no rules => nothing to do
             }
-            else
-            {
-                foreach (var rule in _dayRules)
-                {
-                    IDayInfo curInfo;
 
-                    if (rule.Rule.TryGetDayInfo(date, out curInfo))
-                    { // something to evaluate
-                        dayInfo = curInfo; // register the most recent found
-                        if (rule.Policy == DayRulePolicy.AcceptAlways ||
-                            dayInfo.IsWorkingDay && rule.Policy == DayRulePolicy.AcceptIfTrue ||
-                            !dayInfo.IsWorkingDay && rule.Policy == DayRulePolicy.AcceptIfFalse)
-                        {
-                            break;
-                        }
-                    }
+            foreach (var rule in _dayRules)
+            {
+                if (!rule.Rule.TryGetDayInfo(date, out var curInfo)) continue; // something to evaluate
+                dayInfo = curInfo; // register the most recent found
+                if (rule.Policy == DayRulePolicy.AcceptAlways ||
+                    dayInfo.IsWorkingDay && rule.Policy == DayRulePolicy.AcceptIfTrue ||
+                    !dayInfo.IsWorkingDay && rule.Policy == DayRulePolicy.AcceptIfFalse)
+                {
+                    break;
                 }
             }
             return dayInfo != null;
@@ -156,13 +152,14 @@ namespace Repower.Calendar
             for(var cur = from; cur <= to; cur = cur.AddDays(1))
             {
                 var info = GetDayInfo(cur) ?? defaultDayInfo;
-                List<CalendarDays.TimePeriod> workingPeriods = 
-                    info.WorkingPeriods?.Select(wp => new CalendarDays.TimePeriod() { 
+                var workingPeriods = 
+                    info.WorkingPeriods?.Select(wp => new CalendarDays.TimePeriod
+                    { 
                         Begin = wp.Begin.ToString(),
                         End = wp.End.ToString()
                     }).ToList();
 
-                calendarDays.Add(new CalendarDays.Day()
+                calendarDays.Add(new CalendarDays.Day
                 {
                     Date = cur.ToString("yyyy-MM-dd"),
                     IsWorkingDay = info.IsWorkingDay,
@@ -176,7 +173,7 @@ namespace Repower.Calendar
 
         #region Equals
         // override object.Equals
-        public bool Equals(Calendar that) => that != null && that.Name == this.Name;
+        private bool Equals(ICalendar that) => that != null && that.Name == Name;
 
         public override bool Equals(object that) => Equals(that as Calendar);
 

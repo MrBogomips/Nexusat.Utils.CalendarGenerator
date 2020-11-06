@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.Serialization;
+// ReSharper disable HeapView.ObjectAllocation
+// ReSharper disable HeapView.DelegateAllocation
+// ReSharper disable HeapView.ClosureAllocation
+// ReSharper disable HeapView.ObjectAllocation.Evident
+// ReSharper disable PossibleMultipleEnumeration
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     /// <summary>
     /// Represents a rule based on working week days
@@ -19,24 +24,21 @@ namespace Repower.Calendar
 
         public override IDayInfo GetDayInfo(DateTime date)
         {
-            IDayInfo dayInfo;
-            TryGetDayInfo(date, out dayInfo);
+            TryGetDayInfo(date, out var dayInfo);
             return dayInfo;
         }
 
         public override bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo)
         {
             dayInfo = null;
-            var setting = Settings.Days.Where((d) => d.DayOfWeek == date.DayOfWeek);
-            if (setting == null || !setting.Any())
+            var setting = Settings.Days.Where(_ => _.DayOfWeek == date.DayOfWeek);
+            if (!setting.Any())
             {
                 return false;
             }
-            else
-            {
-                dayInfo = new DayInfo { IsWorkingDay = true, WorkingPeriods = setting.First().WorkingPeriods };
-                return true;
-            }
+
+            dayInfo = new DayInfo { IsWorkingDay = true, WorkingPeriods = setting.First().WorkingPeriods };
+            return true;
         }
     }
 }

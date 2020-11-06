@@ -1,23 +1,26 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+// ReSharper disable HeapView.BoxingAllocation
 
-namespace Repower.Calendar.Test
+namespace Nexusat.Calendar.Tests
 {
     [TestClass]
     public class TimeTests
     {
-        static readonly Time t1 = new Time(0, 0);
-        static readonly Time t2 = new Time(0, 1);
-        static readonly Time t3 = new Time(1, 0);
-        static readonly Time t4 = new Time(0, 0);
+        private static readonly Time T1 = new Time(0, 0);
+        private static readonly Time T2 = new Time(0, 1);
+        private static readonly Time T3 = new Time(1, 0);
+        private static readonly Time T4 = new Time(0, 0);
 
         [TestMethod]
         public void CtorTest()
         {
+            // ReSharper disable once ObjectCreationAsStatement
             new Time(24, 0);
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Time(-1, 0));
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Time(25, 0));
 
+            // ReSharper disable once ObjectCreationAsStatement
             new Time(0, 59);
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Time(0, -1));
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Time(0, 60));
@@ -26,40 +29,40 @@ namespace Repower.Calendar.Test
         [TestMethod]
         public void OperatorsTest()
         {
-            Assert.IsTrue(t1 == t4);
-            Assert.IsTrue(t1 >= t4);
-            Assert.IsTrue(t1 <= t4);
+            Assert.IsTrue(T1 == T4);
+            Assert.IsTrue(T1 >= T4);
+            Assert.IsTrue(T1 <= T4);
 
-            Assert.IsTrue(t1 != t2);
-            Assert.IsTrue(t1 != t3);
+            Assert.IsTrue(T1 != T2);
+            Assert.IsTrue(T1 != T3);
 
-            Assert.IsTrue(t1 < t2);
-            Assert.IsTrue(t1 <= t2);
-            Assert.IsTrue(t2 > t1);
-            Assert.IsTrue(t2 >= t1);
+            Assert.IsTrue(T1 < T2);
+            Assert.IsTrue(T1 <= T2);
+            Assert.IsTrue(T2 > T1);
+            Assert.IsTrue(T2 >= T1);
         }
 
         [TestMethod]
         public void ComparableTest()
         {
-            Assert.IsTrue(t1.CompareTo(t2) < 0);
-            Assert.IsTrue(t2.CompareTo(t1) > 0);
-            Assert.IsTrue(t1.CompareTo(t4) == 0);
+            Assert.IsTrue(T1.CompareTo(T2) < 0);
+            Assert.IsTrue(T2.CompareTo(T1) > 0);
+            Assert.IsTrue(T1.CompareTo(T4) == 0);
         }
         [TestMethod]
         public void EqualsTest()
         {
-            object o1 = t1;
-            object o2 = t4;
+            object o1 = T1;
+            object o2 = T4;
 
             Assert.AreEqual(o1, o2);
         }
         [TestMethod]
         public void ToStringTest()
         {
-            Assert.AreEqual("00:00", t1.ToString());
-            Assert.AreEqual("00:01", t2.ToString());
-            Assert.AreEqual("01:00", t3.ToString());
+            Assert.AreEqual("00:00", T1.ToString());
+            Assert.AreEqual("00:01", T2.ToString());
+            Assert.AreEqual("01:00", T3.ToString());
         }
         [TestMethod]
         public void GetSerialTest()

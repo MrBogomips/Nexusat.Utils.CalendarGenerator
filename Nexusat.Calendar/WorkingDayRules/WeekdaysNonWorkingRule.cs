@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.Serialization;
+// ReSharper disable HeapView.ObjectAllocation
+// ReSharper disable HeapView.DelegateAllocation
+// ReSharper disable HeapView.ClosureAllocation
+// ReSharper disable HeapView.ObjectAllocation.Evident
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     /// <summary>
     /// Represents a rule based on non working week days
@@ -11,31 +15,28 @@ namespace Repower.Calendar
     public class WeekdaysNonWorkingRule : DayRule
     {
         [DataMember]
-        private readonly WeekdaysNonWorkingRuleSettings Settings;
+        private readonly WeekdaysNonWorkingRuleSettings _settings;
 
         public WeekdaysNonWorkingRule(WeekdaysNonWorkingRuleSettings settings) =>
-            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
         public override IDayInfo GetDayInfo(DateTime date)
         {
-            IDayInfo dayInfo;
-            TryGetDayInfo(date, out dayInfo);
+            TryGetDayInfo(date, out var dayInfo);
             return dayInfo;
         }
 
         public override bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo)
         {
             dayInfo = null;
-            var setting = Settings.Days.Where((d) => d.DayOfWeek == date.DayOfWeek);
-            if (setting == null || !setting.Any())
+            var setting = _settings.Days.Where(_ => _.DayOfWeek == date.DayOfWeek);
+            if (!setting.Any())
             {
                 return false;
             }
-            else
-            {
-                dayInfo = new DayInfo { IsWorkingDay = false };
-                return true;
-            }
+
+            dayInfo = new DayInfo { IsWorkingDay = false };
+            return true;
         }
     }
 }

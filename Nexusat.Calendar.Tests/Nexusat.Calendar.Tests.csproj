@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Repower.Calendar\Repower.Calendar.csproj" />
+    <ProjectReference Include="..\Nexusat.Calendar\Nexusat.Calendar.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repower.Calendar", "Repower.Calendar\Repower.Calendar.csproj", "{49F48703-51BB-4348-AF2D-12FD4DB99B60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexusat.Calendar", "Nexusat.Calendar\Nexusat.Calendar.csproj", "{49F48703-51BB-4348-AF2D-12FD4DB99B60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repower.Calendar.Test", "Repower.Calendar.Test\Repower.Calendar.Test.csproj", "{7DB1A1C1-9569-4954-9489-DD5F88A2BD51}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexusat.Calendar.Tests", "Nexusat.Calendar.Tests\Nexusat.Calendar.Tests.csproj", "{7DB1A1C1-9569-4954-9489-DD5F88A2BD51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

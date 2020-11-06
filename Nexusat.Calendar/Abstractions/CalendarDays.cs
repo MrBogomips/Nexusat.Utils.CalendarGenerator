@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+// ReSharper disable HeapView.ObjectAllocation.Evident
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     /// <summary>
     /// Represents a dump of a calendar period
@@ -45,7 +47,7 @@ namespace Repower.Calendar
 	            </Day>
             <CalendarDays>
             */
-            XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+            var ns = new XmlSerializerNamespaces();
             ns.Add("", "");
             var ser = new XmlSerializer(typeof(CalendarDays));
             var sb = new StringBuilder();

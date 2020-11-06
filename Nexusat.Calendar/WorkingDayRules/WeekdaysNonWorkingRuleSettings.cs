@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+// ReSharper disable HeapView.ObjectAllocation.Evident
+// ReSharper disable HeapView.ObjectAllocation.Possible
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     public partial class WeekdaysNonWorkingRuleSettings
     {
@@ -12,7 +14,7 @@ namespace Repower.Calendar
         {
             Days = days ?? throw new ArgumentNullException(nameof(days));
 
-            List<DayOfWeek> daysProcessed = new List<DayOfWeek>();
+            var daysProcessed = new List<DayOfWeek>();
             foreach (var d in days)
             {
                 // ASSERT: Weekday MUST appear once

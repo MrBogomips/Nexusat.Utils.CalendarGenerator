@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public class DayInfo : IDayInfo
@@ -10,6 +10,6 @@ namespace Repower.Calendar
 
         public string Description { get; set; }
 
-        public IList<TimePeriod> WorkingPeriods { get; set; }
+        public IEnumerable<TimePeriod> WorkingPeriods { get; set; }
     }
 }

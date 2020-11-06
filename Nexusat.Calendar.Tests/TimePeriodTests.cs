@@ -1,9 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Repower.Calendar.Test
+namespace Nexusat.Calendar.Tests
 {
     [TestClass]
     public class TimePeriodTests
@@ -11,7 +9,7 @@ namespace Repower.Calendar.Test
         [TestMethod]
         public void OverlapsTest()
         {
-            /* Overlaps is a SYMMETRIC relation, therefore are tested both the directios */
+            /* Overlaps is a SYMMETRIC relation, therefore are tested both the directions */
 
             /* t0    +---------------+
              * t1           +------------+

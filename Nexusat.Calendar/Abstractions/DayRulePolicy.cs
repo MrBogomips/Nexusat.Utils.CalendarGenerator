@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     /// <summary>
     /// The policy in evaluating a chain of rules
@@ -27,7 +27,7 @@ namespace Repower.Calendar
         /// If the rule produce any outcome than this is accepted
         /// </summary>
         [EnumMember]
-        AcceptAlways = 3,
-        
+        AcceptAlways = 3
+
     }
 }

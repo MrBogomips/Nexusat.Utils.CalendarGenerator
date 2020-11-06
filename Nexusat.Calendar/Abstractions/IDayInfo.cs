@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     public interface IDayInfo
     {
@@ -15,6 +15,6 @@ namespace Repower.Calendar
         /// <summary>
         /// Working periods within the day
         /// </summary>
-        IList<TimePeriod> WorkingPeriods { get; }
+        IEnumerable<TimePeriod> WorkingPeriods { get; }
     }
 }

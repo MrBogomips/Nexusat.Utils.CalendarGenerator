@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     /// <summary>
-    /// Represents a contigous, right opened, period within a day.
-    /// A whole day is represented by the period [00:00, 24:00[, as ISO 8601 recommendes.
+    /// Represents a contiguous, right opened, period within a day.
+    /// A whole day is represented by the period [00:00, 24:00[, as ISO 8601 recommends.
     /// .Net Class Library, unfortunately, isn't compliant with that time period representation.
     /// </summary>
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
@@ -33,13 +33,13 @@ namespace Repower.Calendar
         /// <param name="other"></param>
         /// <returns><c>true</c> in case of overlapping</returns>
         public readonly bool Overlaps(TimePeriod other) {
-            var this_begin = Begin.GetSerial();
-            var this_end = End.GetSerial();
-            var other_begin = other.Begin.GetSerial();
-            var other_end = other.End.GetSerial();
+            var thisBegin = Begin.GetSerial();
+            var thisEnd = End.GetSerial();
+            var otherBegin = other.Begin.GetSerial();
+            var otherEnd = other.End.GetSerial();
 
-            return (other_begin < this_end && other_end > this_begin) ||
-                (other_end > this_begin && other_end < this_end);
+            return otherBegin < thisEnd && otherEnd > thisBegin ||
+                otherEnd > thisBegin && otherEnd < thisEnd;
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace Repower.Calendar
 
         public static implicit operator TimeSpan(TimePeriod timePeriod) =>
             new TimeSpan(
-                hours: timePeriod.End.Hour - timePeriod.Begin.Hour, 
-                minutes: timePeriod.End.Minute - timePeriod.Begin.Minute,
-                seconds: 0);
+                timePeriod.End.Hour - timePeriod.Begin.Hour, 
+                timePeriod.End.Minute - timePeriod.Begin.Minute,
+                0);
         
     }
 }
