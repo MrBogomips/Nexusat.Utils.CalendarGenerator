@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     [DataContract]
     public class DayRulesSettings

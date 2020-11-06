@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     public interface IDayInfo
     {

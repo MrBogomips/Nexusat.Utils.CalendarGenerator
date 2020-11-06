@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     /// <summary>
     /// Represents a rule based on working week days

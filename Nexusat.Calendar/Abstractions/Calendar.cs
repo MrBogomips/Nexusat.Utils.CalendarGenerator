@@ -6,8 +6,10 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
+// ReSharper disable HeapView.ObjectAllocation.Evident
+// ReSharper disable HeapView.ObjectAllocation
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
 
     // TODO: CalendarChain
@@ -26,7 +28,7 @@ namespace Repower.Calendar
         private readonly DayRules _dayRules;
 
         [DataMember]
-        public string Name { get; private set; }
+        public string Name { get; }
         [DataMember]
         public string Description { get; private set; }
         [DataMember]
@@ -45,8 +47,7 @@ namespace Repower.Calendar
         /// <returns><c>null</c> if the calendar has no workingDayInfo</returns>
         public IDayInfo GetDayInfo(DateTime date)
         {
-            IDayInfo dayInfo;
-            TryGetDayInfo(date, out dayInfo);
+            TryGetDayInfo(date, out var dayInfo);
             return dayInfo;
         }
         public bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo)
@@ -60,9 +61,7 @@ namespace Repower.Calendar
             {
                 foreach (var rule in _dayRules)
                 {
-                    IDayInfo curInfo;
-
-                    if (rule.Rule.TryGetDayInfo(date, out curInfo))
+                    if (rule.Rule.TryGetDayInfo(date, out var curInfo))
                     { // something to evaluate
                         dayInfo = curInfo; // register the most recent found
                         if (rule.Policy == DayRulePolicy.AcceptAlways ||
@@ -176,7 +175,7 @@ namespace Repower.Calendar
 
         #region Equals
         // override object.Equals
-        public bool Equals(Calendar that) => that != null && that.Name == this.Name;
+        private bool Equals(Calendar that) => that != null && that.Name == this.Name;
 
         public override bool Equals(object that) => Equals(that as Calendar);
 

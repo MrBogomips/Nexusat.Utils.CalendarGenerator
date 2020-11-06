@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     public partial class WeekdaysNonWorkingRuleSettings
     {

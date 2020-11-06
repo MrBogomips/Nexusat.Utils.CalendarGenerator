@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     /// <summary>
     /// Represent a single rule with the interpretation policy

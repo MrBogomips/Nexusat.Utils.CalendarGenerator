@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     /// <summary>
     /// The policy in evaluating a chain of rules

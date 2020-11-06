@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     /// <summary>
     /// A chain of <see cref="DayRule"/>s to manage the working days

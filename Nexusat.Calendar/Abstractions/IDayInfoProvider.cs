@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     public interface IDayInfoProvider
     {

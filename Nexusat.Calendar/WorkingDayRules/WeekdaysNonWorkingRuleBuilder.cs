@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     public class WeekdaysNonWorkingRuleBuilder
     {

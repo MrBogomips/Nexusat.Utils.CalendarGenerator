@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Repower.Calendar.Test
+namespace Nexusat.Calendar.Tests
 {
     [TestClass]
     public class TimePeriodTests

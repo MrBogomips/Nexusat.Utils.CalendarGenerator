@@ -1,29 +1,24 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Repower.Calendar;
+using Nexusat.Calendar;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Xml;
 using static System.DayOfWeek;
+// ReSharper disable HeapView.ObjectAllocation.Evident
 
-namespace Repower.Calendar.Tests
+namespace Nexusat.Calendar.Tests
 {
 
     [TestClass()]
     public class CalendarTests
     {
-        private TestContext TestContextInstance;
-
         /// <summary>
         /// Gets or sets the test context which provides
         /// information about and functionality for the current test run.
         /// </summary>
-        public TestContext TestContext
-        {
-            get { return TestContextInstance; }
-            set { TestContextInstance = value; }
-        }
+        private TestContext TestContext { get; set; }
 
         [TestMethod()]
         public void WeekdayWorkingTest()

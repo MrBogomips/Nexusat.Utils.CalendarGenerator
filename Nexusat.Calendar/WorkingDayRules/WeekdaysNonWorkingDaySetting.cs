@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Repower.Calendar
+namespace Nexusat.Calendar
 {
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public partial class WeekdaysNonWorkingRuleSettings
