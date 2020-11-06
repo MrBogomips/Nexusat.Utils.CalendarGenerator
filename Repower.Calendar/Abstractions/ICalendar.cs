@@ -20,7 +20,7 @@ namespace Repower.Calendar
         /// </summary>
         /// <param name="from"></param>
         /// <param name="to"></param>
-        /// <param name="defaultDayInfo">This is the default value for missing dayinfo</param>
+        /// <param name="defaultDayInfo">This is the default value for missing day info</param>
         /// <returns></returns>
         CalendarDays GenerateCalendarDays(DateTime from, DateTime to, DayInfo defaultDayInfo);
     }

@@ -23,7 +23,7 @@ namespace Repower.Calendar
     public class Calendar : ICalendar
     {
         [DataMember]
-        private readonly DayRules DayRules;
+        private readonly DayRules _dayRules;
 
         [DataMember]
         public string Name { get; private set; }
@@ -35,7 +35,7 @@ namespace Repower.Calendar
         public Calendar(string name, DayRules dayRules, string description = null, string longDescription = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            DayRules = dayRules ?? throw new ArgumentNullException(nameof(dayRules));
+            _dayRules = dayRules ?? throw new ArgumentNullException(nameof(dayRules));
         }
 
         /// <summary>
@@ -52,13 +52,13 @@ namespace Repower.Calendar
         public bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo)
         {
             dayInfo = null;
-            if (DayRules == null || !DayRules.Any())
+            if (_dayRules == null || !_dayRules.Any())
             {
                 return false; // no rules => nothing to do
             }
             else
             {
-                foreach (var rule in DayRules)
+                foreach (var rule in _dayRules)
                 {
                     IDayInfo curInfo;
 

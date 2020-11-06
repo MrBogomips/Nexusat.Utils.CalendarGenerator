@@ -28,7 +28,7 @@ namespace Repower.Calendar
         public int CompareTo(TimePeriod other) => Begin.CompareTo(other.Begin);
 
         /// <summary>
-        /// Check if two timeperiods overlaps
+        /// Check if two time periods overlaps
         /// </summary>
         /// <param name="other"></param>
         /// <returns><c>true</c> in case of overlapping</returns>

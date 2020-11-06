@@ -5,7 +5,7 @@ namespace Repower.Calendar
     public interface IDayInfo
     {
         /// <summary>
-        /// Represetns a working day
+        /// Represents a working day
         /// </summary>
         bool IsWorkingDay { get; }
         /// <summary>
