@@ -12,10 +12,9 @@ namespace Nexusat.Utils.CalendarGenerator
     /// Represents a rule based on non working week days
     /// </summary>
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
-    public class WeekdaysNonWorkingRule : DayRule
+    public partial class WeekdaysNonWorkingRule : DayRule
     {
-        [DataMember]
-        private readonly WeekdaysNonWorkingRuleSettings _settings;
+        [DataMember] private readonly WeekdaysNonWorkingRuleSettings _settings;
 
         public WeekdaysNonWorkingRule(WeekdaysNonWorkingRuleSettings settings) =>
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
@@ -35,7 +34,7 @@ namespace Nexusat.Utils.CalendarGenerator
                 return false;
             }
 
-            dayInfo = new DayInfo { IsWorkingDay = false };
+            dayInfo = new DayInfo {IsWorkingDay = false};
             return true;
         }
     }
