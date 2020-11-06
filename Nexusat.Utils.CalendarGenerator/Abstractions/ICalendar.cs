@@ -1,7 +1,7 @@
 ﻿using System;
 // ReSharper disable UnusedMemberInSuper.Global
 
-namespace Nexusat.Calendar
+namespace Nexusat.Utils.CalendarGenerator
 {
     /// <summary>
     /// Abstraction of a Calendar

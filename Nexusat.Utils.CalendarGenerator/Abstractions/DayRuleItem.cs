@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Nexusat.Calendar
+namespace Nexusat.Utils.CalendarGenerator
 {
     /// <summary>
     /// Represent a single rule with the interpretation policy

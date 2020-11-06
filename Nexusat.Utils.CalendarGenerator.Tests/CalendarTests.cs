@@ -4,7 +4,7 @@ using System.Xml;
 using static System.DayOfWeek;
 // ReSharper disable HeapView.ObjectAllocation.Evident
 
-namespace Nexusat.Calendar.Tests
+namespace Nexusat.Utils.CalendarGenerator.Tests
 {
 
     [TestClass]

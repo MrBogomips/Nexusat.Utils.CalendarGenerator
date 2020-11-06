@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
-namespace Nexusat.Calendar
+namespace Nexusat.Utils.CalendarGenerator
 {
     /// <summary>
     /// Represents a time period within a day.

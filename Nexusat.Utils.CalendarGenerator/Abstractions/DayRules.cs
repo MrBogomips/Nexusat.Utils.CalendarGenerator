@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 // ReSharper disable HeapView.ObjectAllocation.Evident
 
-namespace Nexusat.Calendar
+namespace Nexusat.Utils.CalendarGenerator
 {
     /// <summary>
     /// A chain of <see cref="DayRule"/>s to manage the working days

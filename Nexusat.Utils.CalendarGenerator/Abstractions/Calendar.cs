@@ -8,7 +8,7 @@ using System.Xml;
 // ReSharper disable HeapView.ObjectAllocation.Evident
 // ReSharper disable HeapView.ObjectAllocation
 
-namespace Nexusat.Calendar
+namespace Nexusat.Utils.CalendarGenerator
 {
 
     // TODO: CalendarChain

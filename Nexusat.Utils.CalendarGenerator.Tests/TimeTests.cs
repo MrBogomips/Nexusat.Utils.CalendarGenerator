@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 // ReSharper disable HeapView.BoxingAllocation
 
-namespace Nexusat.Calendar.Tests
+namespace Nexusat.Utils.CalendarGenerator.Tests
 {
     [TestClass]
     public class TimeTests

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 // ReSharper disable HeapView.ObjectAllocation.Evident
 // ReSharper disable HeapView.ObjectAllocation.Possible
 
-namespace Nexusat.Calendar
+namespace Nexusat.Utils.CalendarGenerator
 {
     public partial class WeekdaysNonWorkingRuleSettings
     {

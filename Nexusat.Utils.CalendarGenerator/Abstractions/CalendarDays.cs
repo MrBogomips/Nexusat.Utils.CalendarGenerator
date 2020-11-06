@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 // ReSharper disable HeapView.ObjectAllocation.Evident
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace Nexusat.Calendar
+namespace Nexusat.Utils.CalendarGenerator
 {
     /// <summary>
     /// Represents a dump of a calendar period

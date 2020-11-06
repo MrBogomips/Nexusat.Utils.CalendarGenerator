@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Nexusat.Calendar.Tests
+namespace Nexusat.Utils.CalendarGenerator.Tests
 {
     [TestClass]
     public class TimePeriodTests

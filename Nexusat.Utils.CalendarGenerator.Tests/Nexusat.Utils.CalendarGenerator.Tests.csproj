@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Nexusat.Calendar\Nexusat.Calendar.csproj" />
+    <ProjectReference Include="..\Nexusat.Utils.CalendarGenerator\Nexusat.Utils.CalendarGenerator.csproj" />
   </ItemGroup>
 
 </Project>
