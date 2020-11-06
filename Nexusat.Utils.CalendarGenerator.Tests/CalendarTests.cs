@@ -161,6 +161,29 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         }
 
         [TestMethod]
+        public void EmptyCalendarTest()
+        {
+            var calendar = Calendar.EmptyCalendar;
+            Assert.IsNotNull(calendar);
+            Assert.AreSame(Calendar.EmptyCalendar, calendar, "Empty calendar is a singleton");
+            var xml = calendar.ToXml();
+            TestContext.WriteLine($"Calendar XML Definition:\n{xml}");
+            Assert.IsNull(calendar.GetDayInfo(DateTime.Now), "Empty calendar doesn't provide any info");
+            var defaultDayInfo = new DayInfo
+            {
+                IsWorkingDay = false
+            };
+            var days = calendar.
+                GenerateCalendarDays(
+                    new DateTime(2020, 1, 1), 
+                    new DateTime(2020, 12, 31), defaultDayInfo);
+            Assert.AreEqual(366, days.Count);
+            xml = days.ToXml();
+            Assert.IsNotNull(xml);
+            TestContext.WriteLine($"\n\nCalendar Days:\n{xml}");
+        }
+
+        [TestMethod]
         public void JsonSerializationTest()
         {
             var calendar = SetupFullCalendar();

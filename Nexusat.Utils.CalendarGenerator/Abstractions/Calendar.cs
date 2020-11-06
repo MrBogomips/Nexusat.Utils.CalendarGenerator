@@ -5,16 +5,16 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
+using System.Xml.Schema;
+
 // ReSharper disable HeapView.ObjectAllocation.Evident
 // ReSharper disable HeapView.ObjectAllocation
 
 namespace Nexusat.Utils.CalendarGenerator
 {
-
     // TODO: CalendarChain
     // TODO: CustomDayRule: a way to define a rule for specific days
     // TODO: CronDayRule: a way to define recurrent events
-    // TODO: XSD Exporter for all the Rules settings
     // TODO: NuGet Packaging
 
     /// <summary>
@@ -25,15 +25,26 @@ namespace Nexusat.Utils.CalendarGenerator
     [DataContract(Namespace ="http://www.nexusat.it/schemas/calendar")]
     public class Calendar : ICalendar
     {
-        [DataMember]
+        [DataMember(IsRequired = true, Name = "DayRules")]
         private readonly DayRules _dayRules;
 
-        [DataMember]
+        [DataMember(IsRequired = true)]
         public string Name { get; private set; }
         [DataMember]
         public string Description { get; private set; }
         [DataMember]
         public string LongDescription { get; private set; }
+
+        // ReSharper disable once ConvertToAutoProperty
+        public static Calendar EmptyCalendar => EMPTY_CALENDAR;
+        
+        // ReSharper disable once InconsistentNaming
+        private static readonly Calendar EMPTY_CALENDAR;
+
+        static Calendar()
+        {
+            EMPTY_CALENDAR = new Calendar("EmptyCalendar", new DayRules());
+        }
 
         public Calendar(string name, DayRules dayRules, string description = null, string longDescription = null)
         {
@@ -100,6 +111,7 @@ namespace Nexusat.Utils.CalendarGenerator
             using var reader = XmlReader.Create(buffer);
             return ser.ReadObject(reader) as Calendar;
         }
+
         /// <summary>
         /// Returns an UTF-8 encoded JSON representing the calendar
         /// </summary>
