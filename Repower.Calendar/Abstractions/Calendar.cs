@@ -1,5 +1,4 @@
-﻿using Repower.Calendar.Abstractions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,8 +9,8 @@ using System.Xml;
 
 namespace Repower.Calendar
 {
-    // TODO: Calendar Generator: generate a calendar suitable to be represented
-    // TODO: EasterHolidayRule: manage the easter
+
+    // TODO: CalendarChain
     // TODO: CustomDayRule: a way to define a rule for specific days
     // TODO: XSD Exporter for all the Rules settings
 

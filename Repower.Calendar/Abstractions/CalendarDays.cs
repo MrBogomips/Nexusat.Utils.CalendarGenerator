@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Repower.Calendar.Abstractions
+namespace Repower.Calendar
 {
     /// <summary>
     /// Represents a dump of a calendar period
@@ -37,8 +36,8 @@ namespace Repower.Calendar.Abstractions
         {
             /* XML Layout
             <CalendarDays>
-	            <Day date="ISO_DATE" isWorkingDay="true|false">
-		            <Description></Description>
+	            <Day date="2020-01-01" isWorkingDay="true|false">
+		            <Description></Description>  <!-- missing if null -->
 		            <WorkingPeriods>
 			            <TimePeriod begin="08:00" end="12:00" />
 			            <TimePeriod begin="14:00" end="18:00" />
