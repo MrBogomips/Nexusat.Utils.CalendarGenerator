@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.Json;
 using System.Xml;
 using System.Xml.Serialization;
 // ReSharper disable HeapView.ObjectAllocation.Evident
@@ -57,27 +60,30 @@ namespace Nexusat.Utils.CalendarGenerator
             return sb.ToString();
         }
 
-        public string ToJson()
+        public string ToJson(bool indent = false)
         {
-            /* TODO: JSON Layout
-            {
-	            "days": [{
-		            "date": "ISO_DATE",
-		            "isWorkingDay": true | false,
-		            "description": "",
-		            "workingPeriods": [{
-			            "begin": "08:00",
-			            "end": "12:00"
-		            },{
-			            "begin": "14:00",
-			            "end": "18:00"
-		            },
-		            ]
-	            }]
-	            }
-            }
-            */
-            throw new NotImplementedException();
+	        /* JSON Layout
+			[{
+		        "date": "ISO_DATE",
+		        "isWorkingDay": true | false,
+		        "description": "",
+		        "workingPeriods": [{
+			        "begin": "08:00",
+			        "end": "12:00"
+		        },{
+			        "begin": "14:00",
+			        "end": "18:00"
+		        },
+		        ]
+	        }]
+	        */
+	        JsonSerializerOptions opts = new JsonSerializerOptions
+	        {
+		        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+		        WriteIndented = indent,
+	        };
+            var json = JsonSerializer.Serialize(this, opts);
+            return json;
         }
     }
     

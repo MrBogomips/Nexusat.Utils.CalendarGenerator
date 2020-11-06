@@ -15,7 +15,8 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         /// information about and functionality for the current test run.
         /// </summary>
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        private TestContext TestContext { get; set; }
+        // ReSharper disable once MemberCanBePrivate.Global
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void WeekdayWorkingTest()
@@ -206,6 +207,24 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             var xml = calendarDays.ToXml(xmlSettings);
             Assert.IsNotNull(xml);
             TestContext.WriteLine(xml);
+        }
+        
+        [TestMethod]
+        public void CalendarDaysToJsonTest()
+        {
+            var calendar = SetupFullCalendar();
+
+            var defaultDayInfo = new DayInfo
+            {
+                Description = "Default",
+                IsWorkingDay = false
+            };
+
+            var calendarDays =
+                calendar.GenerateCalendarDays(new DateTime(2020, 1, 1), new DateTime(2020, 12, 31), defaultDayInfo);
+            var json = calendarDays.ToJson(true);
+            Assert.IsNotNull(json);
+            TestContext.WriteLine(json);
         }
     }
 }

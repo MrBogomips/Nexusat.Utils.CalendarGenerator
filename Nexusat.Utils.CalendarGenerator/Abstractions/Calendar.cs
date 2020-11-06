@@ -13,7 +13,9 @@ namespace Nexusat.Utils.CalendarGenerator
 
     // TODO: CalendarChain
     // TODO: CustomDayRule: a way to define a rule for specific days
+    // TODO: CronDayRule: a way to define recurrent events
     // TODO: XSD Exporter for all the Rules settings
+    // TODO: NuGet Packaging
 
     /// <summary>
     /// Base implementation of a calendar.
@@ -27,7 +29,7 @@ namespace Nexusat.Utils.CalendarGenerator
         private readonly DayRules _dayRules;
 
         [DataMember]
-        public string Name { get; }
+        public string Name { get; private set; }
         [DataMember]
         public string Description { get; private set; }
         [DataMember]
@@ -98,13 +100,17 @@ namespace Nexusat.Utils.CalendarGenerator
             using var reader = XmlReader.Create(buffer);
             return ser.ReadObject(reader) as Calendar;
         }
-
-        public string ToJson(Encoding encoding = null, bool indent = false)
+        /// <summary>
+        /// Returns an UTF-8 encoded JSON representing the calendar
+        /// </summary>
+        /// <param name="indent"></param>
+        /// <returns></returns>
+        public string ToJson(bool indent = false)
         {
             var ser = new DataContractJsonSerializer(typeof(Calendar));
 
             using var buffer = new MemoryStream();
-            using var writer = JsonReaderWriterFactory.CreateJsonWriter(buffer, encoding ?? Encoding.UTF8, true, indent);
+            using var writer = JsonReaderWriterFactory.CreateJsonWriter(buffer, Encoding.UTF8, true, indent);
             using var reader = new StreamReader(buffer);
 
             ser.WriteObject(writer, this);
