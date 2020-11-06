@@ -249,5 +249,16 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsNotNull(json);
             TestContext.WriteLine(json);
         }
+
+        [TestMethod]
+        public void CalendarAddRulesTest()
+        {
+            var calendar = SetupFullCalendar();
+            var calendar2 = SetupFullCalendar();
+            var ruleCount = calendar.DayRules.Count;
+            calendar.AddRules(calendar2);
+            Assert.AreEqual(ruleCount * 2, calendar.DayRules.Count);
+            TestContext.WriteLine($"Calendar XML:\n{calendar.ToXml(new XmlWriterSettings{Indent = true})}");
+        }
     }
 }

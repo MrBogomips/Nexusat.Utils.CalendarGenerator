@@ -12,7 +12,6 @@ using System.Xml.Schema;
 
 namespace Nexusat.Utils.CalendarGenerator
 {
-    // TODO: CalendarChain
     // TODO: CustomDayRule: a way to define a rule for specific days
     // TODO: CronDayRule: a way to define recurrent events
     // TODO: NuGet Packaging
@@ -27,6 +26,8 @@ namespace Nexusat.Utils.CalendarGenerator
     {
         [DataMember(IsRequired = true, Name = "DayRules")]
         private readonly DayRules _dayRules;
+        // ReSharper disable once ConvertToAutoProperty
+        public DayRules DayRules => _dayRules;
 
         [DataMember(IsRequired = true)]
         public string Name { get; private set; }
@@ -37,7 +38,10 @@ namespace Nexusat.Utils.CalendarGenerator
 
         // ReSharper disable once ConvertToAutoProperty
         public static Calendar EmptyCalendar => EMPTY_CALENDAR;
+
+        // ReSharper disable once ConvertToAutoProperty
         
+
         // ReSharper disable once InconsistentNaming
         private static readonly Calendar EMPTY_CALENDAR;
 
@@ -67,12 +71,12 @@ namespace Nexusat.Utils.CalendarGenerator
         public bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo)
         {
             dayInfo = null;
-            if (_dayRules == null || !_dayRules.Any())
+            if (DayRules == null || !DayRules.Any())
             {
                 return false; // no rules => nothing to do
             }
 
-            foreach (var rule in _dayRules)
+            foreach (var rule in DayRules)
             {
                 if (!rule.Rule.TryGetDayInfo(date, out var curInfo)) continue; // something to evaluate
                 dayInfo = curInfo; // register the most recent found
@@ -188,6 +192,17 @@ namespace Nexusat.Utils.CalendarGenerator
 
             return calendarDays;
         }
+        /// <summary>
+        /// Add rules to the collection of rules
+        /// </summary>
+        /// <param name="rules"></param>
+        public void AddRules(DayRules rules) => DayRules.AddRange(rules);
+        /// <summary>
+        /// Add the rules from the calendar to the collection of rules
+        /// </summary>
+        /// <param name="calendar"></param>
+        public void AddRules(Calendar calendar) => DayRules.Add(calendar);
+
 
         #region Equals
         // override object.Equals
