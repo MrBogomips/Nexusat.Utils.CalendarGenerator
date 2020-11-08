@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 
 namespace Nexusat.Utils.CalendarGenerator
 {
@@ -64,6 +65,25 @@ namespace Nexusat.Utils.CalendarGenerator
                 timePeriod.End.Hour - timePeriod.Begin.Hour,
                 timePeriod.End.Minute - timePeriod.Begin.Minute,
                 0);
+        }
+        
+        private static Regex ParseRegEx { get; } = new Regex(@"^(\d{2}:\d{2})-(\d{2}:\d{2})$");
+        /// <summary>
+        /// Parse a string in the format "00:00-24:00"
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static TimePeriod Parse(string value)
+        {
+            if (value is null) throw  new ArgumentNullException(nameof(value));
+
+            var match = ParseRegEx.Match(value);
+            if (!match.Success) throw new  ArgumentException("Time syntax should be 00:00-24:00", nameof(value));
+            var begin = Time.Parse(match.Groups[1].Value);
+            var end = Time.Parse(match.Groups[2].Value);
+            return new TimePeriod(begin, end);
         }
     }
 }

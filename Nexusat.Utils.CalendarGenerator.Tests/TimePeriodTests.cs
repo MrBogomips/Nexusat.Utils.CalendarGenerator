@@ -84,5 +84,15 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             var p4 = new TimePeriod(new Time(), new Time(23, 59));
             Assert.AreEqual(60 * 24 - 1, ((TimeSpan) p4).TotalMinutes);
         }
+
+        [TestMethod]
+        public void ParseTest()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => TimePeriod.Parse(null));
+            Assert.ThrowsException<ArgumentException>(() => TimePeriod.Parse("xxx"));
+            var tp = TimePeriod.Parse("00:00-24:00");
+            Assert.AreEqual(Time.Parse("00:00"), tp.Begin);
+            Assert.AreEqual(Time.Parse("24:00"), tp.End);
+        }
     }
 }
