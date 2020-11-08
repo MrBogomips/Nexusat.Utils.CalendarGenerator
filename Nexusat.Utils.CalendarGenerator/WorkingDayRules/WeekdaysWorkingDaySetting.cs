@@ -19,7 +19,7 @@ namespace Nexusat.Utils.CalendarGenerator
                 if (!WorkingPeriods.Any())
                     WorkingPeriods.Add(TimePeriod.AllDay);
                 else
-                    WorkingPeriods.Sort();
+                    DayInfo.NormalizeWorkingPeriods(WorkingPeriods);
             }
 
             [DataMember] public DayOfWeek DayOfWeek { get; private set; }

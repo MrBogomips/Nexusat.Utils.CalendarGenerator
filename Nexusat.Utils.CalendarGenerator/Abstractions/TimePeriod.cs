@@ -7,20 +7,17 @@ using System.Text.RegularExpressions;
 
 namespace Nexusat.Utils.CalendarGenerator
 {
-    // TODO: Classe Working Periods con Parse per stringhe del tipo "08:00-12:00 13:00-17:00
-    //       La validazione dei working Periods non sovrapposti viene fatta qui
-    
     /// <summary>
     ///     Represents a contiguous, right opened, period within a day.
     ///     A whole day is represented by the period [00:00, 24:00[, as ISO 8601 recommends.
     ///     .Net Class Library, unfortunately, isn't compliant with that time period representation.
     /// </summary>
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
-    public struct TimePeriod : IComparable<TimePeriod>
+    public readonly struct TimePeriod : IComparable<TimePeriod>, IEquatable<TimePeriod>
     {
-        public static readonly TimePeriod AllDay = new TimePeriod(new Time(), new Time(24, 0));
-        [DataMember] public Time Begin { get; private set; }
-        [DataMember] public Time End { get; private set; }
+        public static TimePeriod AllDay { get; } = new TimePeriod(new Time(), new Time(24, 0));
+        [field: DataMember] public Time Begin { get; }
+        [field: DataMember] public Time End { get; }
 
         public TimePeriod(Time begin, Time end)
         {
@@ -102,5 +99,13 @@ namespace Nexusat.Utils.CalendarGenerator
             
             return value.Split(' ').Select(TimePeriod.Parse).ToList();
         }
+
+        public override string ToString() => $"{Begin}-{End}";
+
+        public bool Equals(TimePeriod other) => (Begin, End) == (other.Begin, other.End);
+        public override bool Equals(object obj) => obj is TimePeriod other && Equals(other);
+        public override int GetHashCode() => HashCode.Combine(Begin, End);
+        public static bool operator ==(TimePeriod lhs, TimePeriod rhs) => lhs.Equals(rhs);
+        public static bool operator !=(TimePeriod lhs, TimePeriod rhs) => !lhs.Equals(rhs);
     }
 }

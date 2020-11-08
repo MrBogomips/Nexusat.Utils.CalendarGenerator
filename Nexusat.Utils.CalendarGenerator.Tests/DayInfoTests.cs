@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Nexusat.Utils.CalendarGenerator.Tests
@@ -7,7 +9,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
     public class DayInfoTests
     {
         [TestMethod]
-        public void DefaultCtor()
+        public void DefaultCtorTest()
         {
             var di = new DayInfo();
 
@@ -17,7 +19,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         }
 
         [TestMethod]
-        public void OnlyDescription()
+        public void OnlyDescriptionTest()
         {
             var desc = "description";
             var di = new DayInfo(desc);
@@ -28,7 +30,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         }
 
         [TestMethod]
-        public void EmptyWorkingPeriods()
+        public void EmptyWorkingPeriodsTest()
         {
             // ReSharper disable once CollectionNeverUpdated.Local
             var wps = new List<TimePeriod>();
@@ -40,7 +42,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         }
 
         [TestMethod]
-        public void NonEmptyWorkingPeriods()
+        public void NonEmptyWorkingPeriodsTest()
         {
             // ReSharper disable once CollectionNeverUpdated.Local
             var wps = new List<TimePeriod>
@@ -52,6 +54,14 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsTrue(di.IsWorkingDay);
             Assert.IsNull(di.Description);
             Assert.IsNotNull(di.WorkingPeriods);
+        }
+
+        [TestMethod]
+        public void OverlapTimePeriodsTest()
+        {
+            var tps = TimePeriod.ParseMulti("00:00-02:00 01:00-03:00");
+
+            Assert.ThrowsException<ArgumentException>(() => new DayInfo(workingPeriods:tps));
         }
     }
 }

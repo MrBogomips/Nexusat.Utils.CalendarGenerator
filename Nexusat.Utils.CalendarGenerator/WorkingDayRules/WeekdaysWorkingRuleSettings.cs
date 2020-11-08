@@ -22,13 +22,6 @@ namespace Nexusat.Utils.CalendarGenerator
                 if (daysProcessed.Contains(d.DayOfWeek))
                     throw new ArgumentException($"Day of week {d.DayOfWeek} appears more than once", nameof(days));
                 daysProcessed.Add(d.DayOfWeek);
-                // ASSERT: Working periods can't overlap
-                // PRECONDITION d.WorkingPeriods.Sort(); already sorted
-                // PRECONDITION d.WorkingPeriods has at least one element
-                var prevTimePeriod = d.WorkingPeriods.First();
-                for (var i = 1; i < d.WorkingPeriods.Count; i++)
-                    if (prevTimePeriod.Overlaps(d.WorkingPeriods[i]))
-                        throw new ArgumentException("Working Periods can't overlap");
             }
         }
 

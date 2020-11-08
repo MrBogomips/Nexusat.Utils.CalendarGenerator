@@ -104,8 +104,18 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.ThrowsException<ArgumentException>(() => TimePeriod.Parse(""));
             var tps = TimePeriod.ParseMulti("00:00-24:00");
             Assert.AreEqual(1, tps.Count());
-            tps = TimePeriod.ParseMulti("00:00-12:00 00:00-12:00");
-            Assert.AreEqual(2, tps.Count());
+            var tpa = TimePeriod.ParseMulti("00:00-01:00 01:00-03:00 05:00-22:00").ToArray();
+            Assert.AreEqual(3, tpa.Count());
+            Assert.AreEqual(TimePeriod.Parse("00:00-01:00"), tpa[0]);
+            Assert.AreEqual(TimePeriod.Parse("01:00-03:00"), tpa[1]);
+            Assert.AreEqual(TimePeriod.Parse("05:00-22:00"), tpa[2]);
+        }
+
+        [TestMethod]
+        public void ToStringTest()
+        {
+            var actual = "11:11-12:12";
+            Assert.AreEqual(actual, TimePeriod.Parse(actual).ToString());
         }
     }
 }

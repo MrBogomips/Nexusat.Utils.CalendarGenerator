@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Nexusat.Utils.CalendarGenerator
 {
-    // TODO: Classe Working Periods con Parse per stringhe del tipo "08:00-12:00 13:00-17:00
-    //       La validazione dei working Periods non sovrapposti viene fatta qui
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public sealed class DayInfo
     {
@@ -14,11 +13,30 @@ namespace Nexusat.Utils.CalendarGenerator
         public DayInfo(string description = null, IEnumerable<TimePeriod> workingPeriods = null)
         {
             Description = description;
-            WorkingPeriods = workingPeriods;
-            if (workingPeriods is not null && !workingPeriods.Any())
-                WorkingPeriods = null; // force null in case of empty working periods
+            WorkingPeriods = NormalizeWorkingPeriods(workingPeriods);
             IsWorkingDay = WorkingPeriods is not null;
         }
+
+        /// <summary>
+        /// Normalize working periods by sorting them and checking they don't overlap
+        /// </summary>
+        /// <param name="workingPeriods"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+        public static IEnumerable<TimePeriod> NormalizeWorkingPeriods(IEnumerable<TimePeriod> workingPeriods)
+        {
+            if (workingPeriods == null || !workingPeriods.Any()) return null;
+
+            var retVal = new List<TimePeriod>(workingPeriods);
+            retVal.Sort();
+            var prevTimePeriod = retVal.First();
+            for (var i = 1; i < retVal.Count; i++)
+                if (prevTimePeriod.Overlaps(retVal[i]))
+                    throw new ArgumentException("Working Periods can't overlap");
+            return retVal;
+        }
+        
         /// <summary>
         /// Parse a day info declaration
         /// </summary>
