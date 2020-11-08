@@ -11,10 +11,10 @@ namespace Nexusat.Utils.CalendarGenerator
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public struct Time: IComparable<Time>
     {
-        [DataMember]
-        public short Hour { get; private set; }
-        [DataMember]
-        public short Minute { get; private set; }
+        [field: DataMember]
+        public short Hour { get; }
+        [field: DataMember]
+        public short Minute { get; }
         public Time(short hour, short minute)
         {
             if (hour < 0 || hour > 24)
