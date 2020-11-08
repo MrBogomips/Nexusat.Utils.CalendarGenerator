@@ -30,14 +30,14 @@ namespace Nexusat.Utils.CalendarGenerator
     //                 b December 31 => Ogni anno non bisestile, l'ultimo dell'anno
     //                 2021,2023 January 1,L => Nel 2021 e 2023 nel primo e ultimo giorno di gennaio
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
-    public class RecurrentDayRule: DayRule
+    public class RecurrentDayRule : DayRule
     {
-        public override IDayInfo GetDayInfo(DateTime date)
+        public override DayInfo GetDayInfo(DateTime date)
         {
             throw new NotImplementedException();
         }
 
-        public override bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo)
+        public override bool TryGetDayInfo(DateTime date, out DayInfo dayInfo)
         {
             throw new NotImplementedException();
         }

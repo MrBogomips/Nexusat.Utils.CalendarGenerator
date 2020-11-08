@@ -1,18 +1,18 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Xml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static System.DayOfWeek;
+
 // ReSharper disable HeapView.ObjectAllocation.Evident
 
 namespace Nexusat.Utils.CalendarGenerator.Tests
 {
-
     [TestClass]
     public class CalendarTests
     {
         /// <summary>
-        /// Gets or sets the test context which provides
-        /// information about and functionality for the current test run.
+        ///     Gets or sets the test context which provides
+        ///     information about and functionality for the current test run.
         /// </summary>
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         // ReSharper disable once MemberCanBePrivate.Global
@@ -157,7 +157,6 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
 
             var calendar2 = Calendar.LoadFromXml(xml);
             TestFullCalendar(calendar2);
-
         }
 
         [TestMethod]
@@ -170,11 +169,10 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             TestContext.WriteLine($"Calendar XML Definition:\n{xml}");
             Assert.IsNull(calendar.GetDayInfo(DateTime.Now), "Empty calendar doesn't provide any info");
             var defaultDayInfo = new DayInfo();
-            
-            var days = calendar.
-                GenerateCalendarDays(
-                    new DateTime(2020, 1, 1), 
-                    new DateTime(2020, 12, 31), defaultDayInfo);
+
+            var days = calendar.GenerateCalendarDays(
+                new DateTime(2020, 1, 1),
+                new DateTime(2020, 12, 31), defaultDayInfo);
             Assert.AreEqual(366, days.Count);
             xml = days.ToXml();
             Assert.IsNotNull(xml);
@@ -186,7 +184,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         {
             var calendar = SetupFullCalendar();
 
-            var json = calendar.ToJson(indent: true);
+            var json = calendar.ToJson(true);
             TestContext.WriteLine(json);
             Assert.IsNotNull(json);
 
@@ -199,9 +197,10 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         {
             var calendar = SetupFullCalendar();
 
-            var defaultDayInfo = new DayInfo(description: "Default");
+            var defaultDayInfo = new DayInfo("Default");
 
-            var calendarDays = calendar.GenerateCalendarDays(new DateTime(2020, 1, 1), new DateTime(2020, 12, 31), defaultDayInfo);
+            var calendarDays =
+                calendar.GenerateCalendarDays(new DateTime(2020, 1, 1), new DateTime(2020, 12, 31), defaultDayInfo);
 
             Assert.IsNotNull(calendarDays);
             Assert.AreEqual(366, calendarDays.Count);
@@ -212,7 +211,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         {
             var calendar = SetupFullCalendar();
 
-            var defaultDayInfo = new DayInfo(description: "info");
+            var defaultDayInfo = new DayInfo("info");
 
             var calendarDays =
                 calendar.GenerateCalendarDays(new DateTime(2020, 1, 1), new DateTime(2020, 12, 31), defaultDayInfo);
@@ -221,13 +220,13 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsNotNull(xml);
             TestContext.WriteLine(xml);
         }
-        
+
         [TestMethod]
         public void CalendarDaysToJsonTest()
         {
             var calendar = SetupFullCalendar();
 
-            var defaultDayInfo = new DayInfo(description: "info");
+            var defaultDayInfo = new DayInfo("info");
 
             var calendarDays =
                 calendar.GenerateCalendarDays(new DateTime(2020, 1, 1), new DateTime(2020, 12, 31), defaultDayInfo);
@@ -244,7 +243,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             var ruleCount = calendar.DayRules.Count;
             calendar.AddRules(calendar2);
             Assert.AreEqual(ruleCount * 2, calendar.DayRules.Count);
-            TestContext.WriteLine($"Calendar XML:\n{calendar.ToXml(new XmlWriterSettings{Indent = true})}");
+            TestContext.WriteLine($"Calendar XML:\n{calendar.ToXml(new XmlWriterSettings {Indent = true})}");
         }
     }
 }

@@ -1,5 +1,6 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 // ReSharper disable HeapView.BoxingAllocation
 
 namespace Nexusat.Utils.CalendarGenerator.Tests
@@ -49,6 +50,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsTrue(T2.CompareTo(T1) > 0);
             Assert.IsTrue(T1.CompareTo(T4) == 0);
         }
+
         [TestMethod]
         public void EqualsTest()
         {
@@ -57,6 +59,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
 
             Assert.AreEqual(o1, o2);
         }
+
         [TestMethod]
         public void ToStringTest()
         {
@@ -64,6 +67,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.AreEqual("00:01", T2.ToString());
             Assert.AreEqual("01:00", T3.ToString());
         }
+
         [TestMethod]
         public void GetSerialTest()
         {

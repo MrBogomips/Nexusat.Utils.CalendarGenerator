@@ -9,11 +9,12 @@ namespace Nexusat.Utils.CalendarGenerator
         [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
         public class DaySetting
         {
-            [DataMember]
-            public DayOfWeek DayOfWeek { get; private set; }
+            public DaySetting(DayOfWeek dayOfWeek)
+            {
+                DayOfWeek = dayOfWeek;
+            }
 
-            public DaySetting(DayOfWeek dayOfWeek) => DayOfWeek = dayOfWeek;
+            [DataMember] public DayOfWeek DayOfWeek { get; private set; }
         }
-
     }
 }

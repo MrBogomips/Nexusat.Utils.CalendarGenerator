@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
-using System.Xml.Schema;
+// ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable HeapView.ObjectAllocation.Evident
 // ReSharper disable HeapView.ObjectAllocation
@@ -17,64 +17,46 @@ namespace Nexusat.Utils.CalendarGenerator
     // TODO: NuGet Packaging
 
     /// <summary>
-    /// Base implementation of a calendar.
-    /// 
-    /// See <see cref="ICalendar"/> for the semantic of the members.
+    ///     Base implementation of a calendar.
+    ///     See <see cref="ICalendar" /> for the semantic of the members.
     /// </summary>
-    [DataContract(Namespace ="http://www.nexusat.it/schemas/calendar")]
+    [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public class Calendar : ICalendar
     {
-        [DataMember(IsRequired = true, Name = "DayRules")]
-        private readonly DayRules _dayRules;
-        // ReSharper disable once ConvertToAutoProperty
-        public DayRules DayRules => _dayRules;
-
-        [DataMember(IsRequired = true)]
-        public string Name { get; private set; }
-        [DataMember]
-        public string Description { get; private set; }
-        [DataMember]
-        public string LongDescription { get; private set; }
-
-        // ReSharper disable once ConvertToAutoProperty
-        public static Calendar EmptyCalendar => EMPTY_CALENDAR;
-
-        // ReSharper disable once ConvertToAutoProperty
-        
-
-        // ReSharper disable once InconsistentNaming
-        private static readonly Calendar EMPTY_CALENDAR;
-
-        static Calendar()
-        {
-            EMPTY_CALENDAR = new Calendar("EmptyCalendar", new DayRules());
-        }
+        public static Calendar EmptyCalendar { get; } = new Calendar("EmptyCalendar", new DayRules());
 
         public Calendar(string name, DayRules dayRules, string description = null, string longDescription = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description;
             LongDescription = longDescription;
-            _dayRules = dayRules ?? throw new ArgumentNullException(nameof(dayRules));
+            DayRules = dayRules ?? throw new ArgumentNullException(nameof(dayRules));
         }
+        
+        [field: DataMember] public DayRules DayRules { get; }
+
+        
+        [field: DataMember(IsRequired = true)] public string Name { get; }
+
+        [field: DataMember] public string Description { get; }
+
+        [field: DataMember] public string LongDescription { get; }
 
         /// <summary>
-        /// Return the working day info of the day.
+        ///     Return the working day info of the day.
         /// </summary>
         /// <param name="date"></param>
         /// <returns><c>null</c> if the calendar has no workingDayInfo</returns>
-        public IDayInfo GetDayInfo(DateTime date)
+        public DayInfo GetDayInfo(DateTime date)
         {
             TryGetDayInfo(date, out var dayInfo);
             return dayInfo;
         }
-        public bool TryGetDayInfo(DateTime date, out IDayInfo dayInfo)
+
+        public bool TryGetDayInfo(DateTime date, out DayInfo dayInfo)
         {
             dayInfo = null;
-            if (DayRules == null || !DayRules.Any())
-            {
-                return false; // no rules => nothing to do
-            }
+            if (DayRules == null || !DayRules.Any()) return false; // no rules => nothing to do
 
             foreach (var rule in DayRules)
             {
@@ -83,11 +65,46 @@ namespace Nexusat.Utils.CalendarGenerator
                 if (rule.Policy == DayRulePolicy.AcceptAlways ||
                     dayInfo.IsWorkingDay && rule.Policy == DayRulePolicy.AcceptIfTrue ||
                     !dayInfo.IsWorkingDay && rule.Policy == DayRulePolicy.AcceptIfFalse)
-                {
                     break;
-                }
             }
+
             return dayInfo != null;
+        }
+
+        /// <summary>
+        ///     Generate a <see cref="CalendarDays" /> info.
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="defaultDayInfo">Default info in case of missing info</param>
+        /// <returns></returns>
+        public CalendarDays GenerateCalendarDays(DateTime from, DateTime to, DayInfo defaultDayInfo)
+        {
+            if (to < from) throw new ArgumentException($"'{nameof(to)}' cannot precede '{nameof(@from)}'");
+
+            if (defaultDayInfo is null) throw new ArgumentNullException(nameof(defaultDayInfo));
+
+            var calendarDays = new CalendarDays();
+            for (var cur = from; cur <= to; cur = cur.AddDays(1))
+            {
+                var info = GetDayInfo(cur) ?? defaultDayInfo;
+                var workingPeriods =
+                    info.WorkingPeriods?.Select(wp => new CalendarDays.TimePeriod
+                    {
+                        Begin = wp.Begin.ToString(),
+                        End = wp.End.ToString()
+                    }).ToList();
+
+                calendarDays.Add(new CalendarDays.Day
+                {
+                    Date = cur.ToString("yyyy-MM-dd"),
+                    IsWorkingDay = info.IsWorkingDay,
+                    Description = info.Description,
+                    WorkingPeriods = workingPeriods
+                });
+            }
+
+            return calendarDays;
         }
 
         public string ToXml(XmlWriterSettings settings = null)
@@ -105,9 +122,7 @@ namespace Nexusat.Utils.CalendarGenerator
         public static Calendar LoadFromXml(string xml)
         {
             if (string.IsNullOrWhiteSpace(xml))
-            {
                 throw new ArgumentException($"'{nameof(xml)}' cannot be null or whitespace", nameof(xml));
-            }
 
             var ser = new DataContractSerializer(typeof(Calendar));
 
@@ -117,7 +132,7 @@ namespace Nexusat.Utils.CalendarGenerator
         }
 
         /// <summary>
-        /// Returns an UTF-8 encoded JSON representing the calendar
+        ///     Returns an UTF-8 encoded JSON representing the calendar
         /// </summary>
         /// <param name="indent"></param>
         /// <returns></returns>
@@ -138,9 +153,7 @@ namespace Nexusat.Utils.CalendarGenerator
         public static Calendar LoadFromJson(string json)
         {
             if (string.IsNullOrWhiteSpace(json))
-            {
                 throw new ArgumentException($"'{nameof(json)}' cannot be null or whitespace", nameof(json));
-            }
 
             var ser = new DataContractJsonSerializer(typeof(Calendar));
 
@@ -151,67 +164,36 @@ namespace Nexusat.Utils.CalendarGenerator
             buffer.Position = 0;
             return ser.ReadObject(buffer) as Calendar;
         }
+
         /// <summary>
-        /// Generate a <see cref="CalendarDays"/> info.
-        /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <param name="defaultDayInfo">Default info in case of missing info</param>
-        /// <returns></returns>
-        public CalendarDays GenerateCalendarDays(DateTime from, DateTime to, DayInfo defaultDayInfo)
-        {
-            if (to < from)
-            {
-                throw new ArgumentException($"'{nameof(to)}' cannot precede '{nameof(from)}'");
-            }
-
-            if (defaultDayInfo is null)
-            {
-                throw new ArgumentNullException(nameof(defaultDayInfo));
-            }
-
-            var calendarDays = new CalendarDays();
-            for(var cur = from; cur <= to; cur = cur.AddDays(1))
-            {
-                var info = GetDayInfo(cur) ?? defaultDayInfo;
-                var workingPeriods = 
-                    info.WorkingPeriods?.Select(wp => new CalendarDays.TimePeriod
-                    { 
-                        Begin = wp.Begin.ToString(),
-                        End = wp.End.ToString()
-                    }).ToList();
-
-                calendarDays.Add(new CalendarDays.Day
-                {
-                    Date = cur.ToString("yyyy-MM-dd"),
-                    IsWorkingDay = info.IsWorkingDay,
-                    Description = info.Description,
-                    WorkingPeriods = workingPeriods
-                }) ;
-            }
-
-            return calendarDays;
-        }
-        /// <summary>
-        /// Add rules to the collection of rules
+        ///     Add rules to the collection of rules
         /// </summary>
         /// <param name="rules"></param>
-        public void AddRules(DayRules rules) => DayRules.AddRange(rules);
+        public void AddRules(DayRules rules)
+        {
+            DayRules.AddRange(rules);
+        }
+
         /// <summary>
-        /// Add the rules from the calendar to the collection of rules
+        ///     Add the rules from the calendar to the collection of rules
         /// </summary>
         /// <param name="calendar"></param>
-        public void AddRules(Calendar calendar) => DayRules.Add(calendar);
+        public void AddRules(Calendar calendar)
+        {
+            DayRules.Add(calendar);
+        }
 
 
         #region Equals
-        // override object.Equals
-        private bool Equals(ICalendar that) => that != null && that.Name == Name;
 
-        public override bool Equals(object that) => Equals(that as Calendar);
+        // override object.Equals
+        public bool Equals(Calendar other) => other is not null && Name == other.Name;
+
+        public override bool Equals(object obj) => obj is Calendar c && Equals(c);
 
         // override object.GetHashCode
         public override int GetHashCode() => Name.GetHashCode();
+
         #endregion Equals
     }
 }
