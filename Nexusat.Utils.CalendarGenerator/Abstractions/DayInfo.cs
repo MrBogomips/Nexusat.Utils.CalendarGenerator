@@ -19,6 +19,14 @@ namespace Nexusat.Utils.CalendarGenerator
                 WorkingPeriods = null; // force null in case of empty working periods
             IsWorkingDay = WorkingPeriods is not null;
         }
+        /// <summary>
+        /// Parse a day info declaration
+        /// </summary>
+        /// <param name="description"></param>
+        /// <param name="workingPeriods">Represents a valid string for time periods. <see cref="TimePeriod.ParseMulti"/></param>
+        /// <returns></returns>
+        public DayInfo Parse(string description = null, string workingPeriods = null) =>
+            new DayInfo(description, TimePeriod.ParseMulti(workingPeriods));
 
         /// <summary>
         ///     Represents a working day
