@@ -14,13 +14,13 @@ namespace Nexusat.Utils.CalendarGenerator
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public class DayInfo : IDayInfo
     {
-        [field: DataMember(Name = "IsWorkingDay")]
+        [field: DataMember]
         public bool IsWorkingDay { get; }
 
-        [field: DataMember(Name = "Description")]
+        [field: DataMember]
         public string Description { get; }
 
-        [field: DataMember(Name = "WorkingPeriods")]
+        [field: DataMember]
         public IEnumerable<TimePeriod> WorkingPeriods { get; }
 
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
