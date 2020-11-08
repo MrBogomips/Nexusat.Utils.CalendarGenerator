@@ -3,6 +3,9 @@ using System.Runtime.Serialization;
 
 namespace Nexusat.Utils.CalendarGenerator
 {
+    // TODO: Classe Working Periods con Parse per stringhe del tipo "08:00-12:00 13:00-17:00
+    //       La validazione dei working Periods non sovrapposti viene fatta qui
+    
     /// <summary>
     ///     Represents a contiguous, right opened, period within a day.
     ///     A whole day is represented by the period [00:00, 24:00[, as ISO 8601 recommends.

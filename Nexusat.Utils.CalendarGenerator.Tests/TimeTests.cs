@@ -85,5 +85,21 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.AreEqual(24 * 60 - 1, t4.GetSerial());
             Assert.AreEqual(24 * 60, t5.GetSerial());
         }
+
+        [TestMethod]
+        public void ParseTest()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Time.Parse(null));
+            Assert.ThrowsException<ArgumentException>(() => Time.Parse("xxx"));
+            var t = Time.Parse("00:00");
+            Assert.AreEqual(0, t.Hour);
+            Assert.AreEqual(0, t.Minute);
+            t = Time.Parse("23:59");
+            Assert.AreEqual(23, t.Hour);
+            Assert.AreEqual(59, t.Minute);
+            t = Time.Parse("24:00");
+            Assert.AreEqual(24, t.Hour);
+            Assert.AreEqual(00, t.Minute);
+        }
     }
 }

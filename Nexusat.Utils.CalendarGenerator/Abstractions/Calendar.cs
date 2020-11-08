@@ -21,7 +21,7 @@ namespace Nexusat.Utils.CalendarGenerator
     ///     See <see cref="ICalendar" /> for the semantic of the members.
     /// </summary>
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
-    public class Calendar : ICalendar
+    public class Calendar : ICalendar, IEquatable<Calendar>
     {
         public static Calendar EmptyCalendar { get; } = new Calendar("EmptyCalendar", new DayRules());
 

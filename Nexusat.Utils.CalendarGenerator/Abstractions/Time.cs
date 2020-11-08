@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Nexusat.Utils.CalendarGenerator
@@ -67,5 +69,24 @@ namespace Nexusat.Utils.CalendarGenerator
         public readonly int GetSerial() => Hour * 60 + Minute;
 
         public override int GetHashCode() => GetSerial();
+
+        private static Regex ParseRegEx { get; } = new Regex(@"^(\d{2}):(\d{2})$");
+        /// <summary>
+        /// Parse a string in the format "00:00" to "24:00"
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static Time Parse(string value)
+        {
+            if (value is null) throw  new ArgumentNullException(nameof(value));
+
+            var match = ParseRegEx.Match(value);
+            if (!match.Success) throw new  ArgumentException("Time syntax should be 00:00", nameof(value));
+            var hh = short.Parse(match.Groups[1].Value);
+            var mm = short.Parse(match.Groups[2].Value);
+            return new Time(hh, mm);
+        }
     }
 }

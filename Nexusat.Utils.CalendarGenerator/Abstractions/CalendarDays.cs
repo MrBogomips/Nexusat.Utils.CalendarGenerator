@@ -15,6 +15,11 @@ namespace Nexusat.Utils.CalendarGenerator
 	[XmlRoot(ElementName = "CalendarDays")]
     public sealed class CalendarDays : List<CalendarDays.Day>
     {
+        /// <summary>
+        /// Returns an XML representation of the calendar days table
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
         public string ToXml(XmlWriterSettings settings = null)
         {
             /* XML Layout
@@ -38,6 +43,11 @@ namespace Nexusat.Utils.CalendarGenerator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Returns a JSON representation of the calendar days table
+        /// </summary>
+        /// <param name="indent"></param>
+        /// <returns></returns>
         public string ToJson(bool indent = false)
         {
             /* JSON Layout
