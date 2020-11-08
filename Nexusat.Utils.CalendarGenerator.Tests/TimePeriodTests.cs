@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Nexusat.Utils.CalendarGenerator.Tests
@@ -93,6 +94,18 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             var tp = TimePeriod.Parse("00:00-24:00");
             Assert.AreEqual(Time.Parse("00:00"), tp.Begin);
             Assert.AreEqual(Time.Parse("24:00"), tp.End);
+        }
+        
+        [TestMethod]
+        public void ParseMultiTest()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => TimePeriod.Parse(null));
+            Assert.ThrowsException<ArgumentException>(() => TimePeriod.Parse("xxx"));
+            Assert.ThrowsException<ArgumentException>(() => TimePeriod.Parse(""));
+            var tps = TimePeriod.ParseMulti("00:00-24:00");
+            Assert.AreEqual(1, tps.Count());
+            tps = TimePeriod.ParseMulti("00:00-12:00 00:00-12:00");
+            Assert.AreEqual(2, tps.Count());
         }
     }
 }
