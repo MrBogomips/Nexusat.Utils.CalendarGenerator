@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Nexusat.Utils.CalendarGenerator
@@ -11,10 +14,23 @@ namespace Nexusat.Utils.CalendarGenerator
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public class DayInfo : IDayInfo
     {
-        public bool IsWorkingDay { get; set; }
+        [field: DataMember(Name = "IsWorkingDay")]
+        public bool IsWorkingDay { get; }
 
-        public string Description { get; set; }
+        [field: DataMember(Name = "Description")]
+        public string Description { get; }
 
-        public IEnumerable<TimePeriod> WorkingPeriods { get; set; }
+        [field: DataMember(Name = "WorkingPeriods")]
+        public IEnumerable<TimePeriod> WorkingPeriods { get; }
+
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+        public DayInfo(string description = null, IEnumerable<TimePeriod> workingPeriods = null)
+        {
+            Description = description;
+            WorkingPeriods = workingPeriods;
+            if (workingPeriods is not null && !workingPeriods.Any())
+                WorkingPeriods = null; // force null in case of empty working periods
+            IsWorkingDay = WorkingPeriods is not null;
+        }
     }
 }

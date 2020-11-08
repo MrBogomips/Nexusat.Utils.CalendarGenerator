@@ -169,10 +169,8 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             var xml = calendar.ToXml();
             TestContext.WriteLine($"Calendar XML Definition:\n{xml}");
             Assert.IsNull(calendar.GetDayInfo(DateTime.Now), "Empty calendar doesn't provide any info");
-            var defaultDayInfo = new DayInfo
-            {
-                IsWorkingDay = false
-            };
+            var defaultDayInfo = new DayInfo();
+            
             var days = calendar.
                 GenerateCalendarDays(
                     new DateTime(2020, 1, 1), 
@@ -201,11 +199,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         {
             var calendar = SetupFullCalendar();
 
-            var defaultDayInfo = new DayInfo
-            {
-                Description = "Default",
-                IsWorkingDay = false
-            };
+            var defaultDayInfo = new DayInfo(description: "Default");
 
             var calendarDays = calendar.GenerateCalendarDays(new DateTime(2020, 1, 1), new DateTime(2020, 12, 31), defaultDayInfo);
 
@@ -218,11 +212,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         {
             var calendar = SetupFullCalendar();
 
-            var defaultDayInfo = new DayInfo
-            {
-                Description = "Default",
-                IsWorkingDay = false
-            };
+            var defaultDayInfo = new DayInfo(description: "info");
 
             var calendarDays =
                 calendar.GenerateCalendarDays(new DateTime(2020, 1, 1), new DateTime(2020, 12, 31), defaultDayInfo);
@@ -237,11 +227,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         {
             var calendar = SetupFullCalendar();
 
-            var defaultDayInfo = new DayInfo
-            {
-                Description = "Default",
-                IsWorkingDay = false
-            };
+            var defaultDayInfo = new DayInfo(description: "info");
 
             var calendarDays =
                 calendar.GenerateCalendarDays(new DateTime(2020, 1, 1), new DateTime(2020, 12, 31), defaultDayInfo);

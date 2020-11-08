@@ -37,7 +37,7 @@ namespace Nexusat.Utils.CalendarGenerator
                 return false;
             }
 
-            dayInfo = new DayInfo { IsWorkingDay = true, WorkingPeriods = setting.First().WorkingPeriods };
+            dayInfo = new DayInfo( workingPeriods: setting.First().WorkingPeriods);
             return true;
         }
     }

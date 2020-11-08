@@ -34,7 +34,7 @@ namespace Nexusat.Utils.CalendarGenerator
                 return false;
             }
 
-            dayInfo = new DayInfo {IsWorkingDay = false};
+            dayInfo = new DayInfo();
             return true;
         }
     }
