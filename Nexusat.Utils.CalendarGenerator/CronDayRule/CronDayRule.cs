@@ -8,7 +8,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
     public class CronDayRule: DayRule
     {
         public string Description { get; }
-        public IReadOnlyList<YearMatcher> YearMatchers { get; }
+        public IReadOnlyList<IYearMatcher> YearMatchers { get; }
         public IReadOnlyList<MonthMatcher> MonthMatchers { get; }
         public IReadOnlyList<DayOfMonthMatcher> DayOfMonthMatchers { get; }
         public IReadOnlyList<DayOfWeekMatcher> DayOfWeekMatchers { get; }
@@ -16,7 +16,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 
         public CronDayRule(
             string description,
-            IReadOnlyList<YearMatcher> yearMatchers, 
+            IReadOnlyList<IYearMatcher> yearMatchers, 
             IReadOnlyList<MonthMatcher> monthMatchers, 
             IReadOnlyList<DayOfMonthMatcher> dayOfMonthMatchers, 
             IReadOnlyList<DayOfWeekMatcher> dayOfWeekMatchers,

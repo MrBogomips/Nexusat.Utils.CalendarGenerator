@@ -12,28 +12,28 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         {
             var rym = new CronDayRule.RangeYearMatcher(null, null);
             Assert.IsNotNull(rym, "Any year");
-            Assert.IsNull(rym.FirstYear);
-            Assert.IsNull(rym.LastYear);
+            Assert.IsNull(rym.Left);
+            Assert.IsNull(rym.Right);
             
             rym = new CronDayRule.RangeYearMatcher(2000, null);
             Assert.IsNotNull(rym, "Any year greater than or equal");
-            Assert.AreEqual(2000, rym.FirstYear.Value);
-            Assert.IsNull(rym.LastYear);
+            Assert.AreEqual(2000, rym.Left.Value);
+            Assert.IsNull(rym.Right);
             
             rym = new CronDayRule.RangeYearMatcher(null, 2000);
             Assert.IsNotNull(rym,"Any year less than or equal");
-            Assert.IsNull(rym.FirstYear);
-            Assert.AreEqual(2000, rym.LastYear.Value);
+            Assert.IsNull(rym.Left);
+            Assert.AreEqual(2000, rym.Right.Value);
             
             rym = new CronDayRule.RangeYearMatcher(2000, 2000);
             Assert.IsNotNull(rym, "Exact year");
-            Assert.AreEqual(2000, rym.FirstYear.Value);
-            Assert.AreEqual(2000, rym.LastYear.Value);
+            Assert.AreEqual(2000, rym.Left.Value);
+            Assert.AreEqual(2000, rym.Right.Value);
             
             rym = new CronDayRule.RangeYearMatcher(2000, 3000);
             Assert.IsNotNull(rym, "Finite range");
-            Assert.AreEqual(2000, rym.FirstYear.Value);
-            Assert.AreEqual(3000, rym.LastYear.Value);
+            Assert.AreEqual(2000, rym.Left.Value);
+            Assert.AreEqual(3000, rym.Right.Value);
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new CronDayRule.RangeYearMatcher(-100, null), "Non negative first year");
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new CronDayRule.RangeYearMatcher(null, -100), "Non negative last year");
