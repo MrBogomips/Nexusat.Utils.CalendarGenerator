@@ -16,12 +16,12 @@ namespace Nexusat.Utils.CalendarGenerator
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public class WeekdaysWorkingRule : DayRule
     {
-        [DataMember] public readonly WeekdaysWorkingRuleSettings Settings;
+        [DataMember] private readonly WeekdaysWorkingRuleSettings _settings;
 
 
         public WeekdaysWorkingRule(WeekdaysWorkingRuleSettings settings)
         {
-            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
         public override DayInfo GetDayInfo(DateTime date)
@@ -33,7 +33,7 @@ namespace Nexusat.Utils.CalendarGenerator
         public override bool TryGetDayInfo(DateTime date, out DayInfo dayInfo)
         {
             dayInfo = null;
-            var setting = Settings.Days.Where(_ => _.DayOfWeek == date.DayOfWeek);
+            var setting = _settings.Days.Where(_ => _.DayOfWeek == date.DayOfWeek);
             if (!setting.Any()) return false;
 
             dayInfo = new DayInfo(workingPeriods: setting.First().WorkingPeriods);
