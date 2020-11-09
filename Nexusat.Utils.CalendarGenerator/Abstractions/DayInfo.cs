@@ -24,7 +24,7 @@ namespace Nexusat.Utils.CalendarGenerator
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
-        public static IEnumerable<TimePeriod> NormalizeWorkingPeriods(IEnumerable<TimePeriod> workingPeriods)
+        public static IReadOnlyList<TimePeriod> NormalizeWorkingPeriods(IEnumerable<TimePeriod> workingPeriods)
         {
             if (workingPeriods == null || !workingPeriods.Any()) return null;
 

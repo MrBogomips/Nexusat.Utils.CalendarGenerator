@@ -28,7 +28,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         /// 2020%3 => Starting from 2020 every year which reminder modulo 3 is zero
         /// </example>
         /// </summary>
-        public static RangeYearMatcher Parse(string value)
+        public static YearMatcher Parse(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(value));
@@ -38,7 +38,9 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 
         public abstract bool Match(DateTime date);
     }
-    
+    /// <summary>
+    /// Year matcher for a range of years
+    /// </summary>
     public class RangeYearMatcher: YearMatcher
     {
         public int? FirstYear { get; }
@@ -46,18 +48,15 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         public override bool Match(DateTime date) => (!FirstYear.HasValue || FirstYear.Value <= date.Year)
                                                      &&
                                                      (!LastYear.HasValue || LastYear.Value >= date.Year);
-        
 
         public RangeYearMatcher(int? firstYear, int? lastYear)
         {
             if (firstYear is not null && firstYear.Value <= 0)
-            {
                 throw new ArgumentOutOfRangeException(nameof(firstYear), "Must be a positive value");
-            }
+            if (lastYear is not null && lastYear.Value <= 0)
+                throw new ArgumentOutOfRangeException(nameof(lastYear), "Must be a positive value");
             if (lastYear is not null && lastYear < firstYear)
-            {
                 throw new ArgumentOutOfRangeException(nameof(lastYear), $"Must be greater than or equal to '{nameof(firstYear)}'");
-            }
             FirstYear = firstYear;
             LastYear = lastYear;
         }
@@ -77,7 +76,9 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
                 var (fy, ly) => fy == ly ? fy.Value.ToString() : $"{fy}..{ly}"
             };
     }
-    
+    /// <summary>
+    /// Year matcher expressing a modulo condition on the year value
+    /// </summary>
     public class ModuloYearMatcher : RangeYearMatcher
     {
         public int Modulo { get; }
@@ -89,8 +90,12 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         }
         
         public override bool Match(DateTime date) => base.Match(date) && date.Year % Modulo == 0;
+        public override string ToString() => $"{base.ToString()}%{Modulo}";
     }
 
+    /// <summary>
+    /// Year matcher expressing a period condition on the year value and subsequent steps
+    /// </summary>
     public class PeriodicYearMatcher : RangeYearMatcher
     {
         public int Period { get; }
@@ -106,10 +111,14 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 
         public override string ToString() => $"{base.ToString()}/{Period}";
     }
+    /// <summary>
+    /// Year matcher for leap years
+    /// </summary>
     public class LeapYearMatcher: RangeYearMatcher
     {
         public LeapYearMatcher(int? firstYear, int? lastYear) : base(firstYear, lastYear)
         {
+            if (IsOneYear) throw new ArgumentException("You must specify a multi year range");
         }
         
          internal static bool IsLeapYear(DateTime date) 
@@ -119,12 +128,14 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
          
          public override string ToString() => $"{base.ToString()}/Leap";
     }
-
+    /// <summary>
+    /// Year matcher for non-leap years
+    /// </summary>
     public class NonLeapYearMatcher : RangeYearMatcher
     {
         public NonLeapYearMatcher(int? firstYear, int? lastYear) : base(firstYear, lastYear)
         {
-            
+            if (IsOneYear) throw new ArgumentException("You must specify a multi year range");
         }
         
         public override bool Match(DateTime date) => base.Match(date) && !LeapYearMatcher.IsLeapYear(date);
