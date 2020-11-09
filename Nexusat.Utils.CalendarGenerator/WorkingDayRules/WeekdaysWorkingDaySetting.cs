@@ -9,7 +9,7 @@ namespace Nexusat.Utils.CalendarGenerator
 {
     public partial class WeekdaysWorkingRuleSettings
     {
-        [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
+        [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar", Name = nameof(DaySetting))]
         public class DaySetting
         {
             public DaySetting(DayOfWeek dayOfWeek, IEnumerable<TimePeriod> workingPeriods = null)

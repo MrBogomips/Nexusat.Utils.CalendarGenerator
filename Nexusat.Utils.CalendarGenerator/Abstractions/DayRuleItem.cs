@@ -15,8 +15,8 @@ namespace Nexusat.Utils.CalendarGenerator
             Rule = rule ?? throw new ArgumentNullException(nameof(rule));
         }
 
-        [DataMember] public DayRulePolicy Policy { get; private set; }
+        [DataMember(Name=nameof(Policy))] public DayRulePolicy Policy { get; private set; }
 
-        [DataMember] public DayRule Rule { get; private set; }
+        [DataMember(Name=nameof(Rule))] public DayRule Rule { get; private set; }
     }
 }

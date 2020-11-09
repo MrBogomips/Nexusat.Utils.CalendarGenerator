@@ -6,7 +6,7 @@ namespace Nexusat.Utils.CalendarGenerator
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public partial class WeekdaysNonWorkingRuleSettings
     {
-        [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
+        [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar", Name = nameof(DaySetting))]
         public class DaySetting
         {
             public DaySetting(DayOfWeek dayOfWeek)

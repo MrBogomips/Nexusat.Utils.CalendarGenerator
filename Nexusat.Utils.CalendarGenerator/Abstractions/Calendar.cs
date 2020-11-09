@@ -33,14 +33,13 @@ namespace Nexusat.Utils.CalendarGenerator
             DayRules = dayRules ?? throw new ArgumentNullException(nameof(dayRules));
         }
         
-        [field: DataMember] public DayRules DayRules { get; }
+        [field: DataMember(Name=nameof(DayRules))] public DayRules DayRules { get; }
 
-        
-        [field: DataMember(IsRequired = true)] public string Name { get; }
+        [field: DataMember(IsRequired = true, Name=nameof(Name))] public string Name { get; }
 
-        [field: DataMember] public string Description { get; }
+        [field: DataMember(Name=nameof(Description))] public string Description { get; }
 
-        [field: DataMember] public string LongDescription { get; }
+        [field: DataMember(Name=nameof(LongDescription))] public string LongDescription { get; }
 
         /// <summary>
         ///     Return the working day info of the day.

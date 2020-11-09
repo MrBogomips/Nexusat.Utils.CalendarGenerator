@@ -49,14 +49,14 @@ namespace Nexusat.Utils.CalendarGenerator
         /// <summary>
         ///     Represents a working day
         /// </summary>
-        [field: DataMember] public bool IsWorkingDay { get; }
+        [field: DataMember(Name=nameof(IsWorkingDay))] public bool IsWorkingDay { get; }
         /// <summary>
         ///     A short description of the day
         /// </summary>
-        [field: DataMember] public string Description { get; }
+        [field: DataMember(Name=nameof(Description))] public string Description { get; }
         /// <summary>
         ///     Working periods within the day
         /// </summary>
-        [field: DataMember] public IEnumerable<TimePeriod> WorkingPeriods { get; }
+        [field: DataMember(Name=nameof(WorkingPeriods))] public IEnumerable<TimePeriod> WorkingPeriods { get; }
     }
 }

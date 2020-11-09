@@ -16,8 +16,8 @@ namespace Nexusat.Utils.CalendarGenerator
     public readonly struct TimePeriod : IComparable<TimePeriod>, IEquatable<TimePeriod>
     {
         public static TimePeriod AllDay { get; } = new TimePeriod(new Time(), new Time(24, 0));
-        [field: DataMember] public Time Begin { get; }
-        [field: DataMember] public Time End { get; }
+        [field: DataMember(Name = nameof(Begin))] public Time Begin { get; }
+        [field: DataMember(Name = nameof(End))] public Time End { get; }
 
         public TimePeriod(Time begin, Time end)
         {
