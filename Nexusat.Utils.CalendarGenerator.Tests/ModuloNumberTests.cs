@@ -59,24 +59,24 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         {
             // Testing invalid patterns
             
-            Assert.IsFalse(ModuloNumberMatcher.TryParse("120..%1", out var left, out var right, out var period));
-            Assert.IsFalse(ModuloNumberMatcher.TryParse("120..120%2", out left, out right, out period));
-            Assert.IsFalse(ModuloNumberMatcher.TryParse("120%2", out left, out right, out period));
+            Assert.IsFalse(ModuloNumberMatcher.TryParse("120..%1", null, null, null, null, out var left, out var right, out var period));
+            Assert.IsFalse(ModuloNumberMatcher.TryParse("120..120%2", null, null, null, null,out left, out right, out period));
+            Assert.IsFalse(ModuloNumberMatcher.TryParse("120%2",null, null, null, null, out left, out right, out period));
             
             // Testing valid patterns
-            Assert.IsTrue(ModuloNumberMatcher.TryParse("..120%5", out left, out right, out period));
+            Assert.IsTrue(ModuloNumberMatcher.TryParse("..120%5",null, null, null, null, out left, out right, out period));
             Assert.IsNull(left);
             Assert.AreEqual(120, right);
             Assert.AreEqual(5, period);
-            Assert.IsTrue(ModuloNumberMatcher.TryParse("120..%2", out left, out right, out period));
+            Assert.IsTrue(ModuloNumberMatcher.TryParse("120..%2",null, null, null, null,out left, out right, out period));
             Assert.AreEqual(120, left);
             Assert.IsNull(right);
             Assert.AreEqual(2, period);
-            Assert.IsTrue(ModuloNumberMatcher.TryParse("120..240%2", out left, out right, out period));
+            Assert.IsTrue(ModuloNumberMatcher.TryParse("120..240%2",null, null, null, null, out left, out right, out period));
             Assert.AreEqual(120, left);
             Assert.AreEqual(240, right);
             Assert.AreEqual(2, period);
-            Assert.IsTrue(ModuloNumberMatcher.TryParse("*%2", out left, out right, out period));
+            Assert.IsTrue(ModuloNumberMatcher.TryParse("*%2",null, null, null, null, out left, out right, out period));
             Assert.IsNull(left);
             Assert.IsNull(right);
             Assert.AreEqual(2, period);

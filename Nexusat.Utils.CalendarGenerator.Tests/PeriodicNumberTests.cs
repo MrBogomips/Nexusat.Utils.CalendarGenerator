@@ -55,18 +55,18 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         public void TryParseTests()
         {
             // Testing invalid patterns
-            Assert.IsFalse(PeriodicNumberMatcher.TryParse("*/5", out var left, out var right, out var  period));
-            Assert.IsFalse(PeriodicNumberMatcher.TryParse("..120/5", out left, out right, out period));
-            Assert.IsFalse(PeriodicNumberMatcher.TryParse("120../1", out left, out right, out period));
-            Assert.IsFalse(PeriodicNumberMatcher.TryParse("120..120/2", out left, out right, out period));
-            Assert.IsFalse(PeriodicNumberMatcher.TryParse("120/2", out left, out right, out period));
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("*/5",null, null, null, null, out var left, out var right, out var  period));
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("..120/5", null, null, null, null,out left, out right, out period));
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("120../1", null, null, null, null,out left, out right, out period));
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("120..120/2",null, null, null, null, out left, out right, out period));
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("120/2", null, null, null, null,out left, out right, out period));
             
             // Testing valid patterns
-            Assert.IsTrue(PeriodicNumberMatcher.TryParse("120../2", out left, out right, out period));
+            Assert.IsTrue(PeriodicNumberMatcher.TryParse("120../2",null, null, null, null, out left, out right, out period));
             Assert.AreEqual(120, left);
             Assert.IsNull(right);
             Assert.AreEqual(2, period);
-            Assert.IsTrue(PeriodicNumberMatcher.TryParse("120..240/2", out left, out right, out period));
+            Assert.IsTrue(PeriodicNumberMatcher.TryParse("120..240/2",null, null, null, null, out left, out right, out period));
             Assert.AreEqual(120, left);
             Assert.AreEqual(240, right);
             Assert.AreEqual(2, period);

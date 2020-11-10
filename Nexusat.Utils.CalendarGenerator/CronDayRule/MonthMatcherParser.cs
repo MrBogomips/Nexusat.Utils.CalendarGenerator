@@ -12,19 +12,15 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         ///     Parse a year match expression.
         ///     <example>
         ///         Valid expression are:
-        ///         * => Every year
-        ///         2020 => Exactly that year
-        ///         ..2030 => Every year until 2030 comprised
-        ///         2020.. => Every year starting from 2020
-        ///         2020..2030 => Every year between 2020 and 2030
-        ///         */Leap => Every leap year
-        ///         2020..2030/Leap => Every leap year between 2020 and 2030
-        ///         */NotLeap => Every non leap year
-        ///         2020..2030/2 => Starting from 2020 every 2 years until 2030
-        ///         2020../2 => Starting from 2020 every 2 years
-        ///         2020../NotLeap => Starting from 2020 every NonLeap year
-        ///         2020..2030%2 => Every year which reminder modulo 2 is zero between 2020 and 2030
-        ///         2020..%3 => Starting from 2020 every year which reminder modulo 3 is zero
+        ///         * => Every month
+        ///         11 => Only for november
+        ///         ..11 => Every month until november
+        ///         2.. => Every month starting from february
+        ///         2..11 => Every month between february and november
+        ///         1..7/2 => Starting from january every 2 years until july
+        ///         3../2 => Starting from march every 2 months
+        ///         1..7%2 => Every month which reminder modulo 2 is zero between january and july
+        ///         2..%3 => Starting from february every month which reminder modulo 3 is zero
         ///     </example>
         /// </summary>
         public override bool TryParse(string value, out IMonthMatcher monthMatcher)
@@ -35,7 +31,16 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
                 return true;
             }
 
-            // TODO: 
+            if (ModuloMonthMatcher.TryParse(value, out var moduloMonthMatcher))
+            {
+                monthMatcher = moduloMonthMatcher;
+                return true;
+            }
+            if (PeriodicMonthMatcher.TryParse(value, out var periodicMonthMatcher))
+            {
+                monthMatcher = periodicMonthMatcher;
+                return true;
+            }
 
             monthMatcher = default;
             return false;

@@ -25,7 +25,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         public void ToStringTests()
         {
             Assert.AreEqual("1../3",new PeriodicMonthMatcher(1, null, 3).ToString());
-            Assert.AreEqual("1..12/7",new PeriodicMonthMatcher(1, 12, 7).ToString());
+            Assert.AreEqual("*/7",new PeriodicMonthMatcher(1, 12, 7).ToString());
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsTrue(PeriodicMonthMatcher.TryParse("1../3", out dateMatcher));
             Assert.IsNotNull(dateMatcher);
             Assert.AreEqual(1, dateMatcher.Left);
-            Assert.IsNull(dateMatcher.Right);
+            Assert.AreEqual(12, dateMatcher.Right);
             Assert.AreEqual(3, dateMatcher.Period);
         }
     }

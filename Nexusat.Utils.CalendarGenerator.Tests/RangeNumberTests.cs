@@ -156,35 +156,61 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             int? left, right;
             
             // Testing invalid patterns
-            Assert.IsFalse(RangeNumberMatcher.TryParse("..", out left, out right));
-            Assert.IsFalse(RangeNumberMatcher.TryParse("*..", out left, out right));
-            Assert.IsFalse(RangeNumberMatcher.TryParse("*..*", out left, out right));
-            Assert.IsFalse(RangeNumberMatcher.TryParse("..*", out left, out right));
+            Assert.IsFalse(RangeNumberMatcher.TryParse("..", null, null, null, null, out left, out right));
+            Assert.IsFalse(RangeNumberMatcher.TryParse("*..", null, null, null, null, out left, out right));
+            Assert.IsFalse(RangeNumberMatcher.TryParse("*..*",null, null, null, null,  out left, out right));
+            Assert.IsFalse(RangeNumberMatcher.TryParse("..*",null, null, null, null,  out left, out right));
             
             // Testing valid patterns
-            Assert.IsTrue(RangeNumberMatcher.TryParse("*", out left, out right));
+            Assert.IsTrue(RangeNumberMatcher.TryParse("*", null, null, null, null, out left, out right));
             Assert.IsNull(left);
             Assert.IsNull(right);
             
-            Assert.IsTrue(RangeNumberMatcher.TryParse("1..", out left, out right));
+            Assert.IsTrue(RangeNumberMatcher.TryParse("1..", null, null, null, null, out left, out right));
             Assert.AreEqual(1, left);
             Assert.IsNull(right);
             
-            Assert.IsTrue(RangeNumberMatcher.TryParse("..2", out left, out right));
+            Assert.IsTrue(RangeNumberMatcher.TryParse("..2", null, null, null, null, out left, out right));
             Assert.IsNull(left);
             Assert.AreEqual(2, right);
             
-            Assert.IsTrue(RangeNumberMatcher.TryParse("1..2", out left, out right));
+            Assert.IsTrue(RangeNumberMatcher.TryParse("1..2", null, null, null, null, out left, out right));
             Assert.AreEqual(1, left);
             Assert.AreEqual(2, right);
             
-            Assert.IsTrue(RangeNumberMatcher.TryParse("4", out left, out right));
+            Assert.IsTrue(RangeNumberMatcher.TryParse("4", null, null, null, null, out left, out right));
             Assert.AreEqual(4, left);
             Assert.AreEqual(4, right);
             
-            Assert.IsTrue(RangeNumberMatcher.TryParse("4..4", out left, out right));
+            Assert.IsTrue(RangeNumberMatcher.TryParse("4..4", null, null, null, null, out left, out right));
             Assert.AreEqual(4, left);
             Assert.AreEqual(4, right);
+            
+            // Range checked
+            Assert.IsFalse(RangeNumberMatcher.TryParse("4..", 5, null, null, null, out left, out right));
+            Assert.IsFalse(RangeNumberMatcher.TryParse("6..", null, 5, null, null, out left, out right));
+            Assert.IsFalse(RangeNumberMatcher.TryParse("..4", null, null, 5, null, out left, out right));
+            Assert.IsFalse(RangeNumberMatcher.TryParse("..6", null, null, null, 5, out left, out right));
+            
+            Assert.IsTrue(RangeNumberMatcher.TryParse("*", 1, null, null, null, out left, out right));
+            Assert.AreEqual(1, left);
+            
+            Assert.IsTrue(RangeNumberMatcher.TryParse("*", null, null, null, 5, out left, out right));
+            Assert.AreEqual(5, right);
+            
+            Assert.IsTrue(RangeNumberMatcher.TryParse("*", 1, null, null, 5, out left, out right));
+            Assert.AreEqual(1, left);
+            Assert.AreEqual(5, right);
+            
+            // This is a false right-open interval
+            Assert.IsTrue(RangeNumberMatcher.TryParse("12..", null, null, null, 12, out left, out right));
+            Assert.AreEqual(12, left);
+            Assert.AreEqual(12, right);
+            
+            // This is a false left-open interval
+            Assert.IsTrue(RangeNumberMatcher.TryParse("..1", 1, null, null, null, out left, out right));
+            Assert.AreEqual(1, left);
+            Assert.AreEqual(1, right);
             
             // Testing object factory
             Assert.IsTrue(RangeNumberMatcher.TryParse("1..4", out var rnm));

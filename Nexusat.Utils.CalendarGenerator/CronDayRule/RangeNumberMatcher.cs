@@ -27,7 +27,11 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
                     break;
             }
         }
-        
+
+        public RangeNumberMatcher((int? left, int? right) init) : this(init.left, init.right)
+        {
+        }
+
         public bool IsLeftOpenRange => !Left.HasValue;
         public bool IsRightOpenRange => !Right.HasValue;
         public bool IsOpenRange => !Left.HasValue || !Right.HasValue;
@@ -91,29 +95,45 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         /// 100 for the exact number 100
         /// </example>
         /// </summary>
-        public static bool TryParse(string value, out int? left, out int? right)
+        public static bool TryParse(string value, int? minLeft, int? maxLeft, int? minRight, int? maxRight, out int? left, out int? right)
         {
             left = right = default;
             if (string.IsNullOrWhiteSpace(value)) return false;
-            switch (value)
-            {
-                case "*":
-                    return true;
-                case "..":
-                    return false; // the regex match also this patter… too tired to find a better one
-            }
+            if (value == "..") return false;  // regex oversimplified
 
             var m = ParseRegex.Match(value);
-            if (!m.Success) return false;
+            if (m.Success)
+            {
 
-            left = m.Groups["left"].Success ? int.Parse(m.Groups["left"].Value) : (int?)null;
-            if (m.Groups["dots"].Success)
-            {
-                right = m.Groups["right"].Success ? int.Parse(m.Groups["right"].Value) : (int?)null;    
+                left = m.Groups["left"].Success ? int.Parse(m.Groups["left"].Value) : (int?) null;
+                if (m.Groups["dots"].Success)
+                {
+                    right = m.Groups["right"].Success ? int.Parse(m.Groups["right"].Value) : (int?) null;
+                }
+                else
+                {
+                    right = left;
+                }
+            } else if (value != "*") return false; // regex oversimplified
+
+            if (left.HasValue)
+            { // range check
+                if (minLeft.HasValue && left.Value < minLeft.Value) return false;
+                if (maxLeft.HasValue && left.Value > maxLeft.Value) return false;
+            } 
+            else if (minLeft.HasValue)
+            { // normalize left value
+                left = minLeft;
             }
-            else
-            {
-                right = left;
+            
+            if (right.HasValue)
+            {// range check
+                if (minRight.HasValue && right.Value < minRight.Value) return false;
+                if (maxRight.HasValue && right.Value > maxRight.Value) return false;
+            } 
+            else if (maxRight.HasValue)
+            { // normalize right value
+                right = maxRight;
             }
 
             return true;
@@ -132,7 +152,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         /// </summary>
         public static bool TryParse(string value, out RangeNumberMatcher rangeNumberMatcher)
         {
-            if (!TryParse(value, out var left, out var right))
+            if (!TryParse(value, null, null, null, null, out var left, out var right))
             {
                 rangeNumberMatcher = null;
                 return false;

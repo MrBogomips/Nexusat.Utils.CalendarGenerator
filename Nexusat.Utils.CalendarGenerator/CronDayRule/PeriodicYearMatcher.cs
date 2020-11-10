@@ -17,7 +17,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         
         public static bool TryParse(string value, out PeriodicYearMatcher periodicYearMatcher)
         {
-            if (!TryParse(value, out var left, out var right, out var period))
+            if (!TryParse(value, null, null, null, null, out var left, out var right, out var period))
             {
                 periodicYearMatcher = null;
                 return false;

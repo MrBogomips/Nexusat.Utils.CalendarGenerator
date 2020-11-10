@@ -18,6 +18,11 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             if (IsOneValue) throw new ArgumentException("You must specify range");
             Period = period;
         }
+        
+        public PeriodicNumberMatcher((int left, int? right, int period) init) : this(init.left, init.right, init.period)
+        {
+            
+        }
 
         public override bool Match(int value) => base.Match(value) && (value - Left.Value) % Period == 0;
 
@@ -54,7 +59,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 
         private static Regex ParseRegex { get; } = new Regex(@"^(?<range>.+)/(?<period>\d+)?$");
 
-        public static bool TryParse(string value, out int left, out int? right, out int period)
+        public static bool TryParse(string value, int? minLeft, int? maxLeft, int? minRight, int? maxRight, out int left, out int? right, out int period)
         {
             left = default;
             right = default;
@@ -65,7 +70,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             if (!m.Success) return false;
 
             var range = m.Groups["range"].Value;
-            if (!TryParse(range, out var varLeft, out var varRight)) return false;
+            if (!TryParse(range, minLeft, maxLeft, minRight, maxRight, out var varLeft, out var varRight)) return false;
             if (!varLeft.HasValue) return false; // Periodic matcher requires an initial value
             if (varLeft == varRight) return false; // Periodic matcher can't be defined on a single number
             period = int.Parse(m.Groups["period"].Value);
@@ -79,9 +84,11 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         public static bool TryParse(string value, out PeriodicNumberMatcher periodicNumberMatcher)
         {
             periodicNumberMatcher = default;
-            if (!TryParse(value, out var left, out var right, out var period)) return false;
+            if (!TryParse(value, null, null, null, null, out var left, out var right, out var period)) return false;
             periodicNumberMatcher = new PeriodicNumberMatcher(left, right, period);
             return true;
         }
+        
+        
     }
 }

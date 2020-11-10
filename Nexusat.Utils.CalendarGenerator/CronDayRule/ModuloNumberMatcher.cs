@@ -15,6 +15,9 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             if (IsOneValue) throw new ArgumentException("You must specify a range");
             Modulo = modulo;
         }
+
+        public ModuloNumberMatcher((int? left, int? right, int modulo) init) :
+            this(init.left, init.right, init.modulo) {}
         
         public override bool Match(int value) => base.Match(value) && value % Modulo == 0;
         public override string ToString() => $"{base.ToString()}%{Modulo}";
@@ -52,7 +55,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         
         private static Regex ParseRegex { get; } = new Regex(@"^(?<range>.+)%(?<modulo>\d+)?$");
         
-        public static bool TryParse(string value, out int? left, out int? right, out int modulo)
+        public static bool TryParse(string value, int? minLeft, int? maxLeft, int? minRight, int? maxRight, out int? left, out int? right, out int modulo)
         {
             left = default;
             right = default;
@@ -63,7 +66,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             if (!m.Success) return false;
 
             var range = m.Groups["range"].Value;
-            if (!TryParse(range, out var varLeft, out var varRight)) return false;
+            if (!TryParse(range, minLeft, maxLeft, minRight, maxRight, out var varLeft, out var varRight)) return false;
             if (varLeft.HasValue && varLeft == varRight) return false; // Modulo matcher can't be defined on a single number
             modulo = int.Parse(m.Groups["modulo"].Value);
             if (modulo < 2) return false; // Modulo must be at least 2
@@ -76,7 +79,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         public static bool TryParse(string value, out ModuloNumberMatcher moduloNumberMatcher)
         {
             moduloNumberMatcher = default;
-            if (!TryParse(value, out var left, out var right, out var modulo)) return false;
+            if (!TryParse(value, null, null, null, null, out var left, out var right, out var modulo)) return false;
             moduloNumberMatcher = new ModuloNumberMatcher(left, right, modulo);
             return true;
         }

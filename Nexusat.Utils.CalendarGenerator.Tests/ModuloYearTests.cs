@@ -10,8 +10,8 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         [TestMethod]
         public void CtorTests()
         {
-            var mym = new ModuloYearMatcher(null, null, 2);
-            Assert.AreEqual(2, mym.Modulo);
+            var obj = new ModuloYearMatcher(null, null, 2);
+            Assert.AreEqual(2, obj.Modulo);
 
             Assert.ThrowsException<ArgumentException>(() => new ModuloYearMatcher(2000, 2000, 2),
                 "Single year range invalid");
@@ -35,44 +35,44 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             var dt3000 = new DateTime(3000,1,1);
             var dt3003 = new DateTime(3003,1,1);
 
-            var mym = new ModuloYearMatcher(null, null, 3);
-            Assert.IsFalse(mym.Match(dt2000));
-            Assert.IsTrue(mym.Match(dt2001));
-            Assert.IsTrue(mym.Match(dt3000));
-            Assert.IsTrue(mym.Match(dt3003));
+            var obj = new ModuloYearMatcher(null, null, 3);
+            Assert.IsFalse(obj.Match(dt2000));
+            Assert.IsTrue(obj.Match(dt2001));
+            Assert.IsTrue(obj.Match(dt3000));
+            Assert.IsTrue(obj.Match(dt3003));
             
-            mym = new ModuloYearMatcher(2500, null, 3);
-            Assert.IsFalse(mym.Match(dt2000));
-            Assert.IsFalse(mym.Match(dt2001));
-            Assert.IsTrue(mym.Match(dt3000));
-            Assert.IsTrue(mym.Match(dt3003));
+            obj = new ModuloYearMatcher(2500, null, 3);
+            Assert.IsFalse(obj.Match(dt2000));
+            Assert.IsFalse(obj.Match(dt2001));
+            Assert.IsTrue(obj.Match(dt3000));
+            Assert.IsTrue(obj.Match(dt3003));
             
-            mym = new ModuloYearMatcher(null, 3000, 3);
-            Assert.IsFalse(mym.Match(dt2000));
-            Assert.IsTrue(mym.Match(dt2001));
-            Assert.IsTrue(mym.Match(dt3000));
-            Assert.IsFalse(mym.Match(dt3003));
+            obj = new ModuloYearMatcher(null, 3000, 3);
+            Assert.IsFalse(obj.Match(dt2000));
+            Assert.IsTrue(obj.Match(dt2001));
+            Assert.IsTrue(obj.Match(dt3000));
+            Assert.IsFalse(obj.Match(dt3003));
         }
         
         [TestMethod]
         public void TryParseTests()
         {
             // Testing object factory
-            Assert.IsTrue(ModuloYearMatcher.TryParse("1..4%2", out var rym));
-            Assert.IsNotNull(rym);
-            Assert.AreEqual(1, rym.Left);
-            Assert.AreEqual(4, rym.Right);
-            Assert.AreEqual(2, rym.Modulo);
-            Assert.IsTrue(ModuloYearMatcher.TryParse("1..%3", out rym));
-            Assert.IsNotNull(rym);
-            Assert.AreEqual(1, rym.Left);
-            Assert.IsNull(rym.Right);
-            Assert.AreEqual(3, rym.Modulo);
-            Assert.IsTrue(ModuloYearMatcher.TryParse("*%3", out rym));
-            Assert.IsNotNull(rym);
-            Assert.IsNull(rym.Left);
-            Assert.IsNull(rym.Right);
-            Assert.AreEqual(3, rym.Modulo);
+            Assert.IsTrue(ModuloYearMatcher.TryParse("1..4%2", out var dateMatcher));
+            Assert.IsNotNull(dateMatcher);
+            Assert.AreEqual(1, dateMatcher.Left);
+            Assert.AreEqual(4, dateMatcher.Right);
+            Assert.AreEqual(2, dateMatcher.Modulo);
+            Assert.IsTrue(ModuloYearMatcher.TryParse("1..%3", out dateMatcher));
+            Assert.IsNotNull(dateMatcher);
+            Assert.AreEqual(1, dateMatcher.Left);
+            Assert.IsNull(dateMatcher.Right);
+            Assert.AreEqual(3, dateMatcher.Modulo);
+            Assert.IsTrue(ModuloYearMatcher.TryParse("*%3", out dateMatcher));
+            Assert.IsNotNull(dateMatcher);
+            Assert.IsNull(dateMatcher.Left);
+            Assert.IsNull(dateMatcher.Right);
+            Assert.AreEqual(3, dateMatcher.Modulo);
         }
     }
 }

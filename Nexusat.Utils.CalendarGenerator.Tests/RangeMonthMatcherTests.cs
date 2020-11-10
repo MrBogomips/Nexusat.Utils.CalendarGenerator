@@ -48,7 +48,9 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.AreEqual("1..",new RangeMonthMatcher(1, null).ToString());
             Assert.AreEqual("..12",new RangeMonthMatcher(null, 12).ToString());
             Assert.AreEqual("11",new RangeMonthMatcher(11, 11).ToString());
-            Assert.AreEqual("1..12",new RangeMonthMatcher(1, 12).ToString());
+            Assert.AreEqual("*",new RangeMonthMatcher(1, 12).ToString());
+            Assert.AreEqual("12",new RangeMonthMatcher(12, null).ToString());
+            Assert.AreEqual("1",new RangeMonthMatcher(null, 1).ToString());
         }
         
         [TestMethod]
@@ -150,8 +152,8 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.AreEqual(4, obj.Right);
             Assert.IsTrue(RangeMonthMatcher.TryParse("*", out obj));
             Assert.IsNotNull(obj);
-            Assert.IsNull(obj.Left);
-            Assert.IsNull(obj.Right);
+            Assert.AreEqual(1, obj.Left);
+            Assert.AreEqual(12, obj.Right);
         }
     }
 }
