@@ -34,14 +34,14 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         public bool IsLeftRightOpenRange => !Left.HasValue && !Right.HasValue;
         public bool IsClosedRange => Left.HasValue && Right.HasValue;
         public bool IsOneValue => Left.HasValue && Right.HasValue && Left.Value == Right.Value;
-
+        
         public override string ToString() => (LeftNumber: Left, RightNumber: Right) switch {
             (null, null) => "*",
             (var fy, null) => $"{fy}..",
             (null, var ly) => $"..{ly}",
             var (fy, ly) => fy == ly ? fy.Value.ToString() : $"{fy}..{ly}"
         };
-        
+
         public void Deconstruct(out int? left, out int? right)
         {
             left = Left;

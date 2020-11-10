@@ -80,13 +80,24 @@ namespace Nexusat.Utils.CalendarGenerator
         /// <exception cref="ArgumentException"></exception>
         public static Time Parse(string value)
         {
-            if (value is null) throw  new ArgumentNullException(nameof(value));
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
+            if (!TryParse(value, out var time))
+                throw new  ArgumentException("Time syntax should be HH:MM", nameof(value));
+            return time;
+        }
+
+        public static bool TryParse(string value, out Time time)
+        {
+            time = default;
+            if (string.IsNullOrWhiteSpace(value)) return false;
 
             var match = ParseRegEx.Match(value);
-            if (!match.Success) throw new  ArgumentException("Time syntax should be 00:00", nameof(value));
+            if (!match.Success) return false;
             var hh = short.Parse(match.Groups[1].Value);
             var mm = short.Parse(match.Groups[2].Value);
-            return new Time(hh, mm);
+            time = new Time(hh, mm);
+            return true;
         }
     }
 }

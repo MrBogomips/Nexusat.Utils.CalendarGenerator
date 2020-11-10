@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 
 namespace Nexusat.Utils.CalendarGenerator
 {
@@ -37,14 +38,39 @@ namespace Nexusat.Utils.CalendarGenerator
             return retVal;
         }
         
+        private static Regex ParseRegex { get; } = new Regex(@"^\[\[((?<description>.*))\]\]\s*(?<time_periods>(.*))$");
+        
         /// <summary>
-        /// Parse a day info declaration
+        /// Parse a day info declaration.
+        /// <example>
+        /// Valid strings are:
+        ///   [[]] is a day info without a description and a working time
+        ///   [[day description]] is a day info with a description and without a working time
+        ///   [[day description]] 00:00-01:00,22:00-23:00 is a day info with a description and a working time
+        ///   [[]] 00:00-01:00 is a day info without a description and a working time
+        /// </example>
         /// </summary>
-        /// <param name="description"></param>
-        /// <param name="workingPeriods">Represents a valid string for time periods. <see cref="TimePeriod.ParseMulti"/></param>
         /// <returns></returns>
-        public DayInfo Parse(string description = null, string workingPeriods = null) =>
-            new DayInfo(description, TimePeriod.ParseMulti(workingPeriods));
+        public static bool TryParse(string value, out DayInfo dayInfo)
+        {
+            dayInfo = default;
+            IEnumerable<TimePeriod> timePeriods = default;
+            
+            if (string.IsNullOrEmpty(value)) return false;
+            var m = ParseRegex.Match(value);
+            if (!m.Success) return false;
+
+            var description = m.Groups["description"].Value;
+            var strTimePeriods = m.Groups["time_periods"].Value;
+            if (!string.IsNullOrWhiteSpace(strTimePeriods)
+                && !TimePeriod.TryParseMulti(strTimePeriods, ",", out timePeriods)) return false;
+
+            if (string.IsNullOrWhiteSpace(description)) description = null;
+
+            dayInfo = new DayInfo(description, timePeriods);
+
+            return true;
+        }
 
         /// <summary>
         ///     Represents a working day

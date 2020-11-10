@@ -72,31 +72,58 @@ namespace Nexusat.Utils.CalendarGenerator
         /// Parse a string in the format "00:00-24:00"
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="timePeriod"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public static TimePeriod Parse(string value)
+        public static bool TryParse(string value, out TimePeriod timePeriod)
         {
+            timePeriod = default;
             if (value is null) throw new ArgumentNullException(nameof(value));
 
             var match = ParseRegEx.Match(value);
-            if (!match.Success) throw new ArgumentException("Time syntax should be 00:00-24:00", nameof(value));
+            if (!match.Success) return false;
             var begin = Time.Parse(match.Groups[1].Value);
             var end = Time.Parse(match.Groups[2].Value);
-            return new TimePeriod(begin, end);
+            timePeriod = new TimePeriod(begin, end);
+            return true;
         }
-        /// <summary>
-        /// Parse a string in the format "00:00-12:00 13:00-18:00 18:00-20"
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public static IEnumerable<TimePeriod> ParseMulti(string value)
+
+        public static TimePeriod Parse(string value)
         {
-            if (value is null) throw new ArgumentNullException(nameof(value));
-            
-            return value.Split(' ').Select(Parse).ToList();
+            if (!TryParse(value, out var timePeriod))
+                throw new ArgumentException($"'{nameof(value)}' should be in the form HH:MM-HH:MM");
+            return timePeriod;
+        }
+
+        /// <summary>
+        /// Parse a string in the format "00:00-12:00,13:00-18:00,18:00-20"
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="separator"></param>
+        /// <param name="timePeriods"></param>
+        /// <returns></returns>
+        public static bool TryParseMulti(string values, string separator, out IEnumerable<TimePeriod> timePeriods )
+        {
+            timePeriods = default;
+            if (string.IsNullOrEmpty(separator)) throw new ArgumentException(nameof(separator));
+            if (string.IsNullOrEmpty(values)) return false;
+
+            var varTimePeriods = new List<TimePeriod>();
+
+            foreach (var value in values.Split(separator))
+            {
+                if (!TryParse(value, out var timePriod)) return false;
+                varTimePeriods.Add(timePriod);
+            }
+
+            timePeriods = varTimePeriods;
+            return true;
+        }
+        
+        public static IEnumerable<TimePeriod> ParseMulti(string value, string separator)
+        {
+            if (!TryParseMulti(value, separator, out var timePeriods))
+                throw new ArgumentException($"'{nameof(value)}' should be in the form HH:MM-HH:MM{separator}HH:MM-HH:MM{separator}...");
+            return timePeriods;
         }
 
         public override string ToString() => $"{Begin}-{End}";

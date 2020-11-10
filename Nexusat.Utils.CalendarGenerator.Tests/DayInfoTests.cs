@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Nexusat.Utils.CalendarGenerator.Tests
@@ -56,9 +57,35 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         }
 
         [TestMethod]
+        public void TryParseTest()
+        {
+            // Valid strings are:
+            //   "" is a day info without a description and a working time
+            //   "day description" is a day info with a description and without a working time
+            //   "day description" 00:00-01:00,22:00-23:00 is a day info with a description and a working time
+            //   "" 00:00-01:00 is a day info without a description and a working time
+            //
+
+            Assert.IsTrue(DayInfo.TryParse(@"[[]]", out var dayInfo));
+            Assert.IsNull(dayInfo.Description);
+            Assert.IsNull(dayInfo.WorkingPeriods);
+            
+            Assert.IsTrue(DayInfo.TryParse(@"[[Hello world]]", out dayInfo));
+            Assert.AreEqual("Hello world",dayInfo.Description);
+            Assert.IsNull(dayInfo.WorkingPeriods);
+            
+            Assert.IsTrue(DayInfo.TryParse(@"[[Hello world]] 08:00-12:00", out dayInfo));
+            Assert.AreEqual("Hello world",dayInfo.Description);
+            Assert.IsNotNull(dayInfo.WorkingPeriods);
+            Assert.AreEqual(1, dayInfo.WorkingPeriods.Count());
+            Assert.AreEqual("08:00-12:00", dayInfo.WorkingPeriods.First().ToString() );
+            
+        }
+
+        [TestMethod]
         public void OverlapTimePeriodsTest()
         {
-            var tps = TimePeriod.ParseMulti("00:00-02:00 01:00-03:00");
+            TimePeriod.TryParseMulti("00:00-02:00 01:00-03:00", " ",out var tps);
 
             Assert.ThrowsException<ArgumentException>(() => new DayInfo(workingPeriods:tps));
         }

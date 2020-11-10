@@ -95,6 +95,17 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.AreEqual(Time.Parse("00:00"), tp.Begin);
             Assert.AreEqual(Time.Parse("24:00"), tp.End);
         }
+
+        public void TryParseTest()
+        {
+            // invalid
+            Assert.IsFalse(TimePeriod.TryParse(null, out var timePeriod));
+            Assert.IsFalse(TimePeriod.TryParse("xxx", out timePeriod));
+            Assert.IsTrue(TimePeriod.TryParse("00:00-24:00", out timePeriod));
+            Assert.AreEqual(Time.Parse("00:00"), timePeriod.Begin);
+            Assert.AreEqual(Time.Parse("24:00"), timePeriod.End);
+            // valid
+        }
         
         [TestMethod]
         public void ParseMultiTest()
@@ -102,9 +113,9 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.ThrowsException<ArgumentNullException>(() => TimePeriod.Parse(null));
             Assert.ThrowsException<ArgumentException>(() => TimePeriod.Parse("xxx"));
             Assert.ThrowsException<ArgumentException>(() => TimePeriod.Parse(""));
-            var tps = TimePeriod.ParseMulti("00:00-24:00");
+            var tps = TimePeriod.ParseMulti("00:00-24:00", " ");
             Assert.AreEqual(1, tps.Count());
-            var tpa = TimePeriod.ParseMulti("00:00-01:00 01:00-03:00 05:00-22:00").ToArray();
+            var tpa = TimePeriod.ParseMulti("00:00-01:00 01:00-03:00 05:00-22:00", " ").ToArray();
             Assert.AreEqual(3, tpa.Count());
             Assert.AreEqual(TimePeriod.Parse("00:00-01:00"), tpa[0]);
             Assert.AreEqual(TimePeriod.Parse("01:00-03:00"), tpa[1]);
