@@ -10,8 +10,8 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         [TestMethod]
         public void CtorTests()
         {
-            var pym = new PeriodicYearMatcher(2000, null, 2);
-            Assert.AreEqual(2, pym.Period);
+            var obj = new PeriodicYearMatcher(2000, null, 2);
+            Assert.AreEqual(2, obj.Period);
 
             Assert.ThrowsException<ArgumentException>(() => new PeriodicYearMatcher(2000, 2000, 2),
                 "Single year range invalid");
@@ -34,37 +34,37 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             var dt2002 = new DateTime(2002,1,1);
             var dt2003 = new DateTime(2003,1,1);
 
-            var pym = new PeriodicYearMatcher(2000, null, 2);
-            Assert.IsTrue(pym.Match(dt2000));
-            Assert.IsFalse(pym.Match(dt2001));
-            Assert.IsTrue(pym.Match(dt2002));
-            Assert.IsFalse(pym.Match(dt2003));
-            pym = new PeriodicYearMatcher(2001, null, 2);
-            Assert.IsFalse(pym.Match(dt2000));
-            Assert.IsTrue(pym.Match(dt2001));
-            Assert.IsFalse(pym.Match(dt2002));
-            Assert.IsTrue(pym.Match(dt2003));
-            pym = new PeriodicYearMatcher(2002, null, 2);
-            Assert.IsFalse(pym.Match(dt2000));
-            Assert.IsFalse(pym.Match(dt2001));
-            Assert.IsTrue(pym.Match(dt2002));
-            Assert.IsFalse(pym.Match(dt2003));
+            var obj = new PeriodicYearMatcher(2000, null, 2);
+            Assert.IsTrue(obj.Match(dt2000));
+            Assert.IsFalse(obj.Match(dt2001));
+            Assert.IsTrue(obj.Match(dt2002));
+            Assert.IsFalse(obj.Match(dt2003));
+            obj = new PeriodicYearMatcher(2001, null, 2);
+            Assert.IsFalse(obj.Match(dt2000));
+            Assert.IsTrue(obj.Match(dt2001));
+            Assert.IsFalse(obj.Match(dt2002));
+            Assert.IsTrue(obj.Match(dt2003));
+            obj = new PeriodicYearMatcher(2002, null, 2);
+            Assert.IsFalse(obj.Match(dt2000));
+            Assert.IsFalse(obj.Match(dt2001));
+            Assert.IsTrue(obj.Match(dt2002));
+            Assert.IsFalse(obj.Match(dt2003));
         }
         
         [TestMethod]
         public void TryParseTests()
         {
             // Testing object factory
-            Assert.IsTrue(PeriodicYearMatcher.TryParse("1..4/2", out var rym));
-            Assert.IsNotNull(rym);
-            Assert.AreEqual(1, rym.Left);
-            Assert.AreEqual(4, rym.Right);
-            Assert.AreEqual(2, rym.Period);
-            Assert.IsTrue(PeriodicYearMatcher.TryParse("1../3", out rym));
-            Assert.IsNotNull(rym);
-            Assert.AreEqual(1, rym.Left);
-            Assert.IsNull(rym.Right);
-            Assert.AreEqual(3, rym.Period);
+            Assert.IsTrue(PeriodicYearMatcher.TryParse("1..4/2", out var dateMatcher));
+            Assert.IsNotNull(dateMatcher);
+            Assert.AreEqual(1, dateMatcher.Left);
+            Assert.AreEqual(4, dateMatcher.Right);
+            Assert.AreEqual(2, dateMatcher.Period);
+            Assert.IsTrue(PeriodicYearMatcher.TryParse("1../3", out dateMatcher));
+            Assert.IsNotNull(dateMatcher);
+            Assert.AreEqual(1, dateMatcher.Left);
+            Assert.IsNull(dateMatcher.Right);
+            Assert.AreEqual(3, dateMatcher.Period);
         }
     }
 }

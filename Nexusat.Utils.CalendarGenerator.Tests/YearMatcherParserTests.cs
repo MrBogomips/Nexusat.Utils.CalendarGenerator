@@ -12,23 +12,23 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         [TestMethod]
         public void TryParseTest()
         {
-            Assert.IsTrue(YearMatcherParser.Instance.TryParse("*", out var yearMatcher));
-            Assert.IsInstanceOfType(yearMatcher, typeof(RangeYearMatcher));
+            Assert.IsTrue(YearMatcherParser.Instance.TryParse("*", out var dateMatcher));
+            Assert.IsInstanceOfType(dateMatcher, typeof(RangeYearMatcher));
 
-            Assert.IsTrue(YearMatcherParser.Instance.TryParse("*%2", out yearMatcher));
-            Assert.IsInstanceOfType(yearMatcher, typeof(ModuloYearMatcher));
+            Assert.IsTrue(YearMatcherParser.Instance.TryParse("*%2", out dateMatcher));
+            Assert.IsInstanceOfType(dateMatcher, typeof(ModuloYearMatcher));
 
-            Assert.IsTrue(YearMatcherParser.Instance.TryParse("1200../2", out yearMatcher));
-            Assert.IsInstanceOfType(yearMatcher, typeof(PeriodicYearMatcher));
+            Assert.IsTrue(YearMatcherParser.Instance.TryParse("1200../2", out dateMatcher));
+            Assert.IsInstanceOfType(dateMatcher, typeof(PeriodicYearMatcher));
 
-            Assert.IsTrue(YearMatcherParser.Instance.TryParse("*/Leap", out yearMatcher));
-            Assert.IsInstanceOfType(yearMatcher, typeof(LeapYearMatcher));
+            Assert.IsTrue(YearMatcherParser.Instance.TryParse("*/Leap", out dateMatcher));
+            Assert.IsInstanceOfType(dateMatcher, typeof(LeapYearMatcher));
 
-            Assert.IsTrue(YearMatcherParser.Instance.TryParse("*/NotLeap", out yearMatcher));
-            Assert.IsInstanceOfType(yearMatcher, typeof(NotLeapYearMatcher));
+            Assert.IsTrue(YearMatcherParser.Instance.TryParse("*/NotLeap", out dateMatcher));
+            Assert.IsInstanceOfType(dateMatcher, typeof(NotLeapYearMatcher));
 
-            Assert.IsFalse(YearMatcherParser.Instance.TryParse("......", out yearMatcher));
-            Assert.IsNull(yearMatcher);
+            Assert.IsFalse(YearMatcherParser.Instance.TryParse("......", out dateMatcher));
+            Assert.IsNull(dateMatcher);
         }
 
         [TestMethod]
