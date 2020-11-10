@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
@@ -18,5 +19,16 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         public override bool Match(DateTime date) => base.Match(date) && IsLeapYear(date);
          
         public override string ToString() => $"{base.ToString()}/Leap";
+        
+        public static bool TryParse(string value, out LeapYearMatcher leapYearMatcherMatcher)
+        {
+            leapYearMatcherMatcher = default;
+            if (value is null || !value.EndsWith("/Leap")) return false;
+            var range = value.Remove(value.IndexOf("/Leap"));
+            if (!RangeNumberMatcher.TryParse(range, out var left, out var right)) return false;
+            if (left.HasValue && left == right) return false; // Single year range are invalid
+            leapYearMatcherMatcher = new LeapYearMatcher(left, right);
+            return true;
+        }
     }
 }

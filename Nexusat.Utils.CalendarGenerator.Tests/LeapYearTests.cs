@@ -39,5 +39,27 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsTrue(lym.Match(dt2020));
             Assert.IsFalse(lym.Match(dt2100));
         }
+
+        [TestMethod]
+        public void TryParseTests()
+        {
+            // Testing object factory (valid)
+            Assert.IsTrue(LeapYearMatcher.TryParse("*/Leap", out var lym));
+            Assert.IsNotNull(lym);
+            Assert.IsNull(lym.Left);
+            Assert.IsNull(lym.Right);
+            Assert.IsTrue(LeapYearMatcher.TryParse("1..100/Leap", out lym));
+            Assert.IsNotNull(lym);
+            Assert.AreEqual(1, lym.Left);
+            Assert.AreEqual(100, lym.Right);
+            
+            // Testing object factory (invalid)
+            Assert.IsFalse(LeapYearMatcher.TryParse("/Leap", out lym));
+            Assert.IsNull(lym);
+            Assert.IsFalse(LeapYearMatcher.TryParse("12/Leap", out lym));
+            Assert.IsNull(lym);
+            Assert.IsFalse(LeapYearMatcher.TryParse("12..12/Leap", out lym));
+            Assert.IsNull(lym);
+        }
     }
 }
