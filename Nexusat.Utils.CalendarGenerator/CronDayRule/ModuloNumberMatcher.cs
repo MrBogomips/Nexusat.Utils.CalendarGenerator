@@ -16,7 +16,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             Modulo = modulo;
         }
 
-        public ModuloNumberMatcher((int? left, int? right, int modulo) init) :
+        protected ModuloNumberMatcher((int? left, int? right, int modulo) init) :
             this(init.left, init.right, init.modulo) {}
         
         public override bool Match(int value) => base.Match(value) && value % Modulo == 0;

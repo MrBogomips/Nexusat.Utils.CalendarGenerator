@@ -28,7 +28,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             }
         }
 
-        public RangeNumberMatcher((int? left, int? right) init) : this(init.left, init.right)
+        protected RangeNumberMatcher((int? left, int? right) init) : this(init.left, init.right)
         {
         }
 

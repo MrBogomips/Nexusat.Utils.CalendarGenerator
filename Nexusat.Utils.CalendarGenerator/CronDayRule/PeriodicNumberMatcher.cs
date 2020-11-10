@@ -18,8 +18,8 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             if (IsOneValue) throw new ArgumentException("You must specify range");
             Period = period;
         }
-        
-        public PeriodicNumberMatcher((int left, int? right, int period) init) : this(init.left, init.right, init.period)
+
+        protected PeriodicNumberMatcher((int left, int? right, int period) init) : this(init.left, init.right, init.period)
         {
             
         }
