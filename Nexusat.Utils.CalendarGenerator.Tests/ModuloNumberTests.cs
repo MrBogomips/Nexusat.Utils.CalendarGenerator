@@ -53,5 +53,59 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsTrue(mnm.Match(n3000));
             Assert.IsFalse(mnm.Match(n3003));
         }
+        
+        [TestMethod]
+        public void TryParseTests()
+        {
+            // Testing invalid patterns
+            
+            Assert.IsFalse(ModuloNumberMatcher.TryParse("120..%1", out var left, out var right, out var period));
+            Assert.IsFalse(ModuloNumberMatcher.TryParse("120..120%2", out left, out right, out period));
+            Assert.IsFalse(ModuloNumberMatcher.TryParse("120%2", out left, out right, out period));
+            
+            // Testing valid patterns
+            Assert.IsTrue(ModuloNumberMatcher.TryParse("..120%5", out left, out right, out period));
+            Assert.IsNull(left);
+            Assert.AreEqual(120, right);
+            Assert.AreEqual(5, period);
+            Assert.IsTrue(ModuloNumberMatcher.TryParse("120..%2", out left, out right, out period));
+            Assert.AreEqual(120, left);
+            Assert.IsNull(right);
+            Assert.AreEqual(2, period);
+            Assert.IsTrue(ModuloNumberMatcher.TryParse("120..240%2", out left, out right, out period));
+            Assert.AreEqual(120, left);
+            Assert.AreEqual(240, right);
+            Assert.AreEqual(2, period);
+            Assert.IsTrue(ModuloNumberMatcher.TryParse("*%2", out left, out right, out period));
+            Assert.IsNull(left);
+            Assert.IsNull(right);
+            Assert.AreEqual(2, period);
+
+            // Testing object factory (invalid patterns)
+            Assert.IsFalse(ModuloNumberMatcher.TryParse("120%3", out var pnm));
+            Assert.IsNull(pnm);
+            
+            Assert.IsFalse(ModuloNumberMatcher.TryParse("120..120%3", out pnm));
+            Assert.IsNull(pnm);
+            
+            Assert.IsFalse(ModuloNumberMatcher.TryParse("100..%1", out pnm));
+            Assert.IsNull(pnm);
+            
+            // Testing object factory (valid patterns)
+            Assert.IsTrue(ModuloNumberMatcher.TryParse("100..%2", out pnm));
+            Assert.IsNotNull(pnm);
+            Assert.AreEqual(100, pnm.Left);
+            Assert.IsNull(pnm.Right);
+            
+            Assert.IsTrue(ModuloNumberMatcher.TryParse("100..200%2", out pnm));
+            Assert.IsNotNull(pnm);
+            Assert.AreEqual(100, pnm.Left);
+            Assert.AreEqual(200, pnm.Right);
+            
+            Assert.IsTrue(ModuloNumberMatcher.TryParse("*%2", out pnm));
+            Assert.IsNotNull(pnm);
+            Assert.IsNull(pnm.Left);
+            Assert.IsNull(pnm.Right);
+        }
     }
 }

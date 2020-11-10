@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
@@ -46,6 +47,38 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         public static bool operator !=(ModuloNumberMatcher left, ModuloNumberMatcher right)
         {
             return !Equals(left, right);
+        }
+        
+        
+        private static Regex ParseRegex { get; } = new Regex(@"^(?<range>.+)%(?<modulo>\d+)?$");
+        
+        public static bool TryParse(string value, out int? left, out int? right, out int modulo)
+        {
+            left = default;
+            right = default;
+            modulo = default;
+            if (string.IsNullOrWhiteSpace(value)) return false;
+            
+            var m = ParseRegex.Match(value);
+            if (!m.Success) return false;
+
+            var range = m.Groups["range"].Value;
+            if (!RangeNumberMatcher.TryParse(range, out var varLeft, out var varRight)) return false;
+            if (varLeft.HasValue && varLeft == varRight) return false; // Modulo matcher can't be defined on a single number
+            modulo = int.Parse(m.Groups["modulo"].Value);
+            if (modulo < 2) return false; // Modulo must be at least 2
+            left = varLeft;
+            right = varRight;
+
+            return true;
+        }
+
+        public static bool TryParse(string value, out ModuloNumberMatcher moduloNumberMatcher)
+        {
+            moduloNumberMatcher = default;
+            if (!TryParse(value, out var left, out var right, out var modulo)) return false;
+            moduloNumberMatcher = new ModuloNumberMatcher(left, right, modulo);
+            return true;
         }
     }
 }

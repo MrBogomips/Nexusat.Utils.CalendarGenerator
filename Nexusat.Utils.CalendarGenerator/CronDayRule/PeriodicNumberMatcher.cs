@@ -68,7 +68,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             var range = m.Groups["range"].Value;
             if (!RangeNumberMatcher.TryParse(range, out var varLeft, out var varRight)) return false;
             if (!varLeft.HasValue) return false; // Periodic matcher requires an initial value
-            if (varLeft == varRight) return false; // Periodic matcher can be defined on a single number
+            if (varLeft == varRight) return false; // Periodic matcher can't be defined on a single number
             period = int.Parse(m.Groups["period"].Value);
             if (period < 2) return false; // Period must be at least 2
             left = varLeft.Value;

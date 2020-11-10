@@ -66,6 +66,10 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.AreEqual(120, left);
             Assert.IsNull(right);
             Assert.AreEqual(2, period);
+            Assert.IsTrue(PeriodicNumberMatcher.TryParse("120..240/2", out left, out right, out period));
+            Assert.AreEqual(120, left);
+            Assert.AreEqual(240, right);
+            Assert.AreEqual(2, period);
 
             // Testing object factory (invalid patterns)
             Assert.IsFalse(PeriodicNumberMatcher.TryParse("120/3", out var pnm));
