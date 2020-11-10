@@ -50,5 +50,21 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsTrue(pym.Match(dt2002));
             Assert.IsFalse(pym.Match(dt2003));
         }
+        
+        [TestMethod]
+        public void TryParseTests()
+        {
+            // Testing object factory
+            Assert.IsTrue(PeriodicYearMatcher.TryParse("1..4/2", out var rym));
+            Assert.IsNotNull(rym);
+            Assert.AreEqual(1, rym.Left);
+            Assert.AreEqual(4, rym.Right);
+            Assert.AreEqual(2, rym.Period);
+            Assert.IsTrue(PeriodicYearMatcher.TryParse("1../3", out rym));
+            Assert.IsNotNull(rym);
+            Assert.AreEqual(1, rym.Left);
+            Assert.IsNull(rym.Right);
+            Assert.AreEqual(3, rym.Period);
+        }
     }
 }

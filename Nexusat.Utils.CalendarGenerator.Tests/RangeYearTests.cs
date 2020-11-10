@@ -151,7 +151,6 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsNotNull(rym);
             Assert.IsNull(rym.Left);
             Assert.IsNull(rym.Right);
-
         }
     }
 }

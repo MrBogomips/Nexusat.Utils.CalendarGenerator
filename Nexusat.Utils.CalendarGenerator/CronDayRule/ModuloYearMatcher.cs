@@ -14,5 +14,16 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         public bool Match(DateTime date) => Match(date.Year);
 
         public bool IsOneYear => IsOneValue;
+        
+        public static bool TryParse(string value, out ModuloYearMatcher rangeNumberMatcher)
+        {
+            if (!ModuloNumberMatcher.TryParse(value, out var left, out var right, out var modulo))
+            {
+                rangeNumberMatcher = null;
+                return false;
+            };
+            rangeNumberMatcher = new ModuloYearMatcher(left, right, modulo);
+            return true;
+        }
     }
 }
