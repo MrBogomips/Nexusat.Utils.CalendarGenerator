@@ -89,7 +89,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         /// </summary>
         public static bool TryParse(string value, out int? left, out int? right)
         {
-            left = right = null;
+            left = right = default;
             if (string.IsNullOrWhiteSpace(value)) return false;
             if (value == "*") return true;
             if (value == "..") return false; // the regex match also this patter… too tired to find a better one

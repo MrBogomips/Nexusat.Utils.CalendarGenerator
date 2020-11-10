@@ -1,4 +1,7 @@
 using System;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.Xml.Xsl;
 
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
@@ -48,6 +51,38 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         public static bool operator !=(PeriodicNumberMatcher left, PeriodicNumberMatcher right)
         {
             return !Equals(left, right);
+        }
+        
+        private static Regex ParseRegex { get; } = new Regex(@"^(?<range>.+)/(?<period>\d+)?$");
+        
+        public static bool TryParse(string value, out int left, out int? right, out int period)
+        {
+            left = default;
+            right = default;
+            period = default;
+            if (string.IsNullOrWhiteSpace(value)) return false;
+            
+            var m = ParseRegex.Match(value);
+            if (!m.Success) return false;
+
+            var range = m.Groups["range"].Value;
+            if (!RangeNumberMatcher.TryParse(range, out var varLeft, out var varRight)) return false;
+            if (!varLeft.HasValue) return false; // Periodic matcher requires an initial value
+            if (varLeft == varRight) return false; // Periodic matcher can be defined on a single number
+            period = int.Parse(m.Groups["period"].Value);
+            if (period < 2) return false; // Period must be at least 2
+            left = varLeft.Value;
+            right = varRight;
+
+            return true;
+        }
+
+        public static bool TryParse(string value, out PeriodicNumberMatcher periodicNumberMatcher)
+        {
+            periodicNumberMatcher = default;
+            if (!TryParse(value, out var left, out var right, out var period)) return false;
+            periodicNumberMatcher = new PeriodicNumberMatcher(left, right, period);
+            return true;
         }
     }
 }

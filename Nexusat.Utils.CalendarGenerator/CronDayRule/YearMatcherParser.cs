@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
-    public class YearMatcherParser: BaseMatcherParser<IYearMatcher> {
+    public class YearMatcherParser: DateMatcherParserBase<IYearMatcher> {
         private static Regex ParseRegEx { get; } = new Regex(@"^(\*|\d+)(/(Leap)|(NotLeap)|\d+)?$");
         /// <summary>
         /// Parse a year match expression.

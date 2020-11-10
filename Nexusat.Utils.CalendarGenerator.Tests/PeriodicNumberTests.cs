@@ -50,5 +50,43 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsTrue(pnm.Match(n2002));
             Assert.IsFalse(pnm.Match(n2003));
         }
+        
+        [TestMethod]
+        public void TryParseTests()
+        {
+            // Testing invalid patterns
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("*/5", out var left, out var right, out var  period));
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("..120/5", out left, out right, out period));
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("120../1", out left, out right, out period));
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("120..120/2", out left, out right, out period));
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("120/2", out left, out right, out period));
+            
+            // Testing valid patterns
+            Assert.IsTrue(PeriodicNumberMatcher.TryParse("120../2", out left, out right, out period));
+            Assert.AreEqual(120, left);
+            Assert.IsNull(right);
+            Assert.AreEqual(2, period);
+
+            // Testing object factory (invalid patterns)
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("120/3", out var pnm));
+            Assert.IsNull(pnm);
+            
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("120..120/3", out pnm));
+            Assert.IsNull(pnm);
+            
+            Assert.IsFalse(PeriodicNumberMatcher.TryParse("100../1", out pnm));
+            Assert.IsNull(pnm);
+            
+            // Testing object factory (valid patterns)
+            Assert.IsTrue(PeriodicNumberMatcher.TryParse("100../2", out pnm));
+            Assert.IsNotNull(pnm);
+            Assert.AreEqual(100, pnm.Left);
+            Assert.IsNull(pnm.Right);
+            
+            Assert.IsTrue(PeriodicNumberMatcher.TryParse("100..200/2", out pnm));
+            Assert.IsNotNull(pnm);
+            Assert.AreEqual(100, pnm.Left);
+            Assert.AreEqual(200, pnm.Right);
+        }
     }
 }
