@@ -187,10 +187,30 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.AreEqual(4, right);
             
             // Testing object factory
-            RangeNumberMatcher.TryParse("1..4", out var rnm);
+            Assert.IsTrue(RangeNumberMatcher.TryParse("1..4", out var rnm));
             Assert.IsNotNull(rnm);
             Assert.AreEqual(1, rnm.Left);
             Assert.AreEqual(4, rnm.Right);
+            Assert.IsTrue(RangeNumberMatcher.TryParse("*", out rnm));
+            Assert.IsNotNull(rnm);
+            Assert.IsNull(rnm.Left);
+            Assert.IsNull(rnm.Right);
+            Assert.IsTrue(RangeNumberMatcher.TryParse("1..", out rnm));
+            Assert.IsNotNull(rnm);
+            Assert.AreEqual(1, rnm.Left);
+            Assert.IsNull(rnm.Right);
+            Assert.IsTrue(RangeNumberMatcher.TryParse("..4", out rnm));
+            Assert.IsNotNull(rnm);
+            Assert.IsNull(rnm.Left);
+            Assert.AreEqual(4, rnm.Right);
+            Assert.IsTrue(RangeNumberMatcher.TryParse("1..1", out rnm));
+            Assert.IsNotNull(rnm);
+            Assert.AreEqual(1, rnm.Left);
+            Assert.AreEqual(1, rnm.Right);
+            Assert.IsTrue(RangeNumberMatcher.TryParse("1", out rnm));
+            Assert.IsNotNull(rnm);
+            Assert.AreEqual(1, rnm.Left);
+            Assert.AreEqual(1, rnm.Right);
         }
     }
 }

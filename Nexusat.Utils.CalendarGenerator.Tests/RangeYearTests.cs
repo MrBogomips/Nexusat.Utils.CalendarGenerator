@@ -138,5 +138,20 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsTrue(ryp.Match(dt3000));
             Assert.IsFalse(ryp.Match(dt9000));
         }
+        
+        [TestMethod]
+        public void TryParseTests()
+        {
+            // Testing object factory
+            Assert.IsTrue(RangeYearMatcher.TryParse("1..4", out var rym));
+            Assert.IsNotNull(rym);
+            Assert.AreEqual(1, rym.Left);
+            Assert.AreEqual(4, rym.Right);
+            Assert.IsTrue(RangeYearMatcher.TryParse("*", out rym));
+            Assert.IsNotNull(rym);
+            Assert.IsNull(rym.Left);
+            Assert.IsNull(rym.Right);
+
+        }
     }
 }
