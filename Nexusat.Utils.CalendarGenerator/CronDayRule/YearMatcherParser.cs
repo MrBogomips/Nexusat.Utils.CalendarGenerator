@@ -1,11 +1,9 @@
 using System;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
 
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
     public class YearMatcherParser: DateMatcherParserBase<IYearMatcher> {
-        private static Regex ParseRegEx { get; } = new Regex(@"^(\*|\d+)(/(Leap)|(NotLeap)|\d+)?$");
         /// <summary>
         /// Parse a year match expression.
         /// <example>
@@ -26,11 +24,8 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         /// 2020%3 => Starting from 2020 every year which reminder modulo 3 is zero
         /// </example>
         /// </summary>
-        public override IYearMatcher Parse(string value)
+        public override bool TryParse(string value, out IYearMatcher yearMatcher)
         {
-            if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(value));
-            
             throw new NotImplementedException();
         }
     }

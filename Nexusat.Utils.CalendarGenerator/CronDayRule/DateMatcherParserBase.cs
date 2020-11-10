@@ -5,15 +5,26 @@ using System.Linq;
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
     public abstract class DateMatcherParserBase<T>: IDateMatcherParser<T> where T:IDateMatcher {
-        public abstract T Parse(string value);
-        public virtual IEnumerable<T> ParseMulti(string values, string separator)
+        public abstract bool TryParse(string value, out T dateMatcher);
+        public virtual bool TryParseMulti(string values, string separator, out IEnumerable<T> dateMatchers)
         {
-            if (separator == null) throw new ArgumentNullException(nameof(separator));
             if (string.IsNullOrWhiteSpace(values))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(values));
-            return values.Split(separator).Select(Parse);
+            if (string.IsNullOrEmpty(separator))
+                throw new ArgumentException("Value cannot be null or empty.", nameof(separator));
+            dateMatchers = default;
+            var varDateMatchers = new List<T>();
+            foreach (var value in values.Split(separator))
+            {
+                if (!TryParse(value, out var dateMatcher)) return false;
+                varDateMatchers.Add(dateMatcher);
+            }
+
+            dateMatchers = varDateMatchers;
+            return true;
         }
 
-        public IEnumerable<T> ParseMulti(string values) => ParseMulti(values, ",");
+        public bool TryParseMulti(string values, out IEnumerable<T> dateMatchers) 
+            => TryParseMulti(values, ",", out dateMatchers);
     }
 }

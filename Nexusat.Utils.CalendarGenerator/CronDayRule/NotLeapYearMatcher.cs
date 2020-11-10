@@ -19,8 +19,8 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         {
             nonLeapYearMatcherMatcher = default;
             if (value is null || !value.EndsWith("/NotLeap")) return false;
-            var range = value.Remove(value.IndexOf("/NotLeap"));
-            if (!RangeNumberMatcher.TryParse(range, out var left, out var right)) return false;
+            var range = value.Remove(value.IndexOf("/NotLeap", StringComparison.Ordinal));
+            if (!TryParse(range, out var left, out var right)) return false;
             if (left.HasValue && left == right) return false; // Single year range are invalid
             nonLeapYearMatcherMatcher = new NotLeapYearMatcher(left, right);
             return true;

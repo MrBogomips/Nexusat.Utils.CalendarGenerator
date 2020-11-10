@@ -20,10 +20,10 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         [TestMethod]
         public void ToStringTests()
         {
-            Assert.AreEqual("*/Leap",new CronDayRule.LeapYearMatcher(null, null).ToString());
-            Assert.AreEqual("2000../Leap",new CronDayRule.LeapYearMatcher(2000, null).ToString());
-            Assert.AreEqual("..2000/Leap",new CronDayRule.LeapYearMatcher(null, 2000).ToString());
-            Assert.AreEqual("2000..3000/Leap",new CronDayRule.LeapYearMatcher(2000, 3000).ToString());
+            Assert.AreEqual("*/Leap",new LeapYearMatcher(null, null).ToString());
+            Assert.AreEqual("2000../Leap",new LeapYearMatcher(2000, null).ToString());
+            Assert.AreEqual("..2000/Leap",new LeapYearMatcher(null, 2000).ToString());
+            Assert.AreEqual("2000..3000/Leap",new LeapYearMatcher(2000, 3000).ToString());
         }
 
         [TestMethod]

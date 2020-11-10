@@ -1,6 +1,5 @@
 using System;
 using System.Text.RegularExpressions;
-using System.Xml.Schema;
 
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
@@ -16,12 +15,17 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         {
             if (left is not null && left.Value <= 0)
                 throw new ArgumentOutOfRangeException(nameof(left), "Must be a positive value");
-            if (right is not null && right.Value <= 0)
-                throw new ArgumentOutOfRangeException(nameof(right), "Must be a positive value");
-            if (right is not null && right < left)
-                throw new ArgumentOutOfRangeException(nameof(right), $"Must be greater than or equal to '{nameof(left)}'");
-            Left = left;
-            Right = right;
+            switch (right)
+            {
+                case not null when right.Value <= 0:
+                    throw new ArgumentOutOfRangeException(nameof(right), "Must be a positive value");
+                case not null when right < left:
+                    throw new ArgumentOutOfRangeException(nameof(right), $"Must be greater than or equal to '{nameof(left)}'");
+                default:
+                    Left = left;
+                    Right = right;
+                    break;
+            }
         }
         
         public bool IsLeftOpenRange => !Left.HasValue;
@@ -55,7 +59,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((RangeNumberMatcher) obj);
         }
 
@@ -91,8 +95,13 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         {
             left = right = default;
             if (string.IsNullOrWhiteSpace(value)) return false;
-            if (value == "*") return true;
-            if (value == "..") return false; // the regex match also this patter… too tired to find a better one
+            switch (value)
+            {
+                case "*":
+                    return true;
+                case "..":
+                    return false; // the regex match also this patter… too tired to find a better one
+            }
 
             var m = ParseRegex.Match(value);
             if (!m.Success) return false;
@@ -127,7 +136,8 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             {
                 rangeNumberMatcher = null;
                 return false;
-            };
+            }
+
             rangeNumberMatcher = new RangeNumberMatcher(left, right);
             return true;
         }

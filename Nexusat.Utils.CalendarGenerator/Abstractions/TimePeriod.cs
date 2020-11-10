@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -97,7 +96,7 @@ namespace Nexusat.Utils.CalendarGenerator
         {
             if (value is null) throw new ArgumentNullException(nameof(value));
             
-            return value.Split(' ').Select(TimePeriod.Parse).ToList();
+            return value.Split(' ').Select(Parse).ToList();
         }
 
         public override string ToString() => $"{Begin}-{End}";

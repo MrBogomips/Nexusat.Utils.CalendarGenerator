@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable HeapView.ObjectAllocation.Evident
@@ -79,7 +80,7 @@ namespace Nexusat.Utils.CalendarGenerator
         /// <returns></returns>
         public CalendarDays GenerateCalendarDays(DateTime from, DateTime to, DayInfo defaultDayInfo)
         {
-            if (to < from) throw new ArgumentException($"'{nameof(to)}' cannot precede '{nameof(@from)}'");
+            if (to < from) throw new ArgumentException($"'{nameof(to)}' cannot precede '{nameof(from)}'");
 
             if (defaultDayInfo is null) throw new ArgumentNullException(nameof(defaultDayInfo));
 

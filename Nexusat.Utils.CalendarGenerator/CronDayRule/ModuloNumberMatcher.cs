@@ -30,7 +30,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((ModuloNumberMatcher) obj);
         }
 
@@ -63,7 +63,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             if (!m.Success) return false;
 
             var range = m.Groups["range"].Value;
-            if (!RangeNumberMatcher.TryParse(range, out var varLeft, out var varRight)) return false;
+            if (!TryParse(range, out var varLeft, out var varRight)) return false;
             if (varLeft.HasValue && varLeft == varRight) return false; // Modulo matcher can't be defined on a single number
             modulo = int.Parse(m.Groups["modulo"].Value);
             if (modulo < 2) return false; // Modulo must be at least 2

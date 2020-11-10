@@ -1,7 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System.Xml.Xsl;
+
+// ReSharper disable PossibleInvalidOperationException
 
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
@@ -11,8 +11,8 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
     public class PeriodicNumberMatcher : RangeNumberMatcher, IEquatable<PeriodicNumberMatcher>
     {
         public int Period { get; }
-        
-        public PeriodicNumberMatcher(int left, int? right, int period): base(left, right)
+
+        public PeriodicNumberMatcher(int left, int? right, int period) : base(left, right)
         {
             if (period < 2) throw new ArgumentException($"'{nameof(period)}' must be greater than 1");
             if (IsOneValue) throw new ArgumentException("You must specify range");
@@ -34,8 +34,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((PeriodicNumberMatcher) obj);
+            return obj.GetType() == GetType() && Equals((PeriodicNumberMatcher) obj);
         }
 
         public override int GetHashCode()
@@ -52,21 +51,21 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         {
             return !Equals(left, right);
         }
-        
+
         private static Regex ParseRegex { get; } = new Regex(@"^(?<range>.+)/(?<period>\d+)?$");
-        
+
         public static bool TryParse(string value, out int left, out int? right, out int period)
         {
             left = default;
             right = default;
             period = default;
             if (string.IsNullOrWhiteSpace(value)) return false;
-            
+
             var m = ParseRegex.Match(value);
             if (!m.Success) return false;
 
             var range = m.Groups["range"].Value;
-            if (!RangeNumberMatcher.TryParse(range, out var varLeft, out var varRight)) return false;
+            if (!TryParse(range, out var varLeft, out var varRight)) return false;
             if (!varLeft.HasValue) return false; // Periodic matcher requires an initial value
             if (varLeft == varRight) return false; // Periodic matcher can't be defined on a single number
             period = int.Parse(m.Groups["period"].Value);
