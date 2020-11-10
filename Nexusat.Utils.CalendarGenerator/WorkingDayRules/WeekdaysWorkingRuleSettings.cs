@@ -15,7 +15,7 @@ namespace Nexusat.Utils.CalendarGenerator
         {
             Days = days ?? throw new ArgumentNullException(nameof(days));
 
-            var daysProcessed = new List<DayOfWeek>();
+            var daysProcessed = new List<System.DayOfWeek>();
             foreach (var d in days)
             {
                 // ASSERT: Weekday MUST appear once

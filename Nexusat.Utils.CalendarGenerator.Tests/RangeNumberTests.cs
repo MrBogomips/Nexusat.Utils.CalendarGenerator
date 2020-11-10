@@ -5,7 +5,7 @@ using Nexusat.Utils.CalendarGenerator.CronDayRule;
 namespace Nexusat.Utils.CalendarGenerator.Tests
 {
     [TestClass]
-    public class NumberRangeTests
+    public class RangeNumberTests
     {
         [TestMethod]
         public void CtorTests()
@@ -148,6 +148,49 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             
             Assert.AreEqual(1, l);
             Assert.AreEqual(2, r);
+        }
+
+        [TestMethod]
+        public void TryParseTests()
+        {
+            int? left, right;
+            
+            // Testing invalid patterns
+            Assert.IsFalse(RangeNumberMatcher.TryParse("..", out left, out right));
+            Assert.IsFalse(RangeNumberMatcher.TryParse("*..", out left, out right));
+            Assert.IsFalse(RangeNumberMatcher.TryParse("*..*", out left, out right));
+            Assert.IsFalse(RangeNumberMatcher.TryParse("..*", out left, out right));
+            
+            // Testing valid patterns
+            Assert.IsTrue(RangeNumberMatcher.TryParse("*", out left, out right));
+            Assert.IsNull(left);
+            Assert.IsNull(right);
+            
+            Assert.IsTrue(RangeNumberMatcher.TryParse("1..", out left, out right));
+            Assert.AreEqual(1, left);
+            Assert.IsNull(right);
+            
+            Assert.IsTrue(RangeNumberMatcher.TryParse("..2", out left, out right));
+            Assert.IsNull(left);
+            Assert.AreEqual(2, right);
+            
+            Assert.IsTrue(RangeNumberMatcher.TryParse("1..2", out left, out right));
+            Assert.AreEqual(1, left);
+            Assert.AreEqual(2, right);
+            
+            Assert.IsTrue(RangeNumberMatcher.TryParse("4", out left, out right));
+            Assert.AreEqual(4, left);
+            Assert.AreEqual(4, right);
+            
+            Assert.IsTrue(RangeNumberMatcher.TryParse("4..4", out left, out right));
+            Assert.AreEqual(4, left);
+            Assert.AreEqual(4, right);
+            
+            // Testing object factory
+            RangeNumberMatcher.TryParse("1..4", out var rnm);
+            Assert.IsNotNull(rnm);
+            Assert.AreEqual(1, rnm.Left);
+            Assert.AreEqual(4, rnm.Right);
         }
     }
 }

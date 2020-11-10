@@ -9,9 +9,9 @@ namespace Nexusat.Utils.CalendarGenerator
 {
     public class WeekdaysNonWorkingRuleBuilder
     {
-        private readonly HashSet<DayOfWeek> _settings = new HashSet<DayOfWeek>();
+        private readonly HashSet<System.DayOfWeek> _settings = new HashSet<System.DayOfWeek>();
 
-        public void AddRule(DayOfWeek dayOfWeek)
+        public void AddRule(System.DayOfWeek dayOfWeek)
         {
             _settings.Add(dayOfWeek);
         }

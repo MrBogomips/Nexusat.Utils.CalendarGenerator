@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using System.Xml.Schema;
 
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
@@ -73,11 +74,62 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             return !Equals(left, right);
         }
         
-        internal static Regex ParseRegex { get; } = new Regex("");
+        private static Regex ParseRegex { get; } = new Regex(@"^(?<left>\d+)?(?<dots>\.\.)?(?<right>\d+)?$");
+        /// <summary>
+        /// Parse a string representing a valid number range expression.
+        ///
+        /// <example>
+        /// Valid strings are:
+        /// * for any valid number
+        /// 120.. for any number greater than or equal to 120
+        /// ..120 for any number less than or equal to 120
+        /// 100..200 for any number between 100 and 200
+        /// 100 for the exact number 100
+        /// </example>
+        /// </summary>
+        public static bool TryParse(string value, out int? left, out int? right)
+        {
+            left = right = null;
+            if (string.IsNullOrWhiteSpace(value)) return false;
+            if (value == "*") return true;
+            if (value == "..") return false; // the regex match also this patter… too tired to find a better one
 
+            var m = ParseRegex.Match(value);
+            if (!m.Success) return false;
+
+            left = m.Groups["left"].Success ? int.Parse(m.Groups["left"].Value) : (int?)null;
+            if (m.Groups["dots"].Success)
+            {
+                right = m.Groups["right"].Success ? int.Parse(m.Groups["right"].Value) : (int?)null;    
+            }
+            else
+            {
+                right = left;
+            }
+
+            return true;
+        }
+        /// <summary>
+        /// Parse a string representing a valid number range expression.
+        ///
+        /// <example>
+        /// Valid strings are:
+        /// * or *..* for any valid number
+        /// 120.. for any number greater than or equal to 120
+        /// ..120 for any number less than or equal to 120
+        /// 100..200 for any number between 100 and 200
+        /// 100 for the exact number 100
+        /// </example>
+        /// </summary>
         public static bool TryParse(string value, out RangeNumberMatcher rangeNumberMatcher)
         {
-            throw new NotImplementedException();
+            if (!TryParse(value, out var left, out var right))
+            {
+                rangeNumberMatcher = null;
+                return false;
+            };
+            rangeNumberMatcher = new RangeNumberMatcher(left, right);
+            return true;
         }
     }
 }

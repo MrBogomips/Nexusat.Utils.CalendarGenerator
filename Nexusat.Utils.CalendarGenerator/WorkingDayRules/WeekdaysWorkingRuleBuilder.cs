@@ -9,12 +9,12 @@ namespace Nexusat.Utils.CalendarGenerator
 {
     public class WeekdaysWorkingRuleBuilder
     {
-        private readonly Dictionary<DayOfWeek, List<TimePeriod>> _settings =
-            new Dictionary<DayOfWeek, List<TimePeriod>>();
+        private readonly Dictionary<System.DayOfWeek, List<TimePeriod>> _settings =
+            new Dictionary<System.DayOfWeek, List<TimePeriod>>();
 
 
         // ReSharper disable once MemberCanBePrivate.Global
-        public void AddRule(DayOfWeek dayOfWeek, IEnumerable<TimePeriod> timePeriods)
+        public void AddRule(System.DayOfWeek dayOfWeek, IEnumerable<TimePeriod> timePeriods)
         {
             if (timePeriods == null) throw new ArgumentNullException(nameof(timePeriods));
             if (_settings.TryGetValue(dayOfWeek, out var curTimePeriods))
@@ -29,12 +29,12 @@ namespace Nexusat.Utils.CalendarGenerator
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
-        public void AddRule(DayOfWeek dayOfWeek, params TimePeriod[] timePeriods)
+        public void AddRule(System.DayOfWeek dayOfWeek, params TimePeriod[] timePeriods)
         {
             AddRule(dayOfWeek, timePeriods.ToList());
         }
 
-        public void AddRule(DayOfWeek dayOfWeek, short beginHour, short beginMinute, short endHour, short endMinute)
+        public void AddRule(System.DayOfWeek dayOfWeek, short beginHour, short beginMinute, short endHour, short endMinute)
         {
             AddRule(dayOfWeek, new TimePeriod(beginHour, beginMinute, endHour, endMinute));
         }
