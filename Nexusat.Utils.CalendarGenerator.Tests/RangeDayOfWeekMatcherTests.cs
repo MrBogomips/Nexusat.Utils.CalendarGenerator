@@ -46,11 +46,16 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         {
             Assert.AreEqual("*",new RangeDayOfWeekMatcher(null, null).ToString());
             Assert.AreEqual("1..",new RangeDayOfWeekMatcher(1, null).ToString());
-            Assert.AreEqual("..31",new RangeDayOfWeekMatcher(null, 31).ToString());
-            Assert.AreEqual("15",new RangeDayOfWeekMatcher(15, 15).ToString());
-            Assert.AreEqual("*",new RangeDayOfWeekMatcher(1, 31).ToString());
-            Assert.AreEqual("31",new RangeDayOfWeekMatcher(31, null).ToString());
-            Assert.AreEqual("1",new RangeDayOfWeekMatcher(null, 1).ToString());
+            Assert.AreEqual("..7",new RangeDayOfWeekMatcher(null, 7).ToString());
+            Assert.AreEqual("5",new RangeDayOfWeekMatcher(5, 5).ToString());
+            
+            // Different ways to represent all the week days
+            Assert.AreEqual("*",new RangeDayOfWeekMatcher(1, 7).ToString());
+            Assert.AreEqual("*",new RangeDayOfWeekMatcher(0, 7).ToString());
+            Assert.AreEqual("*",new RangeDayOfWeekMatcher(0, 6).ToString());
+            
+            Assert.AreEqual("7",new RangeDayOfWeekMatcher(7, null).ToString());
+            Assert.AreEqual("0",new RangeDayOfWeekMatcher(null, 0).ToString());
         }
         
         [TestMethod]
@@ -72,7 +77,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsFalse(obj.IsClosedRange);
             Assert.IsFalse(obj.IsOneWeekDay);
             
-            obj = new RangeDayOfWeekMatcher(null, 31);
+            obj = new RangeDayOfWeekMatcher(null, 7);
             Assert.IsTrue(obj.IsLeftOpenRange);
             Assert.IsFalse(obj.IsRightOpenRange);
             Assert.IsTrue(obj.IsOpenRange);
@@ -80,7 +85,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsFalse(obj.IsClosedRange);
             Assert.IsFalse(obj.IsOneWeekDay);
             
-            obj = new RangeDayOfWeekMatcher(11, 11);
+            obj = new RangeDayOfWeekMatcher(5, 5);
             Assert.IsFalse(obj.IsLeftOpenRange);
             Assert.IsFalse(obj.IsRightOpenRange);
             Assert.IsFalse(obj.IsOpenRange);
@@ -88,7 +93,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsTrue(obj.IsClosedRange);
             Assert.IsTrue(obj.IsOneWeekDay);
             
-            obj = new RangeDayOfWeekMatcher(1, 31);
+            obj = new RangeDayOfWeekMatcher(0, 7);
             Assert.IsFalse(obj.IsLeftOpenRange);
             Assert.IsFalse(obj.IsRightOpenRange);
             Assert.IsFalse(obj.IsOpenRange);
@@ -100,13 +105,13 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         [TestMethod]
         public void MatchTests()
         {
-            var wd1 = new DateTime(2000, 6, 1); // Mon
-            var wd2 = new DateTime(2000, 6, 2);
-            var wd3 = new DateTime(2000, 6, 3);
-            var wd4 = new DateTime(2000, 6, 4);
-            var wd5 = new DateTime(2000, 6, 5);
-            var wd6 = new DateTime(2000, 6, 6);
-            var wd7 = new DateTime(2000, 6, 7); // Sun
+            var wd1 = new DateTime(2020, 6, 1); // Mon
+            var wd2 = new DateTime(2020, 6, 2);
+            var wd3 = new DateTime(2020, 6, 3);
+            var wd4 = new DateTime(2020, 6, 4);
+            var wd5 = new DateTime(2020, 6, 5);
+            var wd6 = new DateTime(2020, 6, 6);
+            var wd7 = new DateTime(2020, 6, 7); // Sun
             
             var obj = new RangeDayOfWeekMatcher(null, null);
             Assert.IsTrue(obj.Match(wd1));
@@ -164,8 +169,8 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.AreEqual(4, obj.Right);
             Assert.IsTrue(RangeDayOfWeekMatcher.TryParse("*", out obj));
             Assert.IsNotNull(obj);
-            Assert.AreEqual(1, obj.Left);
-            Assert.AreEqual(31, obj.Right);
+            Assert.AreEqual(0, obj.Left);
+            Assert.AreEqual(7, obj.Right);
         }
     }
 }
