@@ -4,7 +4,7 @@ using static Nexusat.Utils.CalendarGenerator.CronDayRule.MonthMatcherHelper;
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
     /// <summary>
-    /// Month matcher expressing a period condition on the year value and subsequent steps
+    /// Month matcher expressing a period condition on the month value and subsequent steps
     /// </summary>
     public class PeriodicMonthMatcher : PeriodicNumberMatcher, IMonthMatcher
     {
