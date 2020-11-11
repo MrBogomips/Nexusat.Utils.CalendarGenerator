@@ -8,28 +8,28 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
     {
         public string Description { get; }
         public IReadOnlyList<IYearMatcher> YearMatchers { get; }
-        public IReadOnlyList<MonthMatcher> MonthMatchers { get; }
-        public IReadOnlyList<DayOfMonthMatcher> DayOfMonthMatchers { get; }
-        public IReadOnlyList<DayOfWeekMatcher> DayOfWeekMatchers { get; }
+        public IReadOnlyList<IMonthMatcher> MonthMatchers { get; }
+        public IReadOnlyList<IDayOfMonthMatcher> DayOfMonthMatchers { get; }
+        public IReadOnlyList<IDayOfWeekMatcher> DayOfWeekMatchers { get; }
         public IReadOnlyList<TimePeriod> WorkingPeriods { get; }
 
         public CronDayRule(
             string description,
-            IReadOnlyList<IYearMatcher> yearMatchers, 
-            IReadOnlyList<MonthMatcher> monthMatchers, 
-            IReadOnlyList<DayOfMonthMatcher> dayOfMonthMatchers, 
-            IReadOnlyList<DayOfWeekMatcher> dayOfWeekMatchers,
-            IReadOnlyList<TimePeriod> workingPeriods
+            IEnumerable<IYearMatcher> yearMatchers, 
+            IEnumerable<IMonthMatcher> monthMatchers, 
+            IEnumerable<IDayOfMonthMatcher> dayOfMonthMatchers, 
+            IEnumerable<IDayOfWeekMatcher> dayOfWeekMatchers,
+            IEnumerable<TimePeriod> workingPeriods
             )
         {
             Description = description;
-            YearMatchers = yearMatchers;
-            MonthMatchers = monthMatchers;
-            DayOfMonthMatchers = dayOfMonthMatchers;
-            DayOfWeekMatchers = dayOfWeekMatchers;
-            WorkingPeriods = workingPeriods;
+            YearMatchers = new List<IYearMatcher>(yearMatchers);
+            MonthMatchers = new List<IMonthMatcher>(monthMatchers);
+            DayOfMonthMatchers = new List<IDayOfMonthMatcher>(dayOfMonthMatchers);
+            DayOfWeekMatchers = new List<IDayOfWeekMatcher>(dayOfWeekMatchers);
+            WorkingPeriods = workingPeriods is not null ? new List<TimePeriod>(workingPeriods) : null;
                 
-            DayInfo.NormalizeWorkingPeriods(workingPeriods);
+            DayInfo.NormalizeWorkingPeriods(WorkingPeriods);
         }
 
         /// <summary>

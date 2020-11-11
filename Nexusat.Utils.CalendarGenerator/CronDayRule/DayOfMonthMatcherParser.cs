@@ -1,12 +1,12 @@
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
-    public class DayOfMonthMonthMatcherParser : DateMatcherParserBase<IDayOfMonthMatcher>
+    public class DayOfMonthMatcherParser : DateMatcherParserBase<IDayOfMonthMatcher>
     {
-        private DayOfMonthMonthMatcherParser()
+        private DayOfMonthMatcherParser()
         {
         }
         
-        public static DayOfMonthMonthMatcherParser Instance { get; } = new DayOfMonthMonthMatcherParser();
+        public static DayOfMonthMatcherParser Instance { get; } = new DayOfMonthMatcherParser();
 
         /// <summary>
         ///     Parse a day of month match expression.

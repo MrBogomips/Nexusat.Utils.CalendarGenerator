@@ -38,7 +38,7 @@ namespace Nexusat.Utils.CalendarGenerator
             return retVal;
         }
         
-        private static Regex ParseRegex { get; } = new Regex(@"^\[\[((?<description>.*))\]\]\s*(?<time_periods>(.*))$");
+        private static Regex ParseRegex { get; } = new Regex(@"^\[\[((?<description>.*))\]\]\s*(?<timePeriods>(.*))$");
         
         /// <summary>
         /// Parse a day info declaration.
@@ -61,7 +61,7 @@ namespace Nexusat.Utils.CalendarGenerator
             if (!m.Success) return false;
 
             var description = m.Groups["description"].Value;
-            var strTimePeriods = m.Groups["time_periods"].Value;
+            var strTimePeriods = m.Groups["timePeriods"].Value;
             if (!string.IsNullOrWhiteSpace(strTimePeriods)
                 && !TimePeriod.TryParseMulti(strTimePeriods, ",", out timePeriods)) return false;
 
