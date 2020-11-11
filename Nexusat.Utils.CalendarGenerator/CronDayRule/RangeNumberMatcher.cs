@@ -13,12 +13,12 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 
         public RangeNumberMatcher(int? left, int? right)
         {
-            if (left is not null && left.Value <= 0)
-                throw new ArgumentOutOfRangeException(nameof(left), "Must be a positive value");
+            if (left is not null && left.Value < 0)
+                throw new ArgumentOutOfRangeException(nameof(left), "Must be a non negative value");
             switch (right)
             {
-                case not null when right.Value <= 0:
-                    throw new ArgumentOutOfRangeException(nameof(right), "Must be a positive value");
+                case not null when right.Value < 0:
+                    throw new ArgumentOutOfRangeException(nameof(right), "Must be a non negative value");
                 case not null when right < left:
                     throw new ArgumentOutOfRangeException(nameof(right), $"Must be greater than or equal to '{nameof(left)}'");
                 default:
