@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
-    public interface IDateMatcherParser<T> where T:IDateMatcher
+    public interface IDateMatcherParseMulti<T>: IDateMatcherParse<T> where T : IDateMatcher
     {
-        bool TryParse(string value, out T dateMatcher);
+        
         bool TryParseMulti(string values, string separator, out IEnumerable<T> dateMatchers);
 
         /// <summary>

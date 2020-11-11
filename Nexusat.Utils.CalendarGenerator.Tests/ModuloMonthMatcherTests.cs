@@ -61,21 +61,21 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         public void TryParseTests()
         {
             // Testing object factory
-            Assert.IsTrue(ModuloMonthMatcher.TryParse("1..4%2", out var dateMatcher));
-            Assert.IsNotNull(dateMatcher);
-            Assert.AreEqual(1, dateMatcher.Left);
-            Assert.AreEqual(4, dateMatcher.Right);
-            Assert.AreEqual(2, dateMatcher.Modulo);
-            Assert.IsTrue(ModuloMonthMatcher.TryParse("1..%3", out dateMatcher));
-            Assert.IsNotNull(dateMatcher);
-            Assert.AreEqual(1, dateMatcher.Left);
-            Assert.AreEqual(12, dateMatcher.Right);
-            Assert.AreEqual(3, dateMatcher.Modulo);
-            Assert.IsTrue(ModuloMonthMatcher.TryParse("*%3", out dateMatcher));
-            Assert.IsNotNull(dateMatcher);
-            Assert.AreEqual(1, dateMatcher.Left);
-            Assert.AreEqual(12, dateMatcher.Right);
-            Assert.AreEqual(3, dateMatcher.Modulo);
+            Assert.IsTrue(ModuloMonthMatcher.TryParse("1..4%2", out var obj));
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(1, obj.Left);
+            Assert.AreEqual(4, obj.Right);
+            Assert.AreEqual(2, obj.Modulo);
+            Assert.IsTrue(ModuloMonthMatcher.TryParse("1..%3", out obj));
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(1, obj.Left);
+            Assert.AreEqual(12, obj.Right);
+            Assert.AreEqual(3, obj.Modulo);
+            Assert.IsTrue(ModuloMonthMatcher.TryParse("*%3", out obj));
+            Assert.IsNotNull(obj);
+            Assert.AreEqual(1, obj.Left);
+            Assert.AreEqual(12, obj.Right);
+            Assert.AreEqual(3, obj.Modulo);
         }
     }
 }

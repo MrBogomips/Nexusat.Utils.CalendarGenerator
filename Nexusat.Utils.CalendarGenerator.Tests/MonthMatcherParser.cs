@@ -28,15 +28,15 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         public void TryParseMultiTest()
         {
             var validParsingString = "*,*%2,*/2";
-            Assert.IsTrue(MonthMatcherParser.Instance.TryParseMulti(validParsingString, out var monthMatchers));
-            var matchers = new List<IMonthMatcher>(monthMatchers);
+            Assert.IsTrue(MonthMatcherParser.Instance.TryParseMulti(validParsingString, out var obj));
+            var matchers = new List<IMonthMatcher>(obj);
             Assert.IsInstanceOfType(matchers[0], typeof(RangeMonthMatcher));
             Assert.IsInstanceOfType(matchers[1], typeof(ModuloMonthMatcher));
             Assert.IsInstanceOfType(matchers[2], typeof(PeriodicMonthMatcher));
             
             var notValidParsingString = validParsingString + ",............";
-            Assert.IsFalse(MonthMatcherParser.Instance.TryParseMulti(notValidParsingString, out monthMatchers));
-            Assert.IsNull(monthMatchers);
+            Assert.IsFalse(MonthMatcherParser.Instance.TryParseMulti(notValidParsingString, out obj));
+            Assert.IsNull(obj);
         }
     }
 }

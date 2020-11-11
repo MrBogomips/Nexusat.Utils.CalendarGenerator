@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 {
-    public abstract class DateMatcherParserBase<T>: IDateMatcherParser<T> where T:IDateMatcher {
+    public abstract class DateMatcherParserBase<T>: IDateMatcherParseMulti<T> where T:IDateMatcher {
         public abstract bool TryParse(string value, out T dateMatcher);
         public virtual bool TryParseMulti(string values, string separator, out IEnumerable<T> dateMatchers)
         {
