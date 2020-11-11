@@ -15,6 +15,9 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
 
             Assert.IsTrue(MonthMatcherParser.Instance.TryParse("*%2", out dateMatcher));
             Assert.IsInstanceOfType(dateMatcher, typeof(ModuloMonthMatcher));
+            
+            Assert.IsTrue(MonthMatcherParser.Instance.TryParse("*/2", out dateMatcher));
+            Assert.IsInstanceOfType(dateMatcher, typeof(PeriodicMonthMatcher));
 
             // False month range that degenerate in a single month (december) wich is not a valid PeriodicMonthMatcher
             Assert.IsFalse(MonthMatcherParser.Instance.TryParse("12../2", out dateMatcher));
