@@ -56,45 +56,45 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         [TestMethod]
         public void OpenRangeCheckTests()
         {
-            var ryp = new RangeMonthMatcher(null, null);
-            Assert.IsTrue(ryp.IsLeftOpenRange);
-            Assert.IsTrue(ryp.IsRightOpenRange);
-            Assert.IsTrue(ryp.IsOpenRange);
-            Assert.IsTrue(ryp.IsLeftRightOpenRange);
-            Assert.IsFalse(ryp.IsClosedRange);
-            Assert.IsFalse(ryp.IsOneMonth);
+            var obj = new RangeMonthMatcher(null, null);
+            Assert.IsTrue(obj.IsLeftOpenRange);
+            Assert.IsTrue(obj.IsRightOpenRange);
+            Assert.IsTrue(obj.IsOpenRange);
+            Assert.IsTrue(obj.IsLeftRightOpenRange);
+            Assert.IsFalse(obj.IsClosedRange);
+            Assert.IsFalse(obj.IsOneMonth);
             
-            ryp = new RangeMonthMatcher(1, null);
-            Assert.IsFalse(ryp.IsLeftOpenRange);
-            Assert.IsTrue(ryp.IsRightOpenRange);
-            Assert.IsTrue(ryp.IsOpenRange);
-            Assert.IsFalse(ryp.IsLeftRightOpenRange);
-            Assert.IsFalse(ryp.IsClosedRange);
-            Assert.IsFalse(ryp.IsOneMonth);
+            obj = new RangeMonthMatcher(1, null);
+            Assert.IsFalse(obj.IsLeftOpenRange);
+            Assert.IsTrue(obj.IsRightOpenRange);
+            Assert.IsTrue(obj.IsOpenRange);
+            Assert.IsFalse(obj.IsLeftRightOpenRange);
+            Assert.IsFalse(obj.IsClosedRange);
+            Assert.IsFalse(obj.IsOneMonth);
             
-            ryp = new RangeMonthMatcher(null, 12);
-            Assert.IsTrue(ryp.IsLeftOpenRange);
-            Assert.IsFalse(ryp.IsRightOpenRange);
-            Assert.IsTrue(ryp.IsOpenRange);
-            Assert.IsFalse(ryp.IsLeftRightOpenRange);
-            Assert.IsFalse(ryp.IsClosedRange);
-            Assert.IsFalse(ryp.IsOneMonth);
+            obj = new RangeMonthMatcher(null, 12);
+            Assert.IsTrue(obj.IsLeftOpenRange);
+            Assert.IsFalse(obj.IsRightOpenRange);
+            Assert.IsTrue(obj.IsOpenRange);
+            Assert.IsFalse(obj.IsLeftRightOpenRange);
+            Assert.IsFalse(obj.IsClosedRange);
+            Assert.IsFalse(obj.IsOneMonth);
             
-            ryp = new RangeMonthMatcher(11, 11);
-            Assert.IsFalse(ryp.IsLeftOpenRange);
-            Assert.IsFalse(ryp.IsRightOpenRange);
-            Assert.IsFalse(ryp.IsOpenRange);
-            Assert.IsFalse(ryp.IsLeftRightOpenRange);
-            Assert.IsTrue(ryp.IsClosedRange);
-            Assert.IsTrue(ryp.IsOneMonth);
+            obj = new RangeMonthMatcher(11, 11);
+            Assert.IsFalse(obj.IsLeftOpenRange);
+            Assert.IsFalse(obj.IsRightOpenRange);
+            Assert.IsFalse(obj.IsOpenRange);
+            Assert.IsFalse(obj.IsLeftRightOpenRange);
+            Assert.IsTrue(obj.IsClosedRange);
+            Assert.IsTrue(obj.IsOneMonth);
             
-            ryp = new RangeMonthMatcher(1, 12);
-            Assert.IsFalse(ryp.IsLeftOpenRange);
-            Assert.IsFalse(ryp.IsRightOpenRange);
-            Assert.IsFalse(ryp.IsOpenRange);
-            Assert.IsFalse(ryp.IsLeftRightOpenRange);
-            Assert.IsTrue(ryp.IsClosedRange);
-            Assert.IsFalse(ryp.IsOneMonth);
+            obj = new RangeMonthMatcher(1, 12);
+            Assert.IsFalse(obj.IsLeftOpenRange);
+            Assert.IsFalse(obj.IsRightOpenRange);
+            Assert.IsFalse(obj.IsOpenRange);
+            Assert.IsFalse(obj.IsLeftRightOpenRange);
+            Assert.IsTrue(obj.IsClosedRange);
+            Assert.IsFalse(obj.IsOneMonth);
         }
 
         [TestMethod]

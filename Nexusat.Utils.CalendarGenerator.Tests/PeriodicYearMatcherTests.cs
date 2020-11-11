@@ -5,7 +5,7 @@ using Nexusat.Utils.CalendarGenerator.CronDayRule;
 namespace Nexusat.Utils.CalendarGenerator.Tests
 {
     [TestClass]
-    public class PeriodicYearTests
+    public class PeriodicYearMatcherTests
     {
         [TestMethod]
         public void CtorTests()
