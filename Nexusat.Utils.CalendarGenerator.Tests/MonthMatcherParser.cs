@@ -27,18 +27,16 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         [TestMethod]
         public void TryParseMultiTest()
         {
-            var validParsingString = "*,*%2,1200../2,*/Leap,*/NotLeap";
-            Assert.IsTrue(YearMatcherParser.Instance.TryParseMulti(validParsingString, out var yearMatchers));
-            var matchers = new List<IYearMatcher>(yearMatchers);
-            Assert.IsInstanceOfType(matchers[0], typeof(RangeYearMatcher));
-            Assert.IsInstanceOfType(matchers[1], typeof(ModuloYearMatcher));
-            Assert.IsInstanceOfType(matchers[2], typeof(PeriodicYearMatcher));
-            Assert.IsInstanceOfType(matchers[3], typeof(LeapYearMatcher));
-            Assert.IsInstanceOfType(matchers[4], typeof(NotLeapYearMatcher));
+            var validParsingString = "*,*%2,*/2";
+            Assert.IsTrue(MonthMatcherParser.Instance.TryParseMulti(validParsingString, out var monthMatchers));
+            var matchers = new List<IMonthMatcher>(monthMatchers);
+            Assert.IsInstanceOfType(matchers[0], typeof(RangeMonthMatcher));
+            Assert.IsInstanceOfType(matchers[1], typeof(ModuloMonthMatcher));
+            Assert.IsInstanceOfType(matchers[2], typeof(PeriodicMonthMatcher));
             
             var notValidParsingString = validParsingString + ",............";
-            Assert.IsFalse(YearMatcherParser.Instance.TryParseMulti(notValidParsingString, out yearMatchers));
-            Assert.IsNull(yearMatchers);
+            Assert.IsFalse(MonthMatcherParser.Instance.TryParseMulti(notValidParsingString, out monthMatchers));
+            Assert.IsNull(monthMatchers);
         }
     }
 }
