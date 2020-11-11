@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.Design;
 using static Nexusat.Utils.CalendarGenerator.CronDayRule.DayOfWeekMatcherHelper;
 
 namespace Nexusat.Utils.CalendarGenerator.CronDayRule
@@ -22,7 +23,12 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             
         }
 
-        public virtual bool Match(DateTime date) => Match((int)date.DayOfWeek % 7);
+        public virtual bool Match(DateTime date) => date.DayOfWeek switch
+        {
+            DayOfWeek.Sunday => base.Match(0) || base.Match(7),
+            var dow => base.Match((int) dow)
+        };
+            
         public bool IsOneWeekDay => IsOneValue;
 
         public static bool TryParse(string value, out RangeDayOfWeekMatcher rangeMonthMatcher)
@@ -37,6 +43,7 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
         public override string ToString() 
             => (Left, Right) == (1, 7)
                || (Left, Right) == (0, 7)
+               || (Left, Right) == (0, 6)
                || (Left, Right) == (1, 6)? $"*" : base.ToString();
     }
 }

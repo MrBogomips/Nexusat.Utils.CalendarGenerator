@@ -32,6 +32,11 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
             DayInfo.NormalizeWorkingPeriods(workingPeriods);
         }
 
+        /// <summary>
+        /// Returns a day info if the rule applyes
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns>'null' in case the rule can't apply</returns>
         public override DayInfo GetDayInfo(DateTime date)
         {
             if (YearMatchers.Any(_ => _.Match(date)) &&
@@ -46,7 +51,15 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 
         public override bool TryGetDayInfo(DateTime date, out DayInfo dayInfo)
         {
-            throw new NotImplementedException();
+            dayInfo = default;
+            if (YearMatchers.Any(_ => _.Match(date)) &&
+                MonthMatchers.Any(_ => _.Match(date)) &&
+                DayOfMonthMatchers.Any(_ => _.Match(date)) &&
+                DayOfWeekMatchers.Any(_ => _.Match(date)))
+            {
+                dayInfo = new DayInfo(Description, WorkingPeriods);
+            }
+            return dayInfo is not null;
         }
     }
 }
