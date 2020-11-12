@@ -81,5 +81,12 @@ namespace Nexusat.Utils.CalendarGenerator.CronDayRule
 
             return true;
         }
+
+        public CronDayRule Parse(string value)
+        {
+            if (!TryParse(value, out var cronDayRule))
+                throw new ArgumentException($"'{value}' is an invalid day rule", nameof(value));
+            return cronDayRule;
+        }
     }
 }

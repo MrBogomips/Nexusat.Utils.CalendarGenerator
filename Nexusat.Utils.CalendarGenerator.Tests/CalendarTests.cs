@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static System.DayOfWeek;
 
 // ReSharper disable HeapView.ObjectAllocation.Evident
-
+// TODO: migrate to xUnit
 namespace Nexusat.Utils.CalendarGenerator.Tests
 {
     [TestClass]

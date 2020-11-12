@@ -9,10 +9,11 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
     /// A Day Rule Expression is:
     ///
     /// * * * * [[{description}]] {working periods}  #{comments}
-    /// ^ ^ ^ ^ ^                     ^              ^
-    /// | | | | |                     |              +- (Optional) EoL comment
-    /// | | | | |                     |
-    /// | | | | |                     +---------------- (Optional) Comma separated list of working periods
+    /// ^ ^ ^ ^ ^                 ^                  ^
+    /// | | | | |                 |                  |
+    /// | | | | |                 |                  +- (Optional) EoL comment
+    /// | | | | |                 |
+    /// | | | | |                 +-------------------- (Optional) Comma separated list of working periods
     /// | | | | |                    
     /// | | | | +-------------------------------------- (Optional) Description of the day
     /// | | | |
@@ -23,7 +24,6 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
     /// | +-------------------------------------------- Month rule
     /// |
     /// +---------------------------------------------- Year rule
-    ///
     /// <example>
     /// Every day non working day: * * * * [[]]
     /// Every day working day: * * * * [[]] 08:30-17:30

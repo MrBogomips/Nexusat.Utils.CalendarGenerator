@@ -13,8 +13,6 @@ using System.Xml;
 
 namespace Nexusat.Utils.CalendarGenerator
 {
-    // TODO: CustomDayRule: a way to define a rule for specific days
-    // TODO: CronDayRule: a way to define recurrent events
     // TODO: NuGet Packaging
 
     /// <summary>
