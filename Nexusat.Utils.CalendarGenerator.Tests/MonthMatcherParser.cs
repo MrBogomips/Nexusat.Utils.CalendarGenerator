@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Nexusat.Utils.CalendarGenerator.CronDayRule;
 
 namespace Nexusat.Utils.CalendarGenerator.Tests
 {

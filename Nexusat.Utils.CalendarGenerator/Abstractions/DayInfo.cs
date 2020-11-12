@@ -18,8 +18,28 @@ namespace Nexusat.Utils.CalendarGenerator
             IsWorkingDay = WorkingPeriods is not null;
         }
 
+        private static Regex ParseRegex { get; } = new Regex(@"^\[\[((?<description>.*))\]\]\s*(?<timePeriods>(.*))$");
+
         /// <summary>
-        /// Normalize working periods by sorting them and checking they don't overlap
+        ///     Represents a working day
+        /// </summary>
+        [field: DataMember(Name = nameof(IsWorkingDay))]
+        public bool IsWorkingDay { get; }
+
+        /// <summary>
+        ///     A short description of the day
+        /// </summary>
+        [field: DataMember(Name = nameof(Description))]
+        public string Description { get; }
+
+        /// <summary>
+        ///     Working periods within the day
+        /// </summary>
+        [field: DataMember(Name = nameof(WorkingPeriods))]
+        public IEnumerable<TimePeriod> WorkingPeriods { get; }
+
+        /// <summary>
+        ///     Normalize working periods by sorting them and checking they don't overlap
         /// </summary>
         /// <param name="workingPeriods"></param>
         /// <returns></returns>
@@ -37,25 +57,23 @@ namespace Nexusat.Utils.CalendarGenerator
                     throw new ArgumentException("Working Periods can't overlap");
             return retVal;
         }
-        
-        private static Regex ParseRegex { get; } = new Regex(@"^\[\[((?<description>.*))\]\]\s*(?<timePeriods>(.*))$");
-        
+
         /// <summary>
-        /// Parse a day info declaration.
-        /// <example>
-        /// Valid strings are:
-        ///   [[]] is a day info without a description and a working time
-        ///   [[day description]] is a day info with a description and without a working time
-        ///   [[day description]] 00:00-01:00,22:00-23:00 is a day info with a description and a working time
-        ///   [[]] 00:00-01:00 is a day info without a description and a working time
-        /// </example>
+        ///     Parse a day info declaration.
+        ///     <example>
+        ///         Valid strings are:
+        ///         [[]] is a day info without a description and a working time
+        ///         [[day description]] is a day info with a description and without a working time
+        ///         [[day description]] 00:00-01:00,22:00-23:00 is a day info with a description and a working time
+        ///         [[]] 00:00-01:00 is a day info without a description and a working time
+        ///     </example>
         /// </summary>
         /// <returns></returns>
         public static bool TryParse(string value, out DayInfo dayInfo)
         {
             dayInfo = default;
             IEnumerable<TimePeriod> timePeriods = default;
-            
+
             if (string.IsNullOrEmpty(value)) return false;
             var m = ParseRegex.Match(value);
             if (!m.Success) return false;
@@ -71,18 +89,5 @@ namespace Nexusat.Utils.CalendarGenerator
 
             return true;
         }
-
-        /// <summary>
-        ///     Represents a working day
-        /// </summary>
-        [field: DataMember(Name=nameof(IsWorkingDay))] public bool IsWorkingDay { get; }
-        /// <summary>
-        ///     A short description of the day
-        /// </summary>
-        [field: DataMember(Name=nameof(Description))] public string Description { get; }
-        /// <summary>
-        ///     Working periods within the day
-        /// </summary>
-        [field: DataMember(Name=nameof(WorkingPeriods))] public IEnumerable<TimePeriod> WorkingPeriods { get; }
     }
 }
