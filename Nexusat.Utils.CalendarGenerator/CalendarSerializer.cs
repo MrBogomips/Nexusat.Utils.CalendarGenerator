@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -27,7 +28,7 @@ namespace Nexusat.Utils.CalendarGenerator
             public class Rule
             {
                 [XmlAttribute(AttributeName = "policy")]
-                public DayRulePolicy Policy { get; set; }
+                public string Policy { get; set; }
                 [XmlAttribute(AttributeName = "description")]
                 public string Description { get; set; }
                 [XmlAttribute(AttributeName = "pattern")]
@@ -57,7 +58,7 @@ namespace Nexusat.Utils.CalendarGenerator
                 LongDescription = calendar.LongDescription;
                 Rules = calendar.CalendarRules.Select(_ => new Rule
                 {
-                    Policy = _.Policy,
+                    Policy = _.Policy.ToString(),
                     Description = _.Rule.Description,
                     Pattern = _.Rule.ToDayPatternString(),
                     WorkingPeriods = _.Rule.WorkingPeriods?.Select(_ => new Period
@@ -84,7 +85,7 @@ namespace Nexusat.Utils.CalendarGenerator
                         throw new SerializationException($"Day pattern '{r.Pattern}' is invalid in this context: you cannot provide a day description");
                     if (workingPeriods is not null)
                         throw new SerializationException($"Day pattern '{r.Pattern}' is invalid in this context: you cannot provide a working period list");
-                    rules.Add(r.Policy, r.Description, yearMatchers, monthMatchers, dayOfMonthMatchers, dayOfWeekMatchers, 
+                    rules.Add(Enum.Parse<DayRulePolicy>(r.Policy) , r.Description, yearMatchers, monthMatchers, dayOfMonthMatchers, dayOfWeekMatchers, 
                         r.WorkingPeriods?.Select(_ => new CalendarGenerator.TimePeriod(Time.Parse(_.Begin), Time.Parse(_.End))));
                 }
                 return new Calendar(Name, rules, Description, LongDescription);
@@ -118,6 +119,7 @@ namespace Nexusat.Utils.CalendarGenerator
         /// <summary>
         ///     Returns an UTF-8 encoded JSON representing the calendar
         /// </summary>
+        /// <param name="calendar"></param>
         /// <param name="indent"></param>
         /// <returns></returns>
         public static string ToJson(this Calendar calendar, bool indent = false)
@@ -125,12 +127,33 @@ namespace Nexusat.Utils.CalendarGenerator
             if (calendar == null) throw new ArgumentNullException(nameof(calendar));
             var document = new CalendarDocument(calendar);
             
-            throw new NotImplementedException();
+            var ser = new DataContractJsonSerializer(typeof(CalendarDocument));
+
+            using var buffer = new MemoryStream();
+            using var writer = JsonReaderWriterFactory.CreateJsonWriter(buffer, Encoding.UTF8, true, indent);
+            using var reader = new StreamReader(buffer);
+
+            ser.WriteObject(writer, document);
+            writer.Flush();
+            buffer.Position = 0;
+            return reader.ReadToEnd();
         }
 
         public static Calendar LoadFromJson(string json)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(json))
+                throw new ArgumentException($"'{nameof(json)}' cannot be null or whitespace", nameof(json));
+
+            var ser = new DataContractJsonSerializer(typeof(CalendarDocument));
+
+            using var buffer = new MemoryStream();
+            using var writer = new StreamWriter(buffer);
+            writer.Write(json);
+            writer.Flush();
+            buffer.Position = 0;
+            var document = ser.ReadObject(buffer) as CalendarDocument;
+            Debug.Assert(document != null, "Calendar serialization returned null");
+            return document.GetCalendar();
         }
 
         public static Calendar ReadFromFile(string fileName)

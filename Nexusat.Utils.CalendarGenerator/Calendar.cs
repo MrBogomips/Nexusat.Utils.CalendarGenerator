@@ -104,40 +104,6 @@ namespace Nexusat.Utils.CalendarGenerator
         }
 
         /// <summary>
-        ///     Returns an UTF-8 encoded JSON representing the calendar
-        /// </summary>
-        /// <param name="indent"></param>
-        /// <returns></returns>
-        public string ToJson(bool indent = false)
-        {
-            var ser = new DataContractJsonSerializer(typeof(Calendar));
-
-            using var buffer = new MemoryStream();
-            using var writer = JsonReaderWriterFactory.CreateJsonWriter(buffer, Encoding.UTF8, true, indent);
-            using var reader = new StreamReader(buffer);
-
-            ser.WriteObject(writer, this);
-            writer.Flush();
-            buffer.Position = 0;
-            return reader.ReadToEnd();
-        }
-
-        public static Calendar LoadFromJson(string json)
-        {
-            if (string.IsNullOrWhiteSpace(json))
-                throw new ArgumentException($"'{nameof(json)}' cannot be null or whitespace", nameof(json));
-
-            var ser = new DataContractJsonSerializer(typeof(Calendar));
-
-            using var buffer = new MemoryStream();
-            using var writer = new StreamWriter(buffer);
-            writer.Write(json);
-            writer.Flush();
-            buffer.Position = 0;
-            return ser.ReadObject(buffer) as Calendar;
-        }
-
-        /// <summary>
         ///     Add rules to the collection of rules
         /// </summary>
         /// <param name="rules"></param>

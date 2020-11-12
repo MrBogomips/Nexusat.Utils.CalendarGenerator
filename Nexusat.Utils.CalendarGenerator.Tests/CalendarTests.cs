@@ -98,7 +98,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             TestContext.WriteLine(json);
             Assert.IsNotNull(json);
 
-            var calendar2 = Calendar.LoadFromJson(json);
+            var calendar2 = CalendarSerializer.LoadFromJson(json);
             TestFullCalendar(calendar2);
         }
 
