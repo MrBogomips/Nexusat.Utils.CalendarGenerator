@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Nexusat.Utils.CalendarGenerator.CronDayRule;
 
 namespace Nexusat.Utils.CalendarGenerator.Tests
 {
@@ -12,7 +11,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         [DynamicData(nameof(GetCases), DynamicDataSourceType.Method)]
         public void TestRules(string dayRuleDefinition, DateTime[] matchingDates, DateTime[] unmatchingDates)
         {
-            var dayRule = CronDayRuleParser.Instance.Parse(dayRuleDefinition);
+            var dayRule = DayRuleParser.Parse(dayRuleDefinition);
             foreach (var @case in matchingDates)
             {
                 Assert.IsTrue(dayRule.TryGetDayInfo(@case.Date, out var dayInfo));
@@ -33,7 +32,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
                 {
                     new DateTime(2020, 1, 1)
                 },
-                new[] // unmatching
+                new[] // un-matching
                 {
                     new DateTime(2020, 1, 2)
                 }
@@ -46,7 +45,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
                     new DateTime(2020, 1, 5),
                     new DateTime(2020, 1, 30)
                 },
-                new[] // unmatching
+                new[] // un-matching
                 {
                     new DateTime(2020, 2, 1),
                     new DateTime(2020, 3, 1),
@@ -61,7 +60,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
                     new DateTime(2024, 1, 1),
                     new DateTime(2028, 1, 1)
                 },
-                new[] // unmatching
+                new[] // un-matching
                 {
                     new DateTime(2020, 2, 1),
                     new DateTime(2020, 1, 2),
@@ -80,7 +79,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
                     new DateTime(2020, 11, 5),
                     new DateTime(2020, 11, 6)  // friday
                 },
-                new[] // unmatching
+                new[] // un-matching
                 {
                     // 2020
                     new DateTime(2020, 11, 7), // saturday

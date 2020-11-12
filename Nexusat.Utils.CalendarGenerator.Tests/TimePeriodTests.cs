@@ -8,6 +8,23 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
     public class TimePeriodTests
     {
         [TestMethod]
+        public void CtorTests()
+        {
+            var tm = new TimePeriod(new Time(0, 0), new Time(24, 0));
+            Assert.AreEqual(new Time(0, 0), tm.Begin);
+            Assert.AreEqual(new Time(24, 0), tm.End);
+            
+            tm = new TimePeriod(0, 0,24, 0);
+            Assert.AreEqual(new Time(0, 0), tm.Begin);
+            Assert.AreEqual(new Time(24, 0), tm.End);
+            
+            tm = TimePeriod.AllDay; // just for coverage sake
+            Assert.AreEqual(new Time(0, 0), tm.Begin);
+            Assert.AreEqual(new Time(24, 0), tm.End);
+
+        }
+        
+        [TestMethod]
         public void OverlapsTest()
         {
             /* Overlaps is a SYMMETRIC relation, therefore are tested both the directions */

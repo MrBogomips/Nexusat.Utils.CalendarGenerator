@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Nexusat.Utils.CalendarGenerator.CronDayRule;
+// ReSharper disable StringLiteralTypo
 
 namespace Nexusat.Utils.CalendarGenerator.Tests
 {
@@ -39,17 +39,19 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         public void InvalidParseTests()
         {
             var value = @"";
-            Assert.IsFalse(CronDayRuleParser.Instance.TryParse(value, out var obj));
+            // ReSharper disable once NotAccessedVariable
+            Assert.IsFalse(DayRuleParser.TryParse(value, out var obj));
             value = null;
-            Assert.IsFalse(CronDayRuleParser.Instance.TryParse(value, out obj));
+            // ReSharper disable once ExpressionIsAlwaysNull
+            Assert.IsFalse(DayRuleParser.TryParse(value, out obj));
             value = "  ";
-            Assert.IsFalse(CronDayRuleParser.Instance.TryParse(value, out obj));
+            Assert.IsFalse(DayRuleParser.TryParse(value, out obj));
             value = "*";
-            Assert.IsFalse(CronDayRuleParser.Instance.TryParse(value, out obj));
+            Assert.IsFalse(DayRuleParser.TryParse(value, out obj));
             value = "* *";
-            Assert.IsFalse(CronDayRuleParser.Instance.TryParse(value, out obj));
+            Assert.IsFalse(DayRuleParser.TryParse(value, out obj));
             value = "* * *";
-            Assert.IsFalse(CronDayRuleParser.Instance.TryParse(value, out obj));
+            Assert.IsFalse(DayRuleParser.TryParse(value, out obj));
         }
 
         [TestMethod]
@@ -57,26 +59,26 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         {
             // Basic
             var value = "* * * *"; // No description and working periods
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out var obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out var obj));
             value = "* * * * [[]]"; // No working periods
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
             value = "* * * * 08:00-12:00"; // No description
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
             
             // Basic with comments
             value = "* * * * # über"; 
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
             value = "* * * * [[]] # über"; // No working periods
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
             value = "* * * * 08:00-12:00 # über"; // No description
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
         }
 
         [TestMethod]
         public void YearMatcherTest()
         {
             var value = "*,*%2,1../2,*/Leap,*/NotLeap * * *";
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out var obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out var obj));
             Assert.AreEqual(5, obj.YearMatchers.Count);
             Assert.IsInstanceOfType(obj.YearMatchers[0], typeof(RangeYearMatcher));
             Assert.IsInstanceOfType(obj.YearMatchers[1], typeof(ModuloYearMatcher));
@@ -89,7 +91,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         public void MonthMatcherTest()
         {
             var value = "* *,*%2,1../2 * *";
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out var obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out var obj));
             Assert.AreEqual(3, obj.MonthMatchers.Count);
             Assert.IsInstanceOfType(obj.MonthMatchers[0], typeof(RangeMonthMatcher));
             Assert.IsInstanceOfType(obj.MonthMatchers[1], typeof(ModuloMonthMatcher));
@@ -100,7 +102,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         public void DayOfMonthMatcherTest()
         {
             var value = "* * *,*%2,1../2 *";
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out var obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out var obj));
             Assert.AreEqual(3, obj.DayOfMonthMatchers.Count);
             Assert.IsInstanceOfType(obj.DayOfMonthMatchers[0], typeof(RangeDayOfMonthMatcher));
             Assert.IsInstanceOfType(obj.DayOfMonthMatchers[1], typeof(ModuloDayOfMonthMatcher));
@@ -111,7 +113,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         public void DayOfWeekMatcherTest()
         {
             var value = "* * * 1,3..6";
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out var obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out var obj));
             Assert.AreEqual(2, obj.DayOfWeekMatchers.Count);
             Assert.IsInstanceOfType(obj.DayOfWeekMatchers[0], typeof(RangeDayOfWeekMatcher));
             Assert.IsInstanceOfType(obj.DayOfWeekMatchers[1], typeof(RangeDayOfWeekMatcher));
@@ -121,22 +123,22 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         public void DescriptionAndWorkingPeriodsTest()
         {
             var value = "* * * *";
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out var obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out var obj));
             Assert.IsNull((obj.Description));
             Assert.IsNull(obj.WorkingPeriods);
             
             value = "* * * * [[]]";
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
             Assert.IsNull((obj.Description));
             Assert.IsNull(obj.WorkingPeriods);
             
             value = "* * * * [[description]]";
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
             Assert.AreEqual("description",obj.Description);
             Assert.IsNull(obj.WorkingPeriods);
             
             value = "* * * * 04:00-05:00,02:00-03:00";
-            Assert.IsTrue(CronDayRuleParser.Instance.TryParse(value, out obj));
+            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
             Assert.IsNull((obj.Description));
             Assert.IsNotNull(obj.WorkingPeriods);
             Assert.AreEqual(2, obj.WorkingPeriods.Count);
