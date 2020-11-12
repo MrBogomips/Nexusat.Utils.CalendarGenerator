@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Nexusat.Utils.CalendarGenerator
@@ -45,31 +46,46 @@ namespace Nexusat.Utils.CalendarGenerator
         {
             dayRule = default;
             if (string.IsNullOrWhiteSpace(value)) return false;
+            
+            if (!TryParseInternal(value, out var description, out var yearMatchers, out var monthMatchers, out var dayOfMonthMatchers, out var dayOfWeekMatchers, out var timePeriods)) return false;
+
+            dayRule = new DayRule(description, yearMatchers, monthMatchers, dayOfMonthMatchers, dayOfWeekMatchers,
+                timePeriods);
+
+            return true;
+        }
+
+        internal static bool TryParseInternal(string value, out string description, out IEnumerable<IYearMatcher> yearMatchers,
+            out IEnumerable<IMonthMatcher> monthMatchers, out IEnumerable<IDayOfMonthMatcher> dayOfMonthMatchers, out IEnumerable<IDayOfWeekMatcher> dayOfWeekMatchers,
+            out IEnumerable<TimePeriod> timePeriods)
+        {
             var m = ParseRegex.Match(value);
+            description = default;
+            yearMatchers = default;
+            monthMatchers = default;
+            dayOfMonthMatchers = default;
+            dayOfWeekMatchers = default;
+            timePeriods = default;
             if (!m.Success) return false;
 
             var year = m.Groups["year"].Value;
             var month = m.Groups["month"].Value;
             var dayOfMonth = m.Groups["dayOfMonth"].Value;
             var dayOfWeek = m.Groups["dayOfWeek"].Value;
-            var description = m.Groups["description"].Value;
+            description = m.Groups["description"].Value;
             var strTimePeriods = m.Groups["timePeriods"].Value;
 
-            if (!YearMatcherParser.Instance.TryParseMulti(year, out var yearMatchers)) return false;
-            if (!MonthMatcherParser.Instance.TryParseMulti(month, out var monthMatchers)) return false;
-            if (!DayOfMonthMatcherParser.Instance.TryParseMulti(dayOfMonth, out var dayOfMonthMatchers)) return false;
-            if (!DayOfWeekMatcherParser.Instance.TryParseMulti(dayOfWeek, out var dayOfWeekMatchers)) return false;
+            if (!YearMatcherParser.Instance.TryParseMulti(year, out yearMatchers)) return false;
+            if (!MonthMatcherParser.Instance.TryParseMulti(month, out monthMatchers)) return false;
+            if (!DayOfMonthMatcherParser.Instance.TryParseMulti(dayOfMonth, out dayOfMonthMatchers)) return false;
+            if (!DayOfWeekMatcherParser.Instance.TryParseMulti(dayOfWeek, out dayOfWeekMatchers)) return false;
 
-            IEnumerable<TimePeriod> timePeriods = null;
+            timePeriods = null;
             if (!string.IsNullOrWhiteSpace(strTimePeriods)
                 && !TimePeriod.TryParseMulti(strTimePeriods, ",", out timePeriods))
                 return false;
 
             if (string.IsNullOrWhiteSpace(description)) description = null;
-
-            dayRule = new DayRule(description, yearMatchers, monthMatchers, dayOfMonthMatchers, dayOfWeekMatchers,
-                timePeriods);
-
             return true;
         }
 
@@ -78,6 +94,20 @@ namespace Nexusat.Utils.CalendarGenerator
             if (!TryParse(value, out var cronDayRule))
                 throw new ArgumentException($"'{value}' is an invalid day rule", nameof(value));
             return cronDayRule;
+        }
+
+        internal static string ToDayPatternString(
+            IEnumerable<IYearMatcher> yearMatchers,
+            IEnumerable<IMonthMatcher> monthMatchers, 
+            IEnumerable<IDayOfMonthMatcher> dayOfMonthMatchers,
+            IEnumerable<IDayOfWeekMatcher> dayOfWeekMatchers)
+        {
+            var yearPattern = string.Join(",",yearMatchers.Select(_ => _.ToString()));
+            var monthPattern = string.Join(",",monthMatchers.Select(_ => _.ToString()));
+            var dayOfMonthPattern = string.Join(",",dayOfMonthMatchers.Select(_ => _.ToString()));
+            var dayOfWeekPattern =string.Join(",",dayOfWeekMatchers.Select(_ => _.ToString()));
+
+            return $"{yearPattern} {monthPattern} {dayOfMonthPattern} {dayOfWeekPattern}";
         }
     }
 }

@@ -22,18 +22,18 @@ namespace Nexusat.Utils.CalendarGenerator
     [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public class Calendar : ICalendar, IEquatable<Calendar>
     {
-        public Calendar(string name, DayRules dayRules, string description = null, string longDescription = null)
+        public Calendar(string name, CalendarRules calendarRules, string description = null, string longDescription = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description;
             LongDescription = longDescription;
-            DayRules = dayRules ?? throw new ArgumentNullException(nameof(dayRules));
+            CalendarRules = calendarRules ?? throw new ArgumentNullException(nameof(calendarRules));
         }
 
-        public static Calendar EmptyCalendar { get; } = new Calendar("EmptyCalendar", new DayRules());
+        public static Calendar EmptyCalendar { get; } = new Calendar("EmptyCalendar", new CalendarRules());
 
-        [field: DataMember(Name = nameof(DayRules))]
-        public DayRules DayRules { get; }
+        [field: DataMember(Name = nameof(CalendarRules))]
+        public CalendarRules CalendarRules { get; }
 
         [field: DataMember(IsRequired = true, Name = nameof(Name))]
         public string Name { get; }
@@ -58,9 +58,9 @@ namespace Nexusat.Utils.CalendarGenerator
         public bool TryGetDayInfo(DateTime date, out DayInfo dayInfo)
         {
             dayInfo = null;
-            if (DayRules == null || !DayRules.Any()) return false; // no rules => nothing to do
+            if (CalendarRules == null || !CalendarRules.Any()) return false; // no rules => nothing to do
 
-            foreach (var rule in DayRules)
+            foreach (var rule in CalendarRules)
             {
                 if (!rule.Rule.TryGetDayInfo(date, out var curInfo)) continue; // something to evaluate
                 dayInfo = curInfo; // register the most recent found
@@ -109,30 +109,6 @@ namespace Nexusat.Utils.CalendarGenerator
             return calendarDays;
         }
 
-        public string ToXml(XmlWriterSettings settings = null)
-        {
-            var ser = new DataContractSerializer(typeof(Calendar));
-
-            using var buffer = new StringWriter();
-            using var writer = XmlWriter.Create(buffer, settings);
-
-            ser.WriteObject(writer, this);
-            writer.Flush();
-            return buffer.ToString();
-        }
-
-        public static Calendar LoadFromXml(string xml)
-        {
-            if (string.IsNullOrWhiteSpace(xml))
-                throw new ArgumentException($"'{nameof(xml)}' cannot be null or whitespace", nameof(xml));
-
-            var ser = new DataContractSerializer(typeof(Calendar));
-
-            using var buffer = new StringReader(xml);
-            using var reader = XmlReader.Create(buffer);
-            return ser.ReadObject(reader) as Calendar;
-        }
-
         /// <summary>
         ///     Returns an UTF-8 encoded JSON representing the calendar
         /// </summary>
@@ -171,9 +147,9 @@ namespace Nexusat.Utils.CalendarGenerator
         ///     Add rules to the collection of rules
         /// </summary>
         /// <param name="rules"></param>
-        public void AddRules(DayRules rules)
+        public void AddRules(CalendarRules rules)
         {
-            DayRules.AddRange(rules);
+            CalendarRules.AddRange(rules);
         }
 
         /// <summary>
@@ -182,7 +158,7 @@ namespace Nexusat.Utils.CalendarGenerator
         /// <param name="calendar"></param>
         public void AddRules(Calendar calendar)
         {
-            DayRules.Add(calendar);
+            CalendarRules.Add(calendar);
         }
 
 

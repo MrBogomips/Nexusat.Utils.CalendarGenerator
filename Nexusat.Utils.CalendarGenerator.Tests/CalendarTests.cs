@@ -69,10 +69,10 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
 
         private static Calendar SetupFullCalendar()
         {
-            var rules = new DayRules
+            var rules = new CalendarRules
             {
-                {DayRulePolicy.Fallthrough, DayRuleParser.Parse("* * * * 08:30-17:30")},
-                {DayRulePolicy.Fallthrough, DayRuleParser.Parse("* * * 6..7")}
+                {DayRulePolicy.Fallthrough, DayRuleParser.Parse("* * * * [[working day]] 08:30-17:30")},
+                {DayRulePolicy.Fallthrough, DayRuleParser.Parse("* * * 6..7 [[non working day]]")}
             };
 
             return new Calendar("Five Working Days Calendar", rules);
@@ -87,7 +87,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             TestContext.WriteLine(xml);
             Assert.IsNotNull(xml);
 
-            var calendar2 = Calendar.LoadFromXml(xml);
+            var calendar2 = CalendarSerializer.LoadFromXml(xml);
             TestFullCalendar(calendar2);
         }
 
@@ -152,9 +152,9 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         {
             var calendar = SetupFullCalendar();
             var calendar2 = SetupFullCalendar();
-            var ruleCount = calendar.DayRules.Count;
+            var ruleCount = calendar.CalendarRules.Count;
             calendar.AddRules(calendar2);
-            Assert.AreEqual(ruleCount * 2, calendar.DayRules.Count);
+            Assert.AreEqual(ruleCount * 2, calendar.CalendarRules.Count);
         }
     }
 }
