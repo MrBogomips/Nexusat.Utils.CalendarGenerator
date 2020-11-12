@@ -14,13 +14,11 @@ using System.Xml;
 namespace Nexusat.Utils.CalendarGenerator
 {
     // TODO: NuGet Packaging
-
     /// <summary>
     ///     Base implementation of a calendar.
     ///     See <see cref="ICalendar" /> for the semantic of the members.
     /// </summary>
-    [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
-    public class Calendar : ICalendar, IEquatable<Calendar>
+    public class Calendar : ICalendar
     {
         public Calendar(string name, CalendarRules calendarRules, string description = null, string longDescription = null)
         {
@@ -31,17 +29,13 @@ namespace Nexusat.Utils.CalendarGenerator
         }
 
         public static Calendar EmptyCalendar { get; } = new Calendar("EmptyCalendar", new CalendarRules());
-
-        [field: DataMember(Name = nameof(CalendarRules))]
+        
         public CalendarRules CalendarRules { get; }
-
-        [field: DataMember(IsRequired = true, Name = nameof(Name))]
+        
         public string Name { get; }
-
-        [field: DataMember(Name = nameof(Description))]
+        
         public string Description { get; }
-
-        [field: DataMember(Name = nameof(LongDescription))]
+        
         public string LongDescription { get; }
 
         /// <summary>
@@ -160,27 +154,5 @@ namespace Nexusat.Utils.CalendarGenerator
         {
             CalendarRules.Add(calendar);
         }
-
-
-        #region Equals
-
-        // override object.Equals
-        public bool Equals(Calendar other)
-        {
-            return other is not null && Name == other.Name;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Calendar c && Equals(c);
-        }
-
-        // override object.GetHashCode
-        public override int GetHashCode()
-        {
-            return Name.GetHashCode();
-        }
-
-        #endregion Equals
     }
 }

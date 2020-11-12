@@ -56,7 +56,6 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             var saturday = DateTime.Parse("2020-11-07");
             var sunday = DateTime.Parse("2020-11-08");
 
-
             // Exercise and Assert
             Assert.IsTrue(calendar.GetDayInfo(monday).IsWorkingDay);
             Assert.IsTrue(calendar.GetDayInfo(tuesday).IsWorkingDay);
@@ -75,14 +74,13 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
                 {DayRulePolicy.Fallthrough, DayRuleParser.Parse("* * * 6..7 [[non working day]]")}
             };
 
-            return new Calendar("Five Working Days Calendar", rules);
+            return new Calendar("Five Working Days Calendar", rules, "calendar description", "this is a very long description");
         }
 
         [TestMethod]
         public void XmlSerializationTest()
         {
             var calendar = SetupFullCalendar();
-
             var xml = calendar.ToXml();
             TestContext.WriteLine(xml);
             Assert.IsNotNull(xml);
