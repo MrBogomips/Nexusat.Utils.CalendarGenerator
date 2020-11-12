@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,9 +17,26 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
         // ReSharper disable once MemberCanBePrivate.Global
         public TestContext TestContext { get; set; }
 
+        [TestMethod]
+        public void EmptyCalendarTest()
+        {
+            var calendar = Calendar.EmptyCalendar;
+            Assert.IsNotNull(calendar);
+            Assert.AreSame(Calendar.EmptyCalendar, calendar, "Empty calendar is a singleton");
+            var xml = calendar.ToXml();
+            TestContext.WriteLine($"Calendar XML Definition:\n{xml}");
+            Assert.IsNull(calendar.GetDayInfo(DateTime.Now), "Empty calendar doesn't provide any info");
+            var defaultDayInfo = new DayInfo();
 
+            var days = calendar.GenerateCalendarDays(
+                new DateTime(2020, 1, 1),
+                new DateTime(2020, 12, 31), defaultDayInfo);
+            Assert.AreEqual(366, days.Count);
+            xml = days.ToXml();
+            Assert.IsNotNull(xml);
+            TestContext.WriteLine($"\n\nCalendar Days:\n{xml}");
+        }
 
-        
 
         [TestMethod]
         public void WeekdayTest()
@@ -52,29 +69,13 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
 
         private static Calendar SetupFullCalendar()
         {
-            throw new NotImplementedException();
-            /*
-            var weekdaysRuleBuilder = new WeekdaysWorkingRuleBuilder();
-            weekdaysRuleBuilder.AddRule(Monday, 8, 30, 17, 30);
-            weekdaysRuleBuilder.AddRule(Tuesday, 8, 30, 17, 30);
-            weekdaysRuleBuilder.AddRule(Wednesday, 8, 30, 17, 30);
-            weekdaysRuleBuilder.AddRule(Thursday, 8, 30, 17, 30);
-            weekdaysRuleBuilder.AddRule(Friday, 8, 30, 17, 30);
-            weekdaysRuleBuilder.AddRule(Saturday, 8, 30, 17, 30); // This rule would be overriden by the Weekend rules
-            weekdaysRuleBuilder.AddRule(Sunday, 8, 30, 17, 30); // This rule would be overriden by the Weekend rules
-
-            var weekendRuleBuilder = new WeekdaysNonWorkingRuleBuilder();
-            weekendRuleBuilder.AddRule(Saturday);
-            weekendRuleBuilder.AddRule(Sunday);
-
             var rules = new DayRules
             {
-                {DayRulePolicy.Fallthrough, weekdaysRuleBuilder.GetRule()},
-                {DayRulePolicy.Fallthrough, weekendRuleBuilder.GetRule()}
+                {DayRulePolicy.Fallthrough, DayRuleParser.Parse("* * * * 08:30-17:30")},
+                {DayRulePolicy.Fallthrough, DayRuleParser.Parse("* * * 6..7")}
             };
 
             return new Calendar("Five Working Days Calendar", rules);
-            */
         }
 
         [TestMethod]
@@ -88,26 +89,6 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
 
             var calendar2 = Calendar.LoadFromXml(xml);
             TestFullCalendar(calendar2);
-        }
-
-        [TestMethod]
-        public void EmptyCalendarTest()
-        {
-            var calendar = Calendar.EmptyCalendar;
-            Assert.IsNotNull(calendar);
-            Assert.AreSame(Calendar.EmptyCalendar, calendar, "Empty calendar is a singleton");
-            var xml = calendar.ToXml();
-            TestContext.WriteLine($"Calendar XML Definition:\n{xml}");
-            Assert.IsNull(calendar.GetDayInfo(DateTime.Now), "Empty calendar doesn't provide any info");
-            var defaultDayInfo = new DayInfo();
-
-            var days = calendar.GenerateCalendarDays(
-                new DateTime(2020, 1, 1),
-                new DateTime(2020, 12, 31), defaultDayInfo);
-            Assert.AreEqual(366, days.Count);
-            xml = days.ToXml();
-            Assert.IsNotNull(xml);
-            TestContext.WriteLine($"\n\nCalendar Days:\n{xml}");
         }
 
         [TestMethod]
@@ -174,7 +155,6 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             var ruleCount = calendar.DayRules.Count;
             calendar.AddRules(calendar2);
             Assert.AreEqual(ruleCount * 2, calendar.DayRules.Count);
-            TestContext.WriteLine($"Calendar XML:\n{calendar.ToXml(new XmlWriterSettings {Indent = true})}");
         }
     }
 }

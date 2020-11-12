@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Nexusat.Utils.CalendarGenerator.Tests
 {
     [TestClass]
-    public class CronDayRuleTests
+    public class DayRuleTests
     {
         [DataTestMethod]
         [DynamicData(nameof(GetCases), DynamicDataSourceType.Method)]

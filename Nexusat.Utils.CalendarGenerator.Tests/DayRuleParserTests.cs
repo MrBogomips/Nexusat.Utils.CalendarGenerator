@@ -33,7 +33,7 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
     /// </example>
     /// </summary>
     [TestClass]
-    public class CronDayRuleParserTests
+    public class DayRuleParserTests
     {
         [TestMethod]
         public void InvalidParseTests()
@@ -54,24 +54,17 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
             Assert.IsFalse(DayRuleParser.TryParse(value, out obj));
         }
 
-        [TestMethod]
-        public void ValidParseTests()
+        [DataTestMethod]
+        [DataRow("* * * *")]
+        [DataRow("* * * * [[]]")]
+        [DataRow("* * * * 08:00-12:00")]
+        [DataRow("* * * * # über")]
+        [DataRow("* * * * [[]] # über")]
+        [DataRow("* * * * 08:00-12:00 # über")]
+        public void ValidParseTests(string dayRule)
         {
-            // Basic
-            var value = "* * * *"; // No description and working periods
-            Assert.IsTrue(DayRuleParser.TryParse(value, out var obj));
-            value = "* * * * [[]]"; // No working periods
-            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
-            value = "* * * * 08:00-12:00"; // No description
-            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
-            
-            // Basic with comments
-            value = "* * * * # über"; 
-            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
-            value = "* * * * [[]] # über"; // No working periods
-            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
-            value = "* * * * 08:00-12:00 # über"; // No description
-            Assert.IsTrue(DayRuleParser.TryParse(value, out obj));
+            Assert.IsTrue(DayRuleParser.TryParse(dayRule, out var obj));
+            Assert.IsNotNull(obj);
         }
 
         [TestMethod]
