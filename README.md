@@ -152,9 +152,11 @@ A calendar rule without a working day period is interpreted as a non-working day
 00:00-24:00
 ``` 
  
+ 
  ## Calendar Examples
  
  For a working example please refer to the [Sample App](../master/Nexusat.Utils.CalendarGenerator.SampleApp/Main.cs).
+ 
  
  ### Typical working day calendar without holidays
  
