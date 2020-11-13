@@ -61,7 +61,10 @@ Debug.Assert(!dayInfo.IsWorkingDay, "Now the xmas is considered a non working da
  */
 var defaultDayInfo = new DayInfo(); // We don't require a default dayInfo in this scenario because our calendar rules will always provide DayInfo data
 var december2020days = workingWeek.GenerateCalendarDays(DateTime.Parse("2020-12-01"), DateTime.Parse("2020-12-31"), defaultDayInfo);
+Console.WriteLine("Calendar Days (JSON)");
 Console.WriteLine(december2020days.ToJson(true));
+Console.WriteLine("Calendar Days (XML)");
+Console.WriteLine(december2020days.ToXml());
 
 /**************************************************
  * SERIALIZE CALENDAR DEFINITIONS (ONLY XML DEMO)
