@@ -10,15 +10,12 @@ namespace Nexusat.Utils.CalendarGenerator
     ///     A whole day is represented by the period [00:00, 24:00[, as ISO 8601 recommends.
     ///     .Net Class Library, unfortunately, isn't compliant with that time period representation.
     /// </summary>
-    [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public readonly struct TimePeriod : IComparable<TimePeriod>, IEquatable<TimePeriod>
     {
         public static TimePeriod AllDay { get; } = new TimePeriod(new Time(), new Time(24, 0));
-
-        [field: DataMember(Name = nameof(Begin))]
+        
         public Time Begin { get; }
-
-        [field: DataMember(Name = nameof(End))]
+        
         public Time End { get; }
 
         public TimePeriod(Time begin, Time end)

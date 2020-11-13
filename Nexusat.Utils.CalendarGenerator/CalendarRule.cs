@@ -6,7 +6,6 @@ namespace Nexusat.Utils.CalendarGenerator
     /// <summary>
     ///     Represent a single rule with the interpretation policy
     /// </summary>
-    [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar", Name = "DayRule")]
     public class CalendarRule
     {
         public CalendarRule(DayRulePolicy policy, DayRule rule)
@@ -15,8 +14,8 @@ namespace Nexusat.Utils.CalendarGenerator
             Rule = rule ?? throw new ArgumentNullException(nameof(rule));
         }
 
-        [DataMember(Name = nameof(Policy))] public DayRulePolicy Policy { get; private set; }
+        public DayRulePolicy Policy { get; private set; }
 
-        [DataMember(Name = nameof(Rule))] public DayRule Rule { get; private set; }
+        public DayRule Rule { get; private set; }
     }
 }

@@ -12,13 +12,10 @@ namespace Nexusat.Utils.CalendarGenerator
     ///     Hour can assume values between 0 and 24 to correctly represent the End of Day: in this case minute must be 0
     ///     (zero).
     /// </summary>
-    [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public readonly struct Time : IComparable<Time>, IEquatable<Time>
     {
-        [field: DataMember(Name = nameof(Hour))]
         public short Hour { get; }
-
-        [field: DataMember(Name = nameof(Minute))]
+        
         public short Minute { get; }
 
         public Time(short hour, short minute)

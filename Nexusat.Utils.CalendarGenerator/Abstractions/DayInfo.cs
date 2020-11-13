@@ -7,7 +7,6 @@ using System.Text.RegularExpressions;
 
 namespace Nexusat.Utils.CalendarGenerator
 {
-    [DataContract(Namespace = "http://www.nexusat.it/schemas/calendar")]
     public sealed class DayInfo
     {
         [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
@@ -23,19 +22,16 @@ namespace Nexusat.Utils.CalendarGenerator
         /// <summary>
         ///     Represents a working day
         /// </summary>
-        [field: DataMember(Name = nameof(IsWorkingDay))]
         public bool IsWorkingDay { get; }
 
         /// <summary>
         ///     A short description of the day
         /// </summary>
-        [field: DataMember(Name = nameof(Description))]
         public string Description { get; }
 
         /// <summary>
         ///     Working periods within the day
         /// </summary>
-        [field: DataMember(Name = nameof(WorkingPeriods))]
         public IEnumerable<TimePeriod> WorkingPeriods { get; }
 
         /// <summary>
