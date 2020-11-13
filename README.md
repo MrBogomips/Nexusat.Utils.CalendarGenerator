@@ -8,7 +8,7 @@ The main purpose of this library is to simplify the generation of calendar days 
 
 More in details with this libary you can:
 * define calendars by a succint syntax
-* combine calendar in a hierarchy
+* combine calendars in a hierarchy
 * check if a date match a calendar and fetch day info
 * generate calendar days tables in JSON or XML formats
 * serialize and deserialize calendar definition in JSON or XML, useful to persist a calendar on an external system (DB or filesystem)
