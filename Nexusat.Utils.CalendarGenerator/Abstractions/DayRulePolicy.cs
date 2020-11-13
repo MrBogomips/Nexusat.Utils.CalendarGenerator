@@ -9,23 +9,13 @@ namespace Nexusat.Utils.CalendarGenerator
     public enum DayRulePolicy
     {
         /// <summary>
-        ///     Useful to set a default value in advance
+        ///     Continue the evaluation of the rules. Following rules could override this outcome.
         /// </summary>
         [EnumMember] Fallthrough = 0,
 
         /// <summary>
-        ///     If the rule evaluates to <c>true</c> then the evaluation is considered determined.
+        ///     Stop the evaluation of the rules and accept this outcome.
         /// </summary>
-        [EnumMember] AcceptIfTrue = 1,
-
-        /// <summary>
-        ///     If the rule evaluates to <c>false</c> then the evaluation is considered determined.
-        /// </summary>
-        [EnumMember] AcceptIfFalse = 2,
-
-        /// <summary>
-        ///     If the rule produce any outcome than this is accepted
-        /// </summary>
-        [EnumMember] AcceptAlways = 3
+        [EnumMember] Accept = 3
     }
 }

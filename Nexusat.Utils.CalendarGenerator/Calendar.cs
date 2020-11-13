@@ -58,10 +58,7 @@ namespace Nexusat.Utils.CalendarGenerator
             {
                 if (!rule.Rule.TryGetDayInfo(date, out var curInfo)) continue; // something to evaluate
                 dayInfo = curInfo; // register the most recent found
-                if (rule.Policy == DayRulePolicy.AcceptAlways ||
-                    dayInfo.IsWorkingDay && rule.Policy == DayRulePolicy.AcceptIfTrue ||
-                    !dayInfo.IsWorkingDay && rule.Policy == DayRulePolicy.AcceptIfFalse)
-                    break;
+                if (rule.Policy == DayRulePolicy.Accept) break;
             }
 
             return dayInfo != null;

@@ -21,9 +21,9 @@ var workingWeek = new Calendar("Standard working week", calendarStandardWorkingW
 var calendarItalianHolydaysRules = new CalendarRules
 {
     // In the following rule we state that all 25th of december are xmas days and the policy we'll force to accept this outcome
-    {DayRulePolicy.AcceptAlways, DayRuleParser.Parse("* 12 25 * [[xmas]]")},
+    {DayRulePolicy.Accept, DayRuleParser.Parse("* 12 25 * [[xmas]]")},
     // Same as before
-    {DayRulePolicy.AcceptAlways, DayRuleParser.Parse("* 1 1 * [[new year]]")}
+    {DayRulePolicy.Accept, DayRuleParser.Parse("* 1 1 * [[new year]]")}
 };
 
 // We buils a simple calendar for italian holydays
