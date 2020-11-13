@@ -155,25 +155,5 @@ namespace Nexusat.Utils.CalendarGenerator
             Debug.Assert(document != null, "Calendar serialization returned null");
             return document.GetCalendar();
         }
-
-        public static Calendar ReadFromFile(string fileName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void WriteToFile(this Calendar calendar, string filename)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Calendar ReadFromStream(Stream stream)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void WriteToStream(this Calendar calendar, Stream stream)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexusat.Utils.CalendarGener
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexusat.Utils.CalendarGenerator.Tests", "Nexusat.Utils.CalendarGenerator.Tests\Nexusat.Utils.CalendarGenerator.Tests.csproj", "{7DB1A1C1-9569-4954-9489-DD5F88A2BD51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexusat.Utils.CalendarGenerator.SampleApp", "Nexusat.Utils.CalendarGenerator.SampleApp\Nexusat.Utils.CalendarGenerator.SampleApp.csproj", "{028221B3-F07B-4E49-8715-A408541E72B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7DB1A1C1-9569-4954-9489-DD5F88A2BD51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DB1A1C1-9569-4954-9489-DD5F88A2BD51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DB1A1C1-9569-4954-9489-DD5F88A2BD51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{028221B3-F07B-4E49-8715-A408541E72B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{028221B3-F07B-4E49-8715-A408541E72B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{028221B3-F07B-4E49-8715-A408541E72B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{028221B3-F07B-4E49-8715-A408541E72B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
