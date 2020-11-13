@@ -14,7 +14,7 @@ namespace Nexusat.Utils.CalendarGenerator
 (?<dayOfWeek>\S+)\s*
 (\s+(\[\[(?<description>.*)\]\])?\s*
 (?<timePeriods>(\d{2}:\d{2}-\d{2}:\d{2})?(,\d{2}:\d{2}-\d{2}:\d{2})*))?\s*
-(?<comments>#.*)?$".Replace("\n", ""));
+(?<comments>#.*)?$".Replace(Environment.NewLine, ""));
 
         /// <summary>
         ///     Parse a day rule expression
