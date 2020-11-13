@@ -15,7 +15,7 @@ More in details with this libary you can:
 
 ## Calendar Definition
 
-The definition of a achieved by specifing a set of rules.
+The definition of a calendar is achieved by specifing a set of rules.
 
 Each rule is made up of the following parts:
 * An evaluation policy
