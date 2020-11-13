@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace Nexusat.Utils.CalendarGenerator
+﻿namespace Nexusat.Utils.CalendarGenerator
 {
     /// <summary>
     ///     The policy in evaluating a chain of rules

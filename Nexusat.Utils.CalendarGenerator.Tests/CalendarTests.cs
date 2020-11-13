@@ -74,7 +74,8 @@ namespace Nexusat.Utils.CalendarGenerator.Tests
                 {DayRulePolicy.Fallthrough, DayRuleParser.Parse("* * * 6..7 [[non working day]]")}
             };
 
-            return new Calendar("Five Working Days Calendar", rules, "calendar description", "this is a very long description");
+            return new Calendar("Five Working Days Calendar", rules, "calendar description",
+                "this is a very long description");
         }
 
         [TestMethod]

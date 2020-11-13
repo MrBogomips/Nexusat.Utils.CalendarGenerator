@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using static Nexusat.Utils.CalendarGenerator.DayOfWeekMatcherHelper;
 
 namespace Nexusat.Utils.CalendarGenerator
@@ -14,6 +15,7 @@ namespace Nexusat.Utils.CalendarGenerator
     ///     Fri: 5
     ///     Sat: 6
     /// </summary>
+    [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
     public class RangeDayOfWeekMatcher : RangeNumberMatcher, IDayOfWeekMatcher
     {
         public RangeDayOfWeekMatcher(int? left, int? right) : base(RangeCtorHelper(left, right))

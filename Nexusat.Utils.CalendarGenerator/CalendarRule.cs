@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace Nexusat.Utils.CalendarGenerator
 {
@@ -14,8 +13,8 @@ namespace Nexusat.Utils.CalendarGenerator
             Rule = rule ?? throw new ArgumentNullException(nameof(rule));
         }
 
-        public DayRulePolicy Policy { get; private set; }
+        public DayRulePolicy Policy { get; }
 
-        public DayRule Rule { get; private set; }
+        public DayRule Rule { get; }
     }
 }

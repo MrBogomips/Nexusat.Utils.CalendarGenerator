@@ -58,7 +58,9 @@ namespace Nexusat.Utils.CalendarGenerator
             return dayInfo is not null;
         }
 
-        public string ToDayPatternString() =>
-            DayRuleParser.ToDayPatternString(YearMatchers, MonthMatchers, DayOfMonthMatchers, DayOfWeekMatchers);
+        public string ToDayPatternString()
+        {
+            return DayRuleParser.ToDayPatternString(YearMatchers, MonthMatchers, DayOfMonthMatchers, DayOfWeekMatchers);
+        }
     }
 }

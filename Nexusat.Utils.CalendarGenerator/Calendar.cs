@@ -1,10 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Xml;
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -20,7 +15,8 @@ namespace Nexusat.Utils.CalendarGenerator
     /// </summary>
     public class Calendar : ICalendar
     {
-        public Calendar(string name, CalendarRules calendarRules, string description = null, string longDescription = null)
+        public Calendar(string name, CalendarRules calendarRules, string description = null,
+            string longDescription = null)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description;
@@ -29,13 +25,13 @@ namespace Nexusat.Utils.CalendarGenerator
         }
 
         public static Calendar EmptyCalendar { get; } = new Calendar("EmptyCalendar", new CalendarRules());
-        
+
         public CalendarRules CalendarRules { get; }
-        
+
         public string Name { get; }
-        
+
         public string Description { get; }
-        
+
         public string LongDescription { get; }
 
         /// <summary>
@@ -104,6 +100,7 @@ namespace Nexusat.Utils.CalendarGenerator
         ///     Add rules to the collection of rules
         /// </summary>
         /// <param name="rules"></param>
+        // ReSharper disable once UnusedMember.Global
         public void AddRules(CalendarRules rules)
         {
             CalendarRules.AddRange(rules);

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using static Nexusat.Utils.CalendarGenerator.DayOfMonthMatcherHelper;
 
 namespace Nexusat.Utils.CalendarGenerator
@@ -6,6 +7,7 @@ namespace Nexusat.Utils.CalendarGenerator
     /// <summary>
     ///     Month matcher for a range of months
     /// </summary>
+    [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
     public class RangeDayOfMonthMatcher : RangeNumberMatcher, IDayOfMonthMatcher
     {
         public RangeDayOfMonthMatcher(int? left, int? right) : base(RangeCtorHelper(left, right))

@@ -9,88 +9,16 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
 namespace Nexusat.Utils.CalendarGenerator
 {
     public static class CalendarSerializer
     {
-        private static int CalendarSerializerVersion = 1;
-        
-        [XmlRoot(ElementName = "Calendar", Namespace = "http://www.nexusat.it/schemas/calendar")]
-        public class CalendarDocument
-        {
-            public class Period
-            {
-                [XmlAttribute(AttributeName = "begin")]
-                public string Begin { get; set; }
-                [XmlAttribute(AttributeName = "end")]
-                public string End { get; set; }
-            }
-            public class Rule
-            {
-                [XmlAttribute(AttributeName = "policy")]
-                public string Policy { get; set; }
-                [XmlAttribute(AttributeName = "description")]
-                public string Description { get; set; }
-                [XmlAttribute(AttributeName = "pattern")]
-                public string Pattern { get; set; }
-                public List<Period> WorkingPeriods { get; set; }
-            }
-            
-            [XmlAttribute(AttributeName = "version")]
-            public string Version { get; set; }
-            [XmlAttribute(AttributeName = "name")]
-            public string Name { get; set; }
-            public string Description { get; set; }
-            public string LongDescription { get; set; }
-            public List<Rule> Rules { get; set; }
+        private static readonly int CalendarSerializerVersion = 1;
 
-            // ReSharper disable once UnusedMember.Global
-            public CalendarDocument()
-            {
-            }
-
-            public CalendarDocument(Calendar calendar)
-            {
-                if (calendar == null) throw new ArgumentNullException(nameof(calendar));
-                Version = CalendarSerializerVersion.ToString();
-                Name = calendar.Name;
-                Description = calendar.Description;
-                LongDescription = calendar.LongDescription;
-                Rules = calendar.CalendarRules.Select(_ => new Rule
-                {
-                    Policy = _.Policy.ToString(),
-                    Description = _.Rule.Description,
-                    Pattern = _.Rule.ToDayPatternString(),
-                    WorkingPeriods = _.Rule.WorkingPeriods?.Select(_ => new Period
-                        {Begin = _.Begin.ToString(), End = _.End.ToString()}).ToList()
-                }).ToList();
-            }
-
-            internal Calendar GetCalendar()
-            {
-                var rules = new CalendarRules();
-                foreach (var r in Rules)
-                {
-                    if (!DayRuleParser.TryParseInternal(r.Pattern,
-                        out var description,
-                        out var yearMatchers,
-                        out var monthMatchers,
-                        out var dayOfMonthMatchers,
-                        out var dayOfWeekMatchers,
-                        out var workingPeriods))
-                    {
-                        throw new SerializationException($"Day pattern '{r.Pattern}' is invalid");
-                    }
-                    if (!string.IsNullOrEmpty(description))
-                        throw new SerializationException($"Day pattern '{r.Pattern}' is invalid in this context: you cannot provide a day description");
-                    if (workingPeriods is not null)
-                        throw new SerializationException($"Day pattern '{r.Pattern}' is invalid in this context: you cannot provide a working period list");
-                    rules.Add(Enum.Parse<DayRulePolicy>(r.Policy) , r.Description, yearMatchers, monthMatchers, dayOfMonthMatchers, dayOfWeekMatchers, 
-                        r.WorkingPeriods?.Select(_ => new CalendarGenerator.TimePeriod(Time.Parse(_.Begin), Time.Parse(_.End))));
-                }
-                return new Calendar(Name, rules, Description, LongDescription);
-            }
-        }
         public static string ToXml(this Calendar calendar, XmlWriterSettings settings = null)
         {
             if (calendar == null) throw new ArgumentNullException(nameof(calendar));
@@ -111,7 +39,7 @@ namespace Nexusat.Utils.CalendarGenerator
             if (xml == null) throw new ArgumentNullException(nameof(xml));
             var ser = new XmlSerializer(typeof(CalendarDocument));
             using var reader = new StringReader(xml);
-            var document = (CalendarDocument)ser.Deserialize(reader);
+            var document = (CalendarDocument) ser.Deserialize(reader);
             Debug.Assert(document != null, "Calendar serialization returned null");
             return document.GetCalendar();
         }
@@ -126,7 +54,7 @@ namespace Nexusat.Utils.CalendarGenerator
         {
             if (calendar == null) throw new ArgumentNullException(nameof(calendar));
             var document = new CalendarDocument(calendar);
-            
+
             var ser = new DataContractJsonSerializer(typeof(CalendarDocument));
 
             using var buffer = new MemoryStream();
@@ -154,6 +82,90 @@ namespace Nexusat.Utils.CalendarGenerator
             var document = ser.ReadObject(buffer) as CalendarDocument;
             Debug.Assert(document != null, "Calendar serialization returned null");
             return document.GetCalendar();
+        }
+
+        [XmlRoot(ElementName = "Calendar", Namespace = "http://www.nexusat.it/schemas/calendar")]
+        public class CalendarDocument
+        {
+            // ReSharper disable once UnusedMember.Global
+            public CalendarDocument()
+            {
+            }
+
+            public CalendarDocument(Calendar calendar)
+            {
+                if (calendar == null) throw new ArgumentNullException(nameof(calendar));
+                Version = CalendarSerializerVersion.ToString();
+                Name = calendar.Name;
+                Description = calendar.Description;
+                LongDescription = calendar.LongDescription;
+                Rules = calendar.CalendarRules.Select(cr => new Rule
+                {
+                    Policy = cr.Policy.ToString(),
+                    Description = cr.Rule.Description,
+                    Pattern = cr.Rule.ToDayPatternString(),
+                    WorkingPeriods = cr.Rule.WorkingPeriods?.Select(wp => new Period
+                        {Begin = wp.Begin.ToString(), End = wp.End.ToString()}).ToList()
+                }).ToList();
+            }
+
+            [XmlAttribute(AttributeName = "version")]
+            public string Version { get; set; }
+
+            [XmlAttribute(AttributeName = "name")] public string Name { get; set; }
+
+            public string Description { get; set; }
+            public string LongDescription { get; set; }
+            public List<Rule> Rules { get; set; }
+
+            internal Calendar GetCalendar()
+            {
+                var rules = new CalendarRules();
+                foreach (var r in Rules)
+                {
+                    if (!DayRuleParser.TryParseInternal(r.Pattern,
+                        out var description,
+                        out var yearMatchers,
+                        out var monthMatchers,
+                        out var dayOfMonthMatchers,
+                        out var dayOfWeekMatchers,
+                        out var workingPeriods))
+                        throw new SerializationException($"Day pattern '{r.Pattern}' is invalid");
+                    if (!string.IsNullOrEmpty(description))
+                        throw new SerializationException(
+                            $"Day pattern '{r.Pattern}' is invalid in this context: you cannot provide a day description");
+                    if (workingPeriods is not null)
+                        throw new SerializationException(
+                            $"Day pattern '{r.Pattern}' is invalid in this context: you cannot provide a working period list");
+                    rules.Add(Enum.Parse<DayRulePolicy>(r.Policy), r.Description, yearMatchers, monthMatchers,
+                        dayOfMonthMatchers, dayOfWeekMatchers,
+                        r.WorkingPeriods?.Select(_ => new TimePeriod(Time.Parse(_.Begin), Time.Parse(_.End))));
+                }
+
+                return new Calendar(Name, rules, Description, LongDescription);
+            }
+
+            public class Period
+            {
+                [XmlAttribute(AttributeName = "begin")]
+                public string Begin { get; set; }
+
+                [XmlAttribute(AttributeName = "end")] public string End { get; set; }
+            }
+
+            public class Rule
+            {
+                [XmlAttribute(AttributeName = "policy")]
+                public string Policy { get; set; }
+
+                [XmlAttribute(AttributeName = "description")]
+                public string Description { get; set; }
+
+                [XmlAttribute(AttributeName = "pattern")]
+                public string Pattern { get; set; }
+
+                public List<Period> WorkingPeriods { get; set; }
+            }
         }
     }
 }
