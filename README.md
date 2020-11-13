@@ -7,15 +7,15 @@
 The main purpose of this library is to simplify the generation of calendar days tables.
 
 More in details with this libary you can:
-* define calendars by a fluent syntax
-* combine them in a hierarchy
+* define calendars by a succint syntax
+* combine calendar in a hierarchy
 * check if a date match a calendar and fetch day info
-* generate calendar days tables in JSON or XML
+* generate calendar days tables in JSON or XML formats
 * serialize and deserialize calendar definition in JSON or XML, useful to persist a calendar on an external system (DB or filesystem)
 
 ## Calendar Definition
 
-The definition of a calendar is obtained by specifing a set of rules.
+The definition of a achieved by specifing a set of rules.
 
 Each rule is made up of the following parts:
 * An evaluation policy
@@ -53,7 +53,7 @@ Year predicates are appended to the range expression.
 |*              | Any year
 |2000..         | Any year from 2000 included
 |..2000         | Any year until 2000 included  
-|2000..2020     | Any year between 2000 and 2020
+|2000..2020     | Any year between 2000 and 2020 included
 
 ##### Year Predicate Expressions
 
@@ -108,7 +108,7 @@ Day of months are represented by the numbers 1 (the 1st) to 31 (the 31st).
 |Expression     |Predicate|Description
 |---------------|---------|-------------------------
 |*%2            |Modulo   |Any day of month wich modulo 2 is zero
-|1../2          |Periodic |The day of months that are odd
+|1../2          |Periodic |The day of months that are odd. **ATTENTION**: this predicate requires that the range is left closed.
 
 #### Day Of Week Matcher Expression
 
