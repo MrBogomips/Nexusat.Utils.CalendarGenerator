@@ -15,6 +15,6 @@ namespace Nexusat.Utils.CalendarGenerator
         /// <summary>
         ///     Stop the evaluation of the rules and accept this outcome.
         /// </summary>
-        Accept = 3
+        Accept = 1
     }
 }

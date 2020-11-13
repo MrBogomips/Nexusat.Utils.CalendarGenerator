@@ -28,7 +28,7 @@ Each rule is made up of the following parts:
 |Policy         | Description
 |---------------|---------------------------------------------------------------------------
 |**Fallthrough**| The rule is accepted but the evaluation continues with the following rules 
-|**Always**     | The rule is accepted and the evaluation stops
+|**Accept**     | The rule is accepted and the evaluation stops
 
 ### Date Matcher Expression (aka Date Pattern)
 
