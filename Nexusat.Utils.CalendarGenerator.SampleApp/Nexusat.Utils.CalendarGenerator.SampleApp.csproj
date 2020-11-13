@@ -5,4 +5,8 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Nexusat.Utils.CalendarGenerator\Nexusat.Utils.CalendarGenerator.csproj" />
+    </ItemGroup>
+
 </Project>
