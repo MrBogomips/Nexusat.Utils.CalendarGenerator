@@ -1,4 +1,4 @@
-# Nexusat.Utils.CalendarGenerator
+# Nexusat.Utils.CalendarGenerator   ![.NET Core](https://github.com/MrBogomips/Nexusat.Utils.CalendarGenerator/workflows/.NET%20Core/badge.svg?branch=master)
 
 .NET Library to generate a perpetual calendar based on rules.
 
