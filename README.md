@@ -57,12 +57,12 @@ Year predicates are appended to the range expression.
 
 ##### Year Predicate Expressions
 
-|Expression     |Name    |Description
-|---------------|--------|-------------------------
-|*%2            |Modulo  |Any year which modulo 2 is zero
-|2000../2       |Periodic|Every 2 years starting from 2000. **ATTENTION**: this predicate requires that the range is left closed.
-|*/Leap         |Leap    |Every leap year  
-|*/NotLeap      |NotLeap |Every not leap year
+|Expression     |Predicate|Description
+|---------------|---------|-------------------------
+|*%2            |Modulo   |Any year which modulo 2 is zero
+|2000../2       |Periodic |Every 2 years starting from 2000. **ATTENTION**: this predicate requires that the range is left closed.
+|*/Leap         |Leap     |Every leap year  
+|*/NotLeap      |NotLeap  |Every not leap year
 
 #### Month Matcher Expression
 
@@ -82,10 +82,10 @@ Months are represented by the numbers 1 (January) to 12 (December).
 
 ##### Month Predicate Expressions
 
-|Expression     |Name    |Description
-|---------------|--------|-------------------------
-|*%2            |Modulo  |Any month which modulo 2 is zero
-|1../2          |Periodic|January, March, May, July, September, November. **ATTENTION**: this predicate requires that the range is left closed.
+|Expression     |Predicate|Description
+|---------------|---------|-------------------------
+|*%2            |Modulo   |Any month which modulo 2 is zero
+|1../2          |Periodic |January, March, May, July, September, November. **ATTENTION**: this predicate requires that the range is left closed.
 
 #### Day Of Month Matcher Expression
 
@@ -105,10 +105,10 @@ Day of months are represented by the numbers 1 (the 1st) to 31 (the 31st).
 
 ##### Day Of Month Predicate Expressions
 
-|Expression     |Name    |Description
-|---------------|--------|-------------------------
-|*%2            |Modulo  |Any day of month wich modulo 2 is zero
-|1../2          |Periodic|The day of months that are odd
+|Expression     |Predicate|Description
+|---------------|---------|-------------------------
+|*%2            |Modulo   |Any day of month wich modulo 2 is zero
+|1../2          |Periodic |The day of months that are odd
 
 #### Day Of Week Matcher Expression
 
