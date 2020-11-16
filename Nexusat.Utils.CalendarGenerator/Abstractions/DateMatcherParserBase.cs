@@ -15,7 +15,8 @@ namespace Nexusat.Utils.CalendarGenerator
                 throw new ArgumentException("Value cannot be null or empty.", nameof(separator));
             dateMatchers = default;
             var varDateMatchers = new List<T>();
-            foreach (var value in values.Split(separator))
+            var separators = new string[] { separator };
+            foreach (var value in values.Split(separators, StringSplitOptions.RemoveEmptyEntries))
             {
                 if (!TryParse(value, out var dateMatcher)) return false;
                 varDateMatchers.Add(dateMatcher);

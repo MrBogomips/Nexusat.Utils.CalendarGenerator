@@ -80,7 +80,7 @@ namespace Nexusat.Utils.CalendarGenerator
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Left, Right);
+            return Left ?? 0 ^ Right ?? 0;
         }
 
         public static bool operator ==(RangeNumberMatcher left, RangeNumberMatcher right)

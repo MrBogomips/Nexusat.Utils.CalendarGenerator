@@ -137,7 +137,7 @@ namespace Nexusat.Utils.CalendarGenerator
                     if (workingPeriods is not null)
                         throw new SerializationException(
                             $"Day pattern '{r.Pattern}' is invalid in this context: you cannot provide a working period list");
-                    rules.Add(Enum.Parse<DayRulePolicy>(r.Policy), r.Description, yearMatchers, monthMatchers,
+                    rules.Add((DayRulePolicy)Enum.Parse(typeof(DayRulePolicy), r.Policy), r.Description, yearMatchers, monthMatchers,
                         dayOfMonthMatchers, dayOfWeekMatchers,
                         r.WorkingPeriods?.Select(_ => new TimePeriod(Time.Parse(_.Begin), Time.Parse(_.End))));
                 }

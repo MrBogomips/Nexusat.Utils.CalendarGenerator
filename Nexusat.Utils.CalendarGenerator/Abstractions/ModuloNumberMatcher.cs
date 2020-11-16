@@ -52,7 +52,7 @@ namespace Nexusat.Utils.CalendarGenerator
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(base.GetHashCode(), Modulo);
+            return Left ?? 0 ^ Right ?? 0 ^ Modulo;
         }
 
         public static bool operator ==(ModuloNumberMatcher left, ModuloNumberMatcher right)

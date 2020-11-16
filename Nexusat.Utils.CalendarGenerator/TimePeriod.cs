@@ -114,7 +114,8 @@ namespace Nexusat.Utils.CalendarGenerator
 
             var varTimePeriods = new List<TimePeriod>();
 
-            foreach (var value in values.Split(separator))
+            var separators = new string[] { separator };
+            foreach (var value in values.Split(separators, StringSplitOptions.RemoveEmptyEntries))
             {
                 if (!TryParse(value, out var timePeriod)) return false;
                 varTimePeriods.Add(timePeriod);
@@ -149,7 +150,7 @@ namespace Nexusat.Utils.CalendarGenerator
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Begin, End);
+            return Begin.GetHashCode() ^ End.GetHashCode();
         }
 
         public static bool operator ==(TimePeriod lhs, TimePeriod rhs)
