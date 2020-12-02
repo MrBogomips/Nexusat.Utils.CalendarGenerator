@@ -7,14 +7,9 @@ namespace Nexusat.Utils.CalendarGenerator
     /// </summary>
     public class PeriodicYearMatcher : PeriodicNumberMatcher, IYearMatcher
     {
-        public PeriodicYearMatcher(int left, int? right, int period) : base(left, right, period)
-        {
-        }
+        public PeriodicYearMatcher(int left, int? right, int period) : base(left, right, period) { }
 
-        public bool Match(DateTime date)
-        {
-            return Match(date.Year);
-        }
+        public bool Match(DateTime date) => Match(date.Year);
 
         public bool IsOneYear => IsOneValue;
 

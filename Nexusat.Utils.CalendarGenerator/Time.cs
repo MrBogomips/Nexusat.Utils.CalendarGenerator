@@ -30,11 +30,8 @@ namespace Nexusat.Utils.CalendarGenerator
             Minute = minute;
         }
 
-        [SuppressMessage("ReSharper", "HeapView.BoxingAllocation")]
-        public override string ToString()
-        {
-            return $"{Hour:D2}:{Minute:D2}";
-        }
+        // ReSharper disable HeapView.BoxingAllocation
+        public override string ToString() => $"{Hour:D2}:{Minute:D2}";
 
         public int CompareTo(Time other)
         {
@@ -48,59 +45,37 @@ namespace Nexusat.Utils.CalendarGenerator
             return 0;
         }
 
-        public static bool operator <(Time lhs, Time rhs)
-        {
-            return lhs.Hour < rhs.Hour || lhs.Hour == rhs.Hour && lhs.Minute < rhs.Minute;
-        }
+        public static bool operator <(Time lhs, Time rhs) =>
+            lhs.Hour < rhs.Hour || lhs.Hour == rhs.Hour && lhs.Minute < rhs.Minute;
 
-        public static bool operator >(Time lhs, Time rhs)
-        {
-            return lhs.Hour > rhs.Hour || lhs.Hour == rhs.Hour && lhs.Minute > rhs.Minute;
-        }
+        public static bool operator >(Time lhs, Time rhs) =>
+            lhs.Hour > rhs.Hour || lhs.Hour == rhs.Hour && lhs.Minute > rhs.Minute;
 
-        public static bool operator <=(Time lhs, Time rhs)
-        {
-            return lhs.Hour <= rhs.Hour && lhs.Minute <= rhs.Minute;
-        }
+        public static bool operator <=(Time lhs, Time rhs) =>
+            lhs.Hour <= rhs.Hour && lhs.Minute <= rhs.Minute;
 
-        public static bool operator >=(Time lhs, Time rhs)
-        {
-            return lhs.Hour >= rhs.Hour && lhs.Minute >= rhs.Minute;
-        }
+        public static bool operator >=(Time lhs, Time rhs) =>
+            lhs.Hour >= rhs.Hour && lhs.Minute >= rhs.Minute;
 
-        public static bool operator ==(Time lhs, Time rhs)
-        {
-            return (lhs.Hour, lhs.Minute) == (rhs.Hour, rhs.Minute);
-        }
+        public static bool operator ==(Time lhs, Time rhs) =>
+            (lhs.Hour, lhs.Minute) == (rhs.Hour, rhs.Minute);
 
-        public static bool operator !=(Time lhs, Time rhs)
-        {
-            return (lhs.Hour, lhs.Minute) != (rhs.Hour, rhs.Minute);
-        }
+        public static bool operator !=(Time lhs, Time rhs) =>
+            (lhs.Hour, lhs.Minute) != (rhs.Hour, rhs.Minute);
 
-        public bool Equals(Time obj)
-        {
-            return (Hour, Minute) == (obj.Hour, obj.Minute);
-        }
+        public bool Equals(Time obj) =>
+            (Hour, Minute) == (obj.Hour, obj.Minute);
 
-        public override bool Equals(object obj)
-        {
-            return obj is Time t && Equals(t);
-        }
+        public override bool Equals(object obj) =>
+            obj is Time t && Equals(t);
 
         /// <summary>
         ///     Returns a serial of the time.
         /// </summary>
         /// <returns></returns>
-        public int GetSerial()
-        {
-            return Hour * 60 + Minute;
-        }
+        public int GetSerial() => Hour * 60 + Minute;
 
-        public override int GetHashCode()
-        {
-            return GetSerial();
-        }
+        public override int GetHashCode() => GetSerial();
 
         private static Regex ParseRegEx { get; } = new Regex(@"^(\d{2}):(\d{2})$");
 

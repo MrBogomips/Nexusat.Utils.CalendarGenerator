@@ -35,10 +35,7 @@ namespace Nexusat.Utils.CalendarGenerator
         {
         }
 
-        public int CompareTo(TimePeriod other)
-        {
-            return Begin.CompareTo(other.Begin);
-        }
+        public int CompareTo(TimePeriod other) => Begin.CompareTo(other.Begin);
 
         /// <summary>
         ///     Check if two time periods overlaps
@@ -63,13 +60,11 @@ namespace Nexusat.Utils.CalendarGenerator
         public int TotalMinutes => End.GetSerial() - Begin.GetSerial();
 
 
-        public static implicit operator TimeSpan(TimePeriod timePeriod)
-        {
-            return new TimeSpan(
+        public static implicit operator TimeSpan(TimePeriod timePeriod) =>
+            new TimeSpan(
                 timePeriod.End.Hour - timePeriod.Begin.Hour,
                 timePeriod.End.Minute - timePeriod.Begin.Minute,
                 0);
-        }
 
         private static Regex ParseRegEx { get; } = new Regex(@"^(\d{2}:\d{2})-(\d{2}:\d{2})$");
 
@@ -132,34 +127,16 @@ namespace Nexusat.Utils.CalendarGenerator
             return timePeriods;
         }
 
-        public override string ToString()
-        {
-            return $"{Begin}-{End}";
-        }
+        public override string ToString() => $"{Begin}-{End}";
 
-        public bool Equals(TimePeriod other)
-        {
-            return (Begin, End) == (other.Begin, other.End);
-        }
+        public bool Equals(TimePeriod other) => (Begin, End) == (other.Begin, other.End);
 
-        public override bool Equals(object obj)
-        {
-            return obj is TimePeriod other && Equals(other);
-        }
+        public override bool Equals(object obj) => obj is TimePeriod other && Equals(other);
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Begin, End);
-        }
+        public override int GetHashCode() => HashCode.Combine(Begin, End);
 
-        public static bool operator ==(TimePeriod lhs, TimePeriod rhs)
-        {
-            return lhs.Equals(rhs);
-        }
+        public static bool operator ==(TimePeriod lhs, TimePeriod rhs) => lhs.Equals(rhs);
 
-        public static bool operator !=(TimePeriod lhs, TimePeriod rhs)
-        {
-            return !lhs.Equals(rhs);
-        }
+        public static bool operator !=(TimePeriod lhs, TimePeriod rhs) =>!lhs.Equals(rhs);
     }
 }

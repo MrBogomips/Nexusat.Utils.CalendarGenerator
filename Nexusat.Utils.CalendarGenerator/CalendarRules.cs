@@ -10,10 +10,7 @@ namespace Nexusat.Utils.CalendarGenerator
     /// </summary>
     public class CalendarRules : List<CalendarRule>
     {
-        public void Add(DayRulePolicy policy, DayRule rule)
-        {
-            Add(new CalendarRule(policy, rule));
-        }
+        public void Add(DayRulePolicy policy, DayRule rule) => Add(new CalendarRule(policy, rule));
 
         public void Add(DayRulePolicy policy,
             string description,

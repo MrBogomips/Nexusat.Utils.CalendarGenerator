@@ -12,15 +12,9 @@ namespace Nexusat.Utils.CalendarGenerator
             if (IsOneYear) throw new ArgumentException("You must specify a multi year range");
         }
 
-        public override bool Match(DateTime date)
-        {
-            return base.Match(date) && !LeapYearMatcher.IsLeapYear(date);
-        }
+        public override bool Match(DateTime date) => base.Match(date) && !LeapYearMatcher.IsLeapYear(date);
 
-        public override string ToString()
-        {
-            return $"{base.ToString()}/NotLeap";
-        }
+        public override string ToString() => $"{base.ToString()}/NotLeap";
 
         public static bool TryParse(string value, out NotLeapYearMatcher nonLeapYearMatcherMatcher)
         {

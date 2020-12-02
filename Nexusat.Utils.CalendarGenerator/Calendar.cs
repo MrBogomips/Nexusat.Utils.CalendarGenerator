@@ -101,18 +101,12 @@ namespace Nexusat.Utils.CalendarGenerator
         /// </summary>
         /// <param name="rules"></param>
         // ReSharper disable once UnusedMember.Global
-        public void AddRules(CalendarRules rules)
-        {
-            CalendarRules.AddRange(rules);
-        }
+        public void AddRules(CalendarRules rules) => CalendarRules.AddRange(rules);
 
         /// <summary>
         ///     Add the rules from the calendar to the collection of rules
         /// </summary>
         /// <param name="calendar"></param>
-        public void AddRules(Calendar calendar)
-        {
-            CalendarRules.Add(calendar);
-        }
+        public void AddRules(Calendar calendar) => CalendarRules.Add(calendar);
     }
 }

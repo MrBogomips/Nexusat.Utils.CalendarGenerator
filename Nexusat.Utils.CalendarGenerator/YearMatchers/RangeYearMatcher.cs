@@ -7,14 +7,9 @@ namespace Nexusat.Utils.CalendarGenerator
     /// </summary>
     public class RangeYearMatcher : RangeNumberMatcher, IYearMatcher
     {
-        public RangeYearMatcher(int? left, int? right) : base(left, right)
-        {
-        }
+        public RangeYearMatcher(int? left, int? right) : base(left, right) { }
 
-        public virtual bool Match(DateTime date)
-        {
-            return Match(date.Year);
-        }
+        public virtual bool Match(DateTime date) => Match(date.Year);
 
         public bool IsOneYear => IsOneValue;
 
