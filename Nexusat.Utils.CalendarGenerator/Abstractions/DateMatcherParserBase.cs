@@ -25,9 +25,6 @@ namespace Nexusat.Utils.CalendarGenerator
             return true;
         }
 
-        public bool TryParseMulti(string values, out IEnumerable<T> dateMatchers)
-        {
-            return TryParseMulti(values, ",", out dateMatchers);
-        }
+        public bool TryParseMulti(string values, out IEnumerable<T> dateMatchers) => TryParseMulti(values, ",", out dateMatchers);
     }
 }

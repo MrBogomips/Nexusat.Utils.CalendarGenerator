@@ -64,11 +64,7 @@ namespace Nexusat.Utils.CalendarGenerator
             };
         }
 
-        public void Deconstruct(out int? left, out int? right)
-        {
-            left = Left;
-            right = Right;
-        }
+        public void Deconstruct(out int? left, out int? right) => (left, right) = (Left, Right);
 
         public override bool Equals(object obj)
         {
@@ -78,20 +74,11 @@ namespace Nexusat.Utils.CalendarGenerator
             return Equals((RangeNumberMatcher) obj);
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Left, Right);
-        }
+        public override int GetHashCode() => HashCode.Combine(Left, Right);
 
-        public static bool operator ==(RangeNumberMatcher left, RangeNumberMatcher right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(RangeNumberMatcher left, RangeNumberMatcher right) => Equals(left, right);
 
-        public static bool operator !=(RangeNumberMatcher left, RangeNumberMatcher right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(RangeNumberMatcher left, RangeNumberMatcher right) => !Equals(left, right);
 
         /// <summary>
         ///     Parse a string representing a valid number range expression.

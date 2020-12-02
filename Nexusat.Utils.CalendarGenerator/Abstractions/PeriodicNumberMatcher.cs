@@ -33,15 +33,9 @@ namespace Nexusat.Utils.CalendarGenerator
             return base.Equals(other) && Period == other.Period;
         }
 
-        public override bool Match(int value)
-        {
-            return base.Match(value) && (value - Left.Value) % Period == 0;
-        }
+        public override bool Match(int value) => base.Match(value) && (value - Left.Value) % Period == 0;
 
-        public override string ToString()
-        {
-            return $"{base.ToString()}/{Period}";
-        }
+        public override string ToString() => $"{base.ToString()}/{Period}";
 
         public override bool Equals(object obj)
         {
@@ -50,20 +44,11 @@ namespace Nexusat.Utils.CalendarGenerator
             return obj.GetType() == GetType() && Equals((PeriodicNumberMatcher) obj);
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(base.GetHashCode(), Period);
-        }
+        public override int GetHashCode() => HashCode.Combine(base.GetHashCode(), Period);
 
-        public static bool operator ==(PeriodicNumberMatcher left, PeriodicNumberMatcher right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(PeriodicNumberMatcher left, PeriodicNumberMatcher right) => Equals(left, right);
 
-        public static bool operator !=(PeriodicNumberMatcher left, PeriodicNumberMatcher right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(PeriodicNumberMatcher left, PeriodicNumberMatcher right) => !Equals(left, right);
 
         public static bool TryParse(string value, int? minLeft, int? maxLeft, int? minRight, int? maxRight,
             out int left, out int? right, out int period)

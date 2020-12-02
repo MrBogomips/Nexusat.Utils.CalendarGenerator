@@ -8,14 +8,9 @@ namespace Nexusat.Utils.CalendarGenerator
     /// </summary>
     public class ModuloMonthMatcher : ModuloNumberMatcher, IMonthMatcher
     {
-        public ModuloMonthMatcher(int? left, int? right, int modulo) : base(ModuloCtorHelper(left, right, modulo))
-        {
-        }
+        public ModuloMonthMatcher(int? left, int? right, int modulo) : base(ModuloCtorHelper(left, right, modulo)) { }
 
-        public bool Match(DateTime date)
-        {
-            return Match(date.Month);
-        }
+        public bool Match(DateTime date) => Match(date.Month);
 
         public bool IsOneMonth => IsOneValue;
 
@@ -28,9 +23,6 @@ namespace Nexusat.Utils.CalendarGenerator
             return true;
         }
 
-        public override string ToString()
-        {
-            return Left == 1 && Right == 12 ? $"*%{Modulo}" : base.ToString();
-        }
+        public override string ToString() => Left == 1 && Right == 12 ? $"*%{Modulo}" : base.ToString();
     }
 }

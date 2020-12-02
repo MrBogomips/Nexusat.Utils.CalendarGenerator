@@ -14,10 +14,7 @@ namespace Nexusat.Utils.CalendarGenerator
         {
         }
 
-        public virtual bool Match(DateTime date)
-        {
-            return Match(date.Day);
-        }
+        public virtual bool Match(DateTime date) => Match(date.Day);
 
         public bool IsOneDay => IsOneValue;
 
@@ -30,9 +27,6 @@ namespace Nexusat.Utils.CalendarGenerator
             return true;
         }
 
-        public override string ToString()
-        {
-            return Left == 1 && Right == 31 ? "*" : base.ToString();
-        }
+        public override string ToString() => Left == 1 && Right == 31 ? "*" : base.ToString();
     }
 }

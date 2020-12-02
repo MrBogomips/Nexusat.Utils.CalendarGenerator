@@ -22,14 +22,11 @@ namespace Nexusat.Utils.CalendarGenerator
         {
         }
 
-        public virtual bool Match(DateTime date)
-        {
-            return date.DayOfWeek switch
+        public virtual bool Match(DateTime date) => date.DayOfWeek switch
             {
                 DayOfWeek.Sunday => base.Match(0) || base.Match(7),
                 var dow => base.Match((int) dow)
             };
-        }
 
         public bool IsOneWeekDay => IsOneValue;
 
@@ -42,14 +39,11 @@ namespace Nexusat.Utils.CalendarGenerator
             return true;
         }
 
-        public override string ToString()
-        {
-            return (Left, Right) == (1, 7)
-                   || (Left, Right) == (0, 7)
-                   || (Left, Right) == (0, 6)
-                   || (Left, Right) == (1, 6)
-                ? "*"
-                : base.ToString();
-        }
+        public override string ToString() =>
+            (Left, Right) == (1, 7)
+            || (Left, Right) == (0, 7)
+            || (Left, Right) == (0, 6)
+            || (Left, Right) == (1, 6)
+            ? "*" : base.ToString();
     }
 }

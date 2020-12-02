@@ -32,15 +32,9 @@ namespace Nexusat.Utils.CalendarGenerator
             return base.Equals(other) && Modulo == other.Modulo;
         }
 
-        public override bool Match(int value)
-        {
-            return base.Match(value) && value % Modulo == 0;
-        }
+        public override bool Match(int value) => base.Match(value) && value % Modulo == 0;
 
-        public override string ToString()
-        {
-            return $"{base.ToString()}%{Modulo}";
-        }
+        public override string ToString() => $"{base.ToString()}%{Modulo}";
 
         public override bool Equals(object obj)
         {
@@ -50,20 +44,11 @@ namespace Nexusat.Utils.CalendarGenerator
             return Equals((ModuloNumberMatcher) obj);
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(base.GetHashCode(), Modulo);
-        }
+        public override int GetHashCode() => HashCode.Combine(base.GetHashCode(), Modulo);
 
-        public static bool operator ==(ModuloNumberMatcher left, ModuloNumberMatcher right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(ModuloNumberMatcher left, ModuloNumberMatcher right) => Equals(left, right);
 
-        public static bool operator !=(ModuloNumberMatcher left, ModuloNumberMatcher right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(ModuloNumberMatcher left, ModuloNumberMatcher right) => !Equals(left, right);
 
         public static bool TryParse(string value, int? minLeft, int? maxLeft, int? minRight, int? maxRight,
             out int? left, out int? right, out int modulo)
