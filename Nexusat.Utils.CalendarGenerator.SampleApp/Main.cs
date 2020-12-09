@@ -53,7 +53,7 @@ Debug.Assert(!dayInfo.IsWorkingDay, "For the working calendar every saturday is 
 
 dayInfo = workingWeek.GetDayInfo(aMonday);
 if (dayInfo.IsWorkingDay) { // It applies only to working days
-    Debug.Assert(!dayInfo.WorkingPeriods.Any(period => period == TimePeriod.Parse("08:30-13:30")));
+    Debug.Assert(dayInfo.WorkingPeriods.Any(period => period == TimePeriod.Parse("08:30-13:30")));
 }
 
 /****************************************************
