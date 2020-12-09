@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Nexusat.Utils.CalendarGenerator;
 
 /*************************************************
@@ -45,6 +46,15 @@ Debug.Assert(dayInfo.IsWorkingDay, "For the working calendar every monday is a w
 dayInfo = workingWeek.GetDayInfo(aSaturday);
 Debug.Assert(dayInfo is not null, "The calendar definition will always provide a dayInfo");
 Debug.Assert(!dayInfo.IsWorkingDay, "For the working calendar every saturday is not a working day");
+
+/*************************************************
+ * CHECKING THE EXISTANCE OF A WORKING PERIOD
+ */
+
+dayInfo = workingWeek.GetDayInfo(aMonday);
+if (dayInfo.IsWorkingDay) { // It applies only to working days
+    Debug.Assert(!dayInfo.WorkingPeriods.Any(period => period == TimePeriod.Parse("08:30-13:30")));
+}
 
 /****************************************************
  * COMBINING CALENDARS' RULES
